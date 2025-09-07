@@ -1,0 +1,41 @@
+.cover-container {
+  max-width: 42em;
+}
+
+.nav-masthead .nav-link {
+  padding: 0.25rem 0;
+  font-weight: 700;
+  color: rgba(65, 21, 21, 0.5);
+  background-color: transparent;
+  border-bottom: 0.25rem solid transparent;
+}
+
+.nav-masthead .nav-link:hover,
+.nav-masthead .nav-link:focus {
+  border-bottom-color: rgba(255, 255, 255, 0.25);
+}
+
+.nav-masthead .nav-link.active {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+#root {
+  height: 100vh;
+}
+main.flex-fill {
+  min-height: 0;
+}
+.btn-donar {
+  background-color: #66abf0 !important; /* azul chill */
+  color: rgba(0, 0, 0, 0.692) !important;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-donar:hover {
+  background-color: #3399ff !important; /* azul más oscuro al pasar el mouse */
+  color:  rgb(255, 149, 228) !important;
+}

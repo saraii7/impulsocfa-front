@@ -1,0 +1,80 @@
+/* Logo más grande y más a la izquierda */
+.logo {
+  height: 200px;
+  width: auto;
+  margin-right: 0;
+  margin-left: -10.5rem; /* Mueve el logo más hacia la izquierda */
+  object-fit: contain;
+  max-width: none;
+}
+
+/* Espaciado entre elementos de navegación */
+.nav-masthead .nav-link {
+  padding: 0.25rem 0;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.753);
+  background-color: transparent;
+  border-bottom: 0.25rem solid transparent;
+  margin-left: 1.5rem; /* Espacio entre elementos */
+  transition: all 0.3s ease;
+}
+
+/* Primer elemento sin margen izquierdo */
+.nav-masthead .nav-link:first-child {
+  margin-left: 0;
+}
+
+/* Estado hover */
+.nav-masthead .nav-link:hover,
+.nav-masthead .nav-link:focus {
+  border-bottom-color: rgba(42, 45, 230, 0.884);
+  color: rgb(224, 112, 196);
+}
+/* Responsive para móvil */
+@media (max-width: 768px) {
+  .logo {
+    height: 80px !important; /* Logo más grande en móvil también */
+    margin-left: -1rem; /* Menos margen negativo en móvil */
+  }
+  
+  .nav-masthead .nav-link {
+    margin-left: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  header .d-flex {
+    flex-direction: row !important; /* Mantener horizontal en móvil */
+    gap: 1rem;
+    padding: 0 1rem;
+    min-height: 80px; /* Menos altura en móvil */
+    align-items: center;
+  }
+  @media (max-width: 768px) {
+  header {
+    height: 80px !important; /* Header más pequeño en móvil */
+  }
+  .nav-masthead {
+    margin-left: 0;
+    justify-content: center;
+  }
+}
+header {
+  height: 200px !important; /* Altura fija que NUNCA cambia */
+  overflow: hidden; /* Oculta partes del logo que se salgan */
+  position: relative;
+   padding: 0 3rem;  /* solo horizontal */
+  display: flex;
+  align-items: center; /* centra verticalmente el logo y nav */
+  justify-content: space-between;
+
+}
+
+/* Separar más el logo y navegación - altura SIEMPRE fija */
+header .d-flex {
+  width: 100%;
+  padding: 0 3rem; /* Solo padding horizontal */
+  justify-content: space-between;
+  align-items: center;
+  height: 120px; /* Misma altura fija que el header */
+}
+}
