@@ -60,12 +60,13 @@
 }
 header {
   height: 200px !important; /* Altura fija que NUNCA cambia */
-  overflow: hidden; /* Oculta partes del logo que se salgan */
+  /*overflow: hidden; /* Oculta partes del logo que se salgan */
   position: relative;
    padding: 0 3rem;  /* solo horizontal */
   display: flex;
   align-items: center; /* centra verticalmente el logo y nav */
   justify-content: space-between;
+
 
 }
 

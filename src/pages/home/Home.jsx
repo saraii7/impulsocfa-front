@@ -1,10 +1,12 @@
 import "./Home.css";
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/Footer";
-
+import Pattern from "../../components/Pattern";
 function Home() {
   return (
     <div className="d-flex h-100 text-center">
+       {/* Fondo Uiverse */}
+      <Pattern />
       <div className="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 
         {/* HEADER */}
@@ -27,6 +29,9 @@ function Home() {
         <Footer />
       </div>
     </div>
+    
+    
+    
   );
 }
 
