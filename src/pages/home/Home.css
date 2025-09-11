@@ -26,8 +26,8 @@ main.flex-fill {
   min-height: 0;
 }
 .btn-donar {
-  background-color: #66abf0 !important; /* azul chill */
-  color: rgba(0, 0, 0, 0.692) !important;
+  background-color: rgba(108, 141, 248, 0.884) !important; /* azul chill */
+  color: rgb(255, 255, 255) !important;
   border: none;
   padding: 0.75rem 1.5rem;
   font-weight: 700;
@@ -36,6 +36,6 @@ main.flex-fill {
 }
 
 .btn-donar:hover {
-  background-color: #3399ff !important; /* azul más oscuro al pasar el mouse */
-  color:  rgb(255, 149, 228) !important;
+  background-color: rgba(108, 141, 248, 0.884) !important; /* azul más oscuro al pasar el mouse */
+  color:  rgb(140, 0, 255) !important;
 }

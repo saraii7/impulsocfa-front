@@ -20,7 +20,7 @@ function Home() {
           </p>
           <p className="lead">
             <a href="#" className="btn btn-lg btn-donar fw-bold">
-              Donar
+              Quiero donar ya!
             </a>
           </p>
         </main>

@@ -27,8 +27,8 @@
 /* Estado hover */
 .nav-masthead .nav-link:hover,
 .nav-masthead .nav-link:focus {
-  border-bottom-color: rgba(42, 45, 230, 0.884);
-  color: rgb(224, 112, 196);
+  border-bottom-color: rgba(108, 141, 248, 0.884);
+  color: rgb(238, 128, 211);
 }
 /* Responsive para móvil */
 @media (max-width: 768px) {
