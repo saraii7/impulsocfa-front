@@ -1,5 +1,5 @@
-import Home from "./pages/home/home";
+import Registrarse from "./pages/Registrarse/Registrarse";
 function App() {
-  return <Home />;
+  return <Registrarse />;
 }
 export default App;
