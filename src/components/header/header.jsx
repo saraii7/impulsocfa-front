@@ -1,21 +1,23 @@
 import "./Header.css";
 import logo from "../../assets/logo/impulsoCFAlogo.svg"
+import { Link } from "react-router-dom";
+
 function Header() {
   return (
      <header className="mb-auto">
       <div className="d-flex align-items-center justify-content-between">
         {/* Logo */}
-        <a href="/" className="d-flex align-items-center mb-2 mb-md-0 text-decoration-none">
+        <Link to="/home" className="d-flex align-items-center mb-2 mb-md-0 text-decoration-none">
           <img src={logo} alt="Logo Impulso CFA" className="logo" />
-        </a>
+        </Link>
 
         {/* Navegación */}
         <nav className="nav nav-masthead justify-content-center">
-          <a className="nav-link fw-bold py-1 px-0" href="#">Inicio</a>
-          <a className="nav-link fw-bold py-1 px-0" href="#">Donar</a>
-          <a className="nav-link fw-bold py-1 px-0" href="#">Campañas</a>
-          <a className="nav-link fw-bold py-1 px-0" href="#">Nosotros</a>
-          <a className="nav-link fw-bold py-1 px-0" href="#">Iniciar sesión</a>
+          <Link className="nav-link fw-bold py-1 px-0" to="/home">Inicio</Link>
+          <Link className="nav-link fw-bold py-1 px-0" to="/donar">Donar</Link>
+          <Link className="nav-link fw-bold py-1 px-0" to="/campanas">Campañas</Link>
+          <Link className="nav-link fw-bold py-1 px-0" to="/nosotros">Nosotros</Link>
+          <Link className="nav-link fw-bold py-1 px-0" to="/iniciarsesion">Iniciar sesión</Link>
         </nav>
       </div>
     </header>

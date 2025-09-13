@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styled from "styled-components";
 
 export default function RegistrarseForm() {
   const [formData, setFormData] = useState({
@@ -39,7 +40,7 @@ export default function RegistrarseForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+     <FormStyled onSubmit={handleSubmit}>
       <input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} required />
       <input type="text" name="apellido" placeholder="Apellido" onChange={handleChange} required />
       <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
@@ -47,6 +48,48 @@ export default function RegistrarseForm() {
       <input type="date" name="fecha_nacimiento" onChange={handleChange} />
       <input type="text" name="nacionalidad" placeholder="Nacionalidad" onChange={handleChange} required />
       <button type="submit">Registrarse</button>
-    </form>
+     </FormStyled>
   );
 }
+const FormStyled = styled.form`
+  margin-top: 20px;
+
+  input, button {
+    width: 100%;
+    border-radius: 20px;
+    padding: 15px 20px;
+    margin-top: 15px;
+    box-shadow: #cff0ff 0px 10px 10px -5px;
+    border: none;
+    font-size: 14px;
+  }
+
+  input::placeholder {
+    color: rgb(170, 170, 170);
+  }
+
+  input:focus {
+    outline: none;
+    border-inline: 2px solid #12b1d1;
+  }
+
+  button {
+    background: linear-gradient(45deg, rgba(107, 16, 211, 1) 0%, rgb(18, 177, 209) 100%);
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    box-shadow: rgba(133, 189, 215, 0.87) 0px 20px 10px -15px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  button:hover {
+    transform: scale(1.03);
+    box-shadow: rgba(133, 189, 215, 0.87) 0px 23px 10px -20px;
+  }
+
+  button:active {
+    transform: scale(0.95);
+    box-shadow: rgba(133, 189, 215, 0.87) 0px 15px 10px -10px;
+  }
+`;
