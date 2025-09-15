@@ -58,7 +58,7 @@ export async function login(email, password) {
 
 // Obtener llave maestra
 export async function getLlaveMaestra() {
-    const token = localStorage.getItem('access_token'); // tomamos el token guardado
+    const token = localStorage.getItem('access_token'); // toma el token de localStorage
     const res = await fetch(`${API_URL}/usuario/llave`, {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },

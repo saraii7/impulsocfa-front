@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { getLlaveMaestra } from "../services/auth.service";
 import styled from "styled-components";
 

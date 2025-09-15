@@ -24,9 +24,9 @@ export default function RegistrarseForm() {
       console.log("Usuario registrado:", data);
 
       // Mensaje de confirmación
-    alert("✅ Usuario registrado. Revisa tu correo para confirmar la cuenta.");
+    alert("Usuario registrado. Revisa tu correo para confirmar la cuenta.");
 
-    // Limpiar form
+    // Limpia el form
     setFormData({
       email: "",
       password: "",
@@ -38,7 +38,7 @@ export default function RegistrarseForm() {
     });
 
      } catch (error) {
-    alert("❌ " + (error.message || error.error));
+    alert("error " + (error.message || error.error));
     console.error(error);
   }
 };
