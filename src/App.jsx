@@ -7,6 +7,8 @@ import Nosotros from "./pages/Nosotros/Nosotros";
 import Footer from "./components/footer/Footer";
 import IniciarSesion from "./pages/IniciarSesion/IniciarSesion";
 import Registrarse from "./pages/Registrarse/Registrarse"; 
+import EmailConfirmed from "./components/EmailConfirmed";
+
 function App() {
   return (
     <Router>
@@ -22,6 +24,7 @@ function App() {
         <Route path="/nosotros" element={<Nosotros />} />
         <Route path="/iniciarsesion" element={<IniciarSesion />} />
         <Route path="/registrarse" element={<Registrarse />} />
+        <Route path="/email-confirmed" element={<EmailConfirmed />} />
       </Routes>
        <div className="cover-container d-flex w-100 p-3 mx-auto flex-column">
       <Footer />

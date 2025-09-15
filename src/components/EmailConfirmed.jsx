@@ -7,9 +7,8 @@ import { getLlaveMaestra } from "../services/auth.service";
 
   useEffect(() => {
     // 1. Capturar token de la URL
-    const hash = window.location.hash;
-    const params = new URLSearchParams(hash.replace("#", ""));
-    const access_token = params.get("access_token");
+    const url = new (window.location.href);
+    const access_token = url.searchParams.get("access_token");
 
     if (access_token) {
       // 2. Guardar en localStorage

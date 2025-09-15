@@ -1,3 +1,5 @@
+import Pattern from "../../components/Pattern";
+
 export default function Nosotros() {
 
   return (

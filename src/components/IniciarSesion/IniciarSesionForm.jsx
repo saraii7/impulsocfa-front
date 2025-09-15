@@ -11,7 +11,7 @@ const Form = () => {
       <Pattern /> {/* Fondo detrás de todo */}
       <div className="container">
         <div className="heading">Iniciar Sesión</div>
-        <form action className="form">
+        <form className="form">
           <input required className="input" type="email" name="email" id="email" placeholder="E-mail" />
           <input required className="input" type="password" name="password" id="password" placeholder="Contraseña" />
           <span className="forgot-password"><a href="#">¿Olvidaste tu contraseña?</a></span>
