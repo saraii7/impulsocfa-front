@@ -10,14 +10,14 @@ export default function RegistrarseForm() {
     nombre: "",
     apellido: "",
     fecha_nacimiento: "",
-    foto_perfil: "",
+    foto_perfil: null,
     nacionalidad: "",
   });
 
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value || null });
   };
 
   const handleSubmit = async (e) => {

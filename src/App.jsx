@@ -24,7 +24,10 @@ function App() {
         <Route path="/nosotros" element={<Nosotros />} />
         <Route path="/iniciarsesion" element={<IniciarSesion />} />
         <Route path="/registrarse" element={<Registrarse />} />
-        <Route path="/email-confirmed" element={<EmailConfirmed />} />
+        <Route path="/recuperar-contrasenia" element={<RecuperarContrasenia />} />
+        <Route path="/email-confirmed" element={<EmailConfirmed/>} />
+        <Route path="/mostrar-llave" element={<MostrarLlave/>} />
+        <Route path="/confirmarinicioform" element={<ConfirmarInicioForm />} />
       </Routes>
        <div className="cover-container d-flex w-100 p-3 mx-auto flex-column">
       <Footer />
