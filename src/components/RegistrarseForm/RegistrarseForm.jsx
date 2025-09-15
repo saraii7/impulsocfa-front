@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { registerUser } from "../../services/auth.service";
 
 export default function RegistrarseForm() {
   const [formData, setFormData] = useState({
@@ -8,45 +9,48 @@ export default function RegistrarseForm() {
     nombre: "",
     apellido: "",
     fecha_nacimiento: "",
-    foto_perfil: "",
+    foto_perfil: null,
     nacionalidad: "",
   });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value || null });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3000/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.message || "Error al registrar usuario");
-      }
-
-      const data = await res.json();
+      const data = await registerUser(formData);
       console.log("Usuario registrado:", data);
-      alert("Usuario registrado correctamente");
-    } catch (error) {
-      console.error(error);
-      alert("Error al registrarse: " + error.message);
-    }
-  };
+
+      // Mensaje de confirmación
+    alert("✅ Usuario registrado. Revisa tu correo para confirmar la cuenta.");
+
+    // Limpiar form
+    setFormData({
+      email: "",
+      password: "",
+      nombre: "",
+      apellido: "",
+      fecha_nacimiento: "",
+      foto_perfil: null,
+      nacionalidad: "",
+    });
+
+     } catch (error) {
+    alert("❌ " + (error.message || error.error));
+    console.error(error);
+  }
+};
 
   return (
      <FormStyled onSubmit={handleSubmit}>
-      <input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} required />
-      <input type="text" name="apellido" placeholder="Apellido" onChange={handleChange} required />
-      <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-      <input type="password" name="password" placeholder="Contraseña" onChange={handleChange} required />
-      <input type="date" name="fecha_nacimiento" onChange={handleChange} />
-      <input type="text" name="nacionalidad" placeholder="Nacionalidad" onChange={handleChange} required />
+      <input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} value={formData.nombre} required />
+      <input type="text" name="apellido" placeholder="Apellido" onChange={handleChange} value={formData.apellido} required />
+      <input type="email" name="email" placeholder="Email" onChange={handleChange} value={formData.email} required />
+      <input type="password" name="password" placeholder="Contraseña" onChange={handleChange} value={formData.password} required />
+      <input type="date" name="fecha_nacimiento" onChange={handleChange} value={formData.fecha_nacimiento || ""} />
+      <input type="text" name="nacionalidad" placeholder="Nacionalidad" onChange={handleChange} value={formData.nacionalidad} required />
       <button type="submit">Registrarse</button>
      </FormStyled>
   );

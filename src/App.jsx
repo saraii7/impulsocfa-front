@@ -7,6 +7,10 @@ import Nosotros from "./pages/Nosotros/Nosotros";
 import Footer from "./components/footer/Footer";
 import IniciarSesion from "./pages/IniciarSesion/IniciarSesion";
 import Registrarse from "./pages/Registrarse/Registrarse"; 
+import RecuperarContrasenia from "./pages/RecuperarContrasenia/RecuperarContrasenia";
+import EmailConfirmed from "./components/EmailConfirmed";
+import MostrarLlave from "./components/MostrarLlave";
+import ConfirmarInicioForm from "./components/ConfirmarInicioForm";
 function App() {
   return (
     <Router>
@@ -22,6 +26,10 @@ function App() {
         <Route path="/nosotros" element={<Nosotros />} />
         <Route path="/iniciarsesion" element={<IniciarSesion />} />
         <Route path="/registrarse" element={<Registrarse />} />
+        <Route path="/recuperar-contrasenia" element={<RecuperarContrasenia />} />
+        <Route path="/email-confirmed" element={<EmailConfirmed/>} />
+        <Route path="/mostrar-llave" element={<MostrarLlave/>} />
+        <Route path="/confirmarinicioform" element={<ConfirmarInicioForm />} />
       </Routes>
        <div className="cover-container d-flex w-100 p-3 mx-auto flex-column">
       <Footer />
