@@ -1,5 +1,6 @@
 const API_URL = 'http://localhost:3000/api/auth';
 
+// Registrarse normal
 export async function registerUser(userData) {
   const res = await fetch(`${API_URL}/register`, {
     method: 'POST',
@@ -15,22 +16,19 @@ export async function registerUser(userData) {
     throw new Error('Error al parsear la respuesta del servidor');
   }
 
-  if (!res.ok) {
-    let message = data.message || data.error || 'Error al registrar usuario';
-    throw new Error(message);
-  }
-  //Si no hay session (email pendiente de confirmar), no guardamos token
+  // Si no hay session (usuario debe confirmar email)
   if (!data.access_token) {
-    return {
-     message: 'Usuario registrado correctamente. Por favor confirma tu correo.',
+    return { 
+      message: 'Usuario registrado correctamente. Por favor confirma tu correo.' 
     };
   }
-    // Si hay session, guardamos token normalmente
+
+  // Guardar token solo si existe
   localStorage.setItem('access_token', data.access_token);
 
-  return {
-    message: 'Usuario registrado correctamente y logueado correctamente.',
-    access_token: data.access_token,
+  return { 
+    message: 'Usuario registrado y logueado correctamente', 
+    access_token: data.access_token 
   };
 }
 
@@ -42,13 +40,15 @@ export async function registerGoogle(access_token) {
     body: JSON.stringify({ access_token }),
   });
 
+  const data = await res.json();
+
   if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.error || 'Error al registrar usuario con Google');
+    throw new Error(data.error || 'Error al registrar usuario con Google');
   }
 
-  const data = await res.json();
+  // Guardar token
   localStorage.setItem('access_token', data.access_token);
+
   return data;
 }
 
@@ -60,12 +60,12 @@ export async function login(email, password) {
     body: JSON.stringify({ email, password }),
   });
 
+  const data = await res.json();
+
   if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.error || 'Error al iniciar sesión');
+    throw new Error(data.error || 'Error al iniciar sesión');
   }
 
-  const data = await res.json();
   localStorage.setItem('access_token', data.access_token);
   return data;
 }
@@ -78,12 +78,13 @@ export async function getLlaveMaestra() {
     headers: { Authorization: `Bearer ${token}` },
   });
 
+  const data = await res.json();
+
   if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.error || 'Error al obtener la llave maestra');
+    throw new Error(data.error || 'Error al obtener la llave maestra');
   }
 
-  return await res.json();
+  return data;
 }
 
 // Cerrar sesión
@@ -94,13 +95,14 @@ export async function logout() {
     headers: { Authorization: `Bearer ${token}` },
   });
 
+  const data = await res.json();
+
   if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.error || 'Error al cerrar sesión');
+    throw new Error(data.error || 'Error al cerrar sesión');
   }
 
   localStorage.removeItem('access_token');
-  return await res.json();
+  return data;
 }
 
 // Cambiar contraseña
@@ -115,10 +117,11 @@ export async function changePassword(llave_maestra, newPassword) {
     body: JSON.stringify({ llave_maestra, newPassword }),
   });
 
+  const data = await res.json();
+
   if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.error || 'Error al cambiar la contraseña');
+    throw new Error(data.error || 'Error al cambiar la contraseña');
   }
 
-  return await res.json();
+  return data;
 }
