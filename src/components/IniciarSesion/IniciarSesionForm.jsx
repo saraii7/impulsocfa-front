@@ -6,6 +6,7 @@ import { login } from '../../services/auth.service';
 import { useNavigate } from "react-router-dom";
 
 
+
 export default function IniciarSesionForm() {
    const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -40,7 +41,7 @@ export default function IniciarSesionForm() {
         <form className="form">
           <input required className="input" type="email" name="email" id="email" placeholder="E-mail" />
           <input required className="input" type="password" name="password" id="password" placeholder="Contraseña" />
-          <span className="forgot-password"><a href="#">¿Olvidaste tu contraseña?</a></span>
+          <span className="forgot-password"><Link to="/recuperar-contrasenia">¿Olvidaste tu contraseña?</Link></span>
           <input className="login-button" type="submit" defaultValue="Iniciar" />
         </form>
         <div className="social-account-container">
