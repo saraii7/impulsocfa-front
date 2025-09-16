@@ -1,42 +1,51 @@
 import { useEffect, useState } from "react";
-import { getLlaveMaestra } from "../services/auth.service";
 
 export default function EmailConfirmed() {
-  const [llave, setLlave] = useState(null);
-  const [error, setError] = useState(null);
+  const [message, setMessage] = useState("Verificando tu cuenta...");
 
   useEffect(() => {
-    // Leer token desde el hash de la URL (#access_token=...)
-    const hash = window.location.hash; 
-    const params = new URLSearchParams(hash.replace("#", "?"));
-    const access_token = params.get("access_token");
+    const confirmarEmail = async () => {
+      try {
+        // 🔹 Extraer hash de Supabase (access_token, refresh_token, etc.)
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
 
-    if (access_token) {
-      // Guardar en localStorage
-      localStorage.setItem("access_token", access_token);
+        const accessToken = params.get("access_token");
+        const refreshToken = params.get("refresh_token");
 
-      // Obtener llave maestra
-      getLlaveMaestra()
-        .then((data) => setLlave(data.llave_maestra))
-        .catch((err) => setError(err.message));
-    } else {
-      setError("No se encontró access_token en la URL");
-    }
+        if (!accessToken) throw new Error("No se recibió token de Supabase");
+
+        // 🔹 Enviar al backend
+        const res = await fetch("http://localhost:3000/api/auth/confirm-login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ access_token: accessToken, refresh_token: refreshToken }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Error al generar sesión");
+
+        localStorage.setItem("access_token", data.access_token);
+        localStorage.setItem("refresh_token", data.refresh_token);
+
+        setMessage("✅ Cuenta confirmada. Redirigiendo...");
+        setTimeout(() => {
+          window.location.href = "http://localhost:5173/dashboard";
+        }, 2000);
+
+      } catch (err) {
+        console.error(err);
+        setMessage(`❌ Error: ${err.message}`);
+      }
+    };
+
+    confirmarEmail();
   }, []);
 
   return (
     <div style={{ padding: "2rem", textAlign: "center" }}>
       <h2>Confirmación de email</h2>
-      {llave ? (
-        <p>
-          ✅ Tu email fue confirmado.  
-          Esta es tu <strong>llave maestra</strong>: {llave}
-        </p>
-      ) : error ? (
-        <p style={{ color: "red" }}>❌ {error}</p>
-      ) : (
-        <p>Verificando tu cuenta...</p>
-      )}
+      <p>{message}</p>
     </div>
   );
 }

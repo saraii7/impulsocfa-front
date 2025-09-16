@@ -3,33 +3,15 @@ const API_URL = 'http://localhost:3000/api/auth';
 // Registrarse normal
 export async function registerUser(userData) {
   const res = await fetch(`${API_URL}/register`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(userData),
   });
 
-  let data;
-  try {
-    data = await res.json();
-  } catch (parseError) {
-    console.error("No se pudo parsear la respuesta del servidor:", parseError);
-    throw new Error('Error al parsear la respuesta del servidor');
-  }
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Error al registrar usuario");
 
-  // Si no hay session (usuario debe confirmar email)
-  if (!data.access_token) {
-    return { 
-      message: 'Usuario registrado correctamente. Por favor confirma tu correo.' 
-    };
-  }
-
-  // Guardar token solo si existe
-  localStorage.setItem('access_token', data.access_token);
-
-  return { 
-    message: 'Usuario registrado y logueado correctamente', 
-    access_token: data.access_token 
-  };
+  return data;
 }
 
 // Registrarse con Google
@@ -37,7 +19,7 @@ export async function registerGoogle(access_token) {
   const res = await fetch(`${API_URL}/google`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ access_token }),
+    body: JSON.stringify({ userData }),
   });
 
   const data = await res.json();
@@ -45,9 +27,6 @@ export async function registerGoogle(access_token) {
   if (!res.ok) {
     throw new Error(data.error || 'Error al registrar usuario con Google');
   }
-
-  // Guardar token
-  localStorage.setItem('access_token', data.access_token);
 
   return data;
 }
