@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 
+
 export default function EmailConfirmed() {
   const [message, setMessage] = useState("Verificando tu cuenta...");
 
   useEffect(() => {
-    const confirmarEmail = async () => {
+    const confirmarEmail = () => {
       try {
         // 🔹 Extraer hash de Supabase (access_token, refresh_token, etc.)
         const hash = window.location.hash.substring(1);
@@ -15,18 +16,9 @@ export default function EmailConfirmed() {
 
         if (!accessToken) throw new Error("No se recibió token de Supabase");
 
-        // 🔹 Enviar al backend
-        const res = await fetch("http://localhost:3000/api/auth/confirm-login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ access_token: accessToken, refresh_token: refreshToken }),
-        });
-
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Error al generar sesión");
-
-        localStorage.setItem("access_token", data.access_token);
-        localStorage.setItem("refresh_token", data.refresh_token);
+        // 🔹 Guardar tokens directamente en localStorage
+        localStorage.setItem("access_token", accessToken);
+        localStorage.setItem("refresh_token", refreshToken);
 
         setMessage("✅ Cuenta confirmada. Redirigiendo...");
         setTimeout(() => {
