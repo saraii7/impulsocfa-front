@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { googleCallback } from "../services/auth.service";
 
 export default function GoogleCallback() {
     const [message, setMessage] = useState("Iniciando sesión con Google...");
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleGoogleLogin = async () => {
@@ -15,11 +17,17 @@ export default function GoogleCallback() {
 
                 if (!accessToken) throw new Error("No se recibió token de Google");
 
-                await googleCallback(accessToken, refreshToken);
+                const data = await googleCallback(accessToken, refreshToken);
 
-                setMessage("✅ Sesión iniciada con Google. Redirigiendo...");
+                setMessage("✅ Sesión iniciada. Redirigiendo...");
+
                 setTimeout(() => {
-                    window.location.href = "http://localhost:5173/dashboard";
+                    // Redirigir según si es usuario nuevo o existente
+                    if (data.isNewUser) {
+                        window.location.href = "http://localhost:5173/mostrarllavemaestra";
+                    } else {
+                        window.location.href = "http://localhost:5173/home";
+                    }
                 }, 2000);
             } catch (err) {
                 console.error(err);

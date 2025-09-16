@@ -47,8 +47,33 @@ export async function login(email, password) {
   }
 
   localStorage.setItem('access_token', data.access_token);
+  
   return data;
 }
+
+
+// Cerrar sesión
+export async function logout() {
+  const token = localStorage.getItem('access_token');
+  const res = await fetch(`${API_URL}/logout`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`, // si tu backend usa token para logout
+    },
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error || 'Error al cerrar sesión');
+  }
+
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('rol');
+  return data;
+}
+
 
 // Obtener llave maestra
 export async function getLlaveMaestra() {
@@ -67,23 +92,6 @@ export async function getLlaveMaestra() {
   return data;
 }
 
-// Cerrar sesión
-export async function logout() {
-  const token = localStorage.getItem('access_token');
-  const res = await fetch(`${API_URL}/logout`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(data.error || 'Error al cerrar sesión');
-  }
-
-  localStorage.removeItem('access_token');
-  return data;
-}
 
 // Cambiar contraseña
 export async function changePassword(llave_maestra, newPassword) {

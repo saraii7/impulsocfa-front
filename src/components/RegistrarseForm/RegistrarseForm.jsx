@@ -26,7 +26,6 @@ export default function RegistrarseForm() {
     try {
       const response = await registerUser(formData);
 
-      // Siempre mostrar que revise su email para confirmar
       alert(response.message || "Registro exitoso. Revisa tu correo para confirmar tu cuenta.");
       
     } catch (error) {

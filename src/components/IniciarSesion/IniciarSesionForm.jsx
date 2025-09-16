@@ -24,9 +24,7 @@ export default function IniciarSesionForm() {
     try {
       const data = await login(formData.email, formData.password);
       console.log("Usuario logueado:", data);
-      alert("Inicio de sesión exitoso!");
-      // access_token ya se guarda en localStorage dentro de login
-      navigate("/home"); // Redirige a la página principal
+      navigate("/home"); 
     } catch (error) {
       console.error("Error al iniciar sesión:", error.message);
       alert("Error al iniciar sesión: " + error.message);
@@ -34,16 +32,35 @@ export default function IniciarSesionForm() {
   };
   
   return (
-    
     <StyledWrapper>
-      <Pattern /> {/* Fondo detrás de todo */}
+      <Pattern />
       <div className="container">
         <div className="heading">Iniciar Sesión</div>
-        <form className="form">
-          <input required className="input" type="email" name="email" id="email" placeholder="E-mail" />
-          <input required className="input" type="password" name="password" id="password" placeholder="Contraseña" />
-          <span className="forgot-password"><Link to="/recuperar-contrasenia">¿Olvidaste tu contraseña?</Link></span>
-          <input className="login-button" type="submit" defaultValue="Iniciar" />
+        <form className="form" onSubmit={handleSubmit}>
+          <input
+            required
+            className="input"
+            type="email"
+            name="email"
+            id="email"
+            placeholder="E-mail"
+            value={formData.email}
+            onChange={handleChange}
+          />
+          <input
+            required
+            className="input"
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Contraseña"
+            value={formData.password}
+            onChange={handleChange}
+          />
+          <span className="forgot-password">
+            <Link to="/recuperar-contrasenia">¿Olvidaste tu contraseña?</Link>
+          </span>
+          <input className="login-button" type="submit" value="Iniciar" />
         </form>
         <div className="social-account-container">
           <span className="title">O inicia Sesión con Google</span>
@@ -52,8 +69,8 @@ export default function IniciarSesionForm() {
           </div>
         </div>
         <span className="agreement">
-            <Link to="/registrarse">¿No tenes cuenta? Registrate</Link>
-            </span>
+          <Link to="/registrarse">¿No tenes cuenta? Registrate</Link>
+        </span>
       </div>
     </StyledWrapper>
   );

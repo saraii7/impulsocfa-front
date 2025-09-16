@@ -16,7 +16,6 @@ export default function GoogleRegistrarseButton() {
       return;
     }
 
-    console.log("Redirigiendo a Google...", data);
   };
 
   return (
