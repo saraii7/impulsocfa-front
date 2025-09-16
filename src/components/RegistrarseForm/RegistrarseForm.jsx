@@ -13,48 +13,45 @@ export default function RegistrarseForm() {
     nacionalidad: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value || null });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     try {
-      const data = await registerUser(formData);
-      console.log("Usuario registrado:", data);
+      const response = await registerUser(formData);
 
-      // Mensaje de confirmación
-    alert("Usuario registrado. Revisa tu correo para confirmar la cuenta.");
+      alert(response.message || "Registro exitoso. Revisa tu correo para confirmar tu cuenta.");
+      
+    } catch (error) {
+      console.error(error);
+      alert("Error al registrarse: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    // Limpia el form
-    setFormData({
-      email: "",
-      password: "",
-      nombre: "",
-      apellido: "",
-      fecha_nacimiento: "",
-      foto_perfil: null,
-      nacionalidad: "",
-    });
-
-     } catch (error) {
-    alert("error " + (error.message || error.error));
-    console.error(error);
-  }
-};
 
   return (
-     <FormStyled onSubmit={handleSubmit}>
-      <input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} value={formData.nombre} required />
-      <input type="text" name="apellido" placeholder="Apellido" onChange={handleChange} value={formData.apellido} required />
-      <input type="email" name="email" placeholder="Email" onChange={handleChange} value={formData.email} required />
-      <input type="password" name="password" placeholder="Contraseña" onChange={handleChange} value={formData.password} required />
-      <input type="date" name="fecha_nacimiento" onChange={handleChange} value={formData.fecha_nacimiento || ""} />
-      <input type="text" name="nacionalidad" placeholder="Nacionalidad" onChange={handleChange} value={formData.nacionalidad} required />
-      <button type="submit">Registrarse</button>
-     </FormStyled>
+    <FormStyled onSubmit={handleSubmit}>
+      <input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} required />
+      <input type="text" name="apellido" placeholder="Apellido" onChange={handleChange} required />
+      <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+      <input type="password" name="password" placeholder="Contraseña" onChange={handleChange} required />
+      <input type="date" name="fecha_nacimiento" onChange={handleChange} />
+      <input type="text" name="nacionalidad" placeholder="Nacionalidad" onChange={handleChange} required />
+      <button type="submit" disabled={loading}>
+        {loading ? "Registrando..." : "Registrarse"}
+      </button>
+    </FormStyled>
   );
 }
+
 const FormStyled = styled.form`
   margin-top: 20px;
 

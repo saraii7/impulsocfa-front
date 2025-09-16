@@ -1,9 +1,11 @@
 import { useState } from "react";
 import RegistrarseForm from "../../components/RegistrarseForm/RegistrarseForm";
-//import GoogleRegistrarseButton from "../../components/GoogleRegistrarseButton/GoogleRegistrarseButton";
+import GoogleRegistrarseButton from "../../components/GoogleRegistrarseButton/GoogleRegistrarseButton";
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
 import Pattern from "../../components/Pattern";
+
+
 export default function Registrarse() {
   return (
  <StyledWrapper>
@@ -16,7 +18,7 @@ export default function Registrarse() {
         <div className="social-account-container">
           <span className="title">O registrate con Google</span>
       
-     {/* <GoogleRegistrarseButton /> */}
+      {/*{<GoogleRegistrarseButton />}*/}
         
                 </div>
 

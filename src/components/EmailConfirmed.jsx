@@ -1,41 +1,43 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 
 export default function EmailConfirmed() {
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+  const [message, setMessage] = useState("Verificando tu cuenta...");
 
   useEffect(() => {
-    // Simular pequeño delay para UX
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 500);
+    const confirmarEmail = () => {
+      try {
+        // 🔹 Extraer hash de Supabase (access_token, refresh_token, etc.)
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
 
-    return () => clearTimeout(timer);
+        const accessToken = params.get("access_token");
+        const refreshToken = params.get("refresh_token");
+
+        if (!accessToken) throw new Error("No se recibió token de Supabase");
+
+        // 🔹 Guardar tokens directamente en localStorage
+        localStorage.setItem("access_token", accessToken);
+        localStorage.setItem("refresh_token", refreshToken);
+
+        setMessage("✅ Cuenta confirmada. Redirigiendo...");
+        setTimeout(() => {
+          window.location.href = "http://localhost:5173/mostrarllavemaestra";
+        }, 2000);
+
+      } catch (err) {
+        console.error(err);
+        setMessage(`❌ Error: ${err.message}`);
+      }
+    };
+
+    confirmarEmail();
   }, []);
 
-  if (loading) return <p>Procesando confirmación de email...</p>;
-
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h2>Email confirmado ✅</h2>
-      <p>¡Tu email fue confirmado correctamente!</p>
-      <p>Ahora, inicia sesión para ver tu llave maestra.</p>
-      <button
-        style={{
-          marginTop: "20px",
-          padding: "10px 20px",
-          borderRadius: "10px",
-          border: "none",
-          backgroundColor: "#6b10d3",
-          color: "white",
-          fontWeight: "bold",
-          cursor: "pointer",
-        }}
-        onClick={() => navigate("/confirmarinicioform")}
-      >
-        Ir a Login
-      </button>
+    <div style={{ padding: "2rem", textAlign: "center" }}>
+      <h2>Confirmación de email</h2>
+      <p>{message}</p>
     </div>
   );
 }

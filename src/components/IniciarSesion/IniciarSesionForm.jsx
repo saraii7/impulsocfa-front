@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import Pattern from '../../components/Pattern';
 import { login } from '../../services/auth.service';
 import { useNavigate } from "react-router-dom";
+import GoogleRegistrarseButton from "../GoogleRegistrarseButton/GoogleRegistrarseButton";
+
 
 
 export default function IniciarSesionForm() {
@@ -22,9 +24,7 @@ export default function IniciarSesionForm() {
     try {
       const data = await login(formData.email, formData.password);
       console.log("Usuario logueado:", data);
-      alert("Inicio de sesión exitoso!");
-      // access_token ya se guarda en localStorage dentro de login
-      navigate("/home"); // Redirige a la página principal
+      navigate("/home"); 
     } catch (error) {
       console.error("Error al iniciar sesión:", error.message);
       alert("Error al iniciar sesión: " + error.message);
@@ -32,33 +32,45 @@ export default function IniciarSesionForm() {
   };
   
   return (
-    
     <StyledWrapper>
-      <Pattern /> {/* Fondo detrás de todo */}
+      <Pattern />
       <div className="container">
         <div className="heading">Iniciar Sesión</div>
-        <form  className="form" onSubmit={handleSubmit} >
-          <input required className="input" type="email" name="email" id="email" placeholder="E-mail" value={formData.email}
-            onChange={handleChange} />
-          <input required className="input" type="password" name="password" id="password" placeholder="Contraseña"  value={formData.password}
-            onChange={handleChange} />
-
-          <span className="agreement a">
-            <Link to="/recuperar-contrasenia">¿Olvidaste tu contraseña?</Link></span>
+        <form className="form" onSubmit={handleSubmit}>
+          <input
+            required
+            className="input"
+            type="email"
+            name="email"
+            id="email"
+            placeholder="E-mail"
+            value={formData.email}
+            onChange={handleChange}
+          />
+          <input
+            required
+            className="input"
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Contraseña"
+            value={formData.password}
+            onChange={handleChange}
+          />
+          <span className="forgot-password">
+            <Link to="/recuperar-contrasenia">¿Olvidaste tu contraseña?</Link>
+          </span>
           <input className="login-button" type="submit" value="Iniciar" />
         </form>
         <div className="social-account-container">
           <span className="title">O inicia Sesión con Google</span>
           <div className="social-accounts">
-            <button className="social-button google">
-              <svg className="svg" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 488 512">
-                <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z" />
-              </svg></button>
+            <GoogleRegistrarseButton />
           </div>
         </div>
         <span className="agreement">
-            <Link to="/registrarse">¿No tenes cuenta? Registrate</Link>
-            </span>
+          <Link to="/registrarse">¿No tenes cuenta? Registrate</Link>
+        </span>
       </div>
     </StyledWrapper>
   );

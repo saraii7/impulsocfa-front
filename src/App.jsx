@@ -7,8 +7,12 @@ import Nosotros from "./pages/Nosotros/Nosotros";
 import Footer from "./components/footer/Footer";
 import IniciarSesion from "./pages/IniciarSesion/IniciarSesion";
 import Registrarse from "./pages/Registrarse/Registrarse"; 
-import RecuperarContrasenia from "./pages/RecuperarContrasenia/RecuperarContrasenia";
 import EmailConfirmed from "./components/EmailConfirmed";
+import RecuperarContrasenia from "./pages/RecuperarContrasenia/RecuperarContrasenia";
+import GoogleCallback from "./components/GoogleCallback";
+import MostrarLlaveMaestra from "./components/LlaveMaestra/MostrarLLaveMaestra";
+
+
 function App() {
   return (
     <Router>
@@ -25,7 +29,10 @@ function App() {
         <Route path="/iniciarsesion" element={<IniciarSesion />} />
         <Route path="/registrarse" element={<Registrarse />} />
         <Route path="/recuperar-contrasenia" element={<RecuperarContrasenia />} />
-        <Route path="/email-confirmed" element={<EmailConfirmed/>} />
+        <Route path="/email-confirmed" element={<EmailConfirmed />} />
+        <Route path="/google-callback" element={<GoogleCallback />} /> 
+        <Route path="/mostrarllavemaestra" element={<MostrarLlaveMaestra />} /> 
+
       </Routes>
        <div className="cover-container d-flex w-100 p-3 mx-auto flex-column">
       <Footer />
