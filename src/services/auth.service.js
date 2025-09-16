@@ -15,18 +15,19 @@ export async function registerUser(userData) {
 }
 
 // Registrarse con Google
-export async function registerGoogle(access_token) {
+export async function googleCallback(access_token, refresh_token) {
   const res = await fetch(`${API_URL}/google`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ userData }),
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ access_token, refresh_token }),
   });
 
   const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Error en login con Google");
 
-  if (!res.ok) {
-    throw new Error(data.error || 'Error al registrar usuario con Google');
-  }
+  // Guardar tokens en localStorage
+  localStorage.setItem("access_token", data.access_token);
+  localStorage.setItem("refresh_token", data.refresh_token);
 
   return data;
 }

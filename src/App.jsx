@@ -9,6 +9,8 @@ import IniciarSesion from "./pages/IniciarSesion/IniciarSesion";
 import Registrarse from "./pages/Registrarse/Registrarse"; 
 import EmailConfirmed from "./components/EmailConfirmed";
 import RecuperarContrasenia from "./pages/RecuperarContrasenia/RecuperarContrasenia";
+import GoogleCallback from "./components/GoogleCallback";
+
 
 function App() {
   return (
@@ -26,7 +28,8 @@ function App() {
         <Route path="/iniciarsesion" element={<IniciarSesion />} />
         <Route path="/registrarse" element={<Registrarse />} />
         <Route path="/recuperar-contrasenia" element={<RecuperarContrasenia />} />
-        <Route path="/email-confirmed" element={<EmailConfirmed/>} />
+        <Route path="/email-confirmed" element={<EmailConfirmed />} />
+        <Route path="/google-callback" element={<GoogleCallback />} /> 
       </Routes>
        <div className="cover-container d-flex w-100 p-3 mx-auto flex-column">
       <Footer />
