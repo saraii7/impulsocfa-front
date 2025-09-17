@@ -13,6 +13,7 @@ import MostrarLlaveMaestra from "./components/LlaveMaestra/MostrarLLaveMaestra";
 import CreateCampaignForm from "./components/campañas/CreateCampaignForm/CreateCampaignForm";
 import CampanasPage from "./components/campañas/CampanasPage/CampanasPage";
 import DetalleCampana from "./pages/Campanas/DetalleCampana";
+import Campanas from "./pages/Campanas/Campanas";
 
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/donar" element={<Donar />} />
+        <Route path="/donar" element={<Campanas />} />
         <Route path="/nosotros" element={<Nosotros />} />
         <Route path="/iniciarsesion" element={<IniciarSesion />} />
         <Route path="/registrarse" element={<Registrarse />} />
