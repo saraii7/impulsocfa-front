@@ -1,87 +1,133 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { registerUser } from "../../services/auth.service";
+import { createCampaign } from "../../services/campaign.service";
 
-export default function RegistrarseForm() {
+export default function CreateCampaignForm() {
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
     nombre: "",
-    apellido: "",
-    fecha_nacimiento: "",
-    foto_perfil: null,
-    nacionalidad: "",
+    descripcion: "",
+    monto_objetivo: "",
+    dias: "",
+    imagen: null,
   });
 
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value || null });
+    const { name, value, files } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: files ? files[0] : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
-      const response = await registerUser(formData);
-
-      alert(response.message || "Registro exitoso. Revisa tu correo para confirmar tu cuenta.");
-      
+      await createCampaign(formData);
+      alert("✅ Campaña creada con éxito!");
     } catch (error) {
       console.error(error);
-      alert("Error al registrarse: " + error.message);
+      alert("❌ Error al crear la campaña: " + error.message);
     } finally {
       setLoading(false);
     }
   };
 
-
   return (
     <FormStyled onSubmit={handleSubmit}>
-      <input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} required />
-      <input type="text" name="apellido" placeholder="Apellido" onChange={handleChange} required />
-      <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-      <input type="password" name="password" placeholder="Contraseña" onChange={handleChange} required />
-      <input type="date" name="fecha_nacimiento" onChange={handleChange} />
-      <input type="text" name="nacionalidad" placeholder="Nacionalidad" onChange={handleChange} required />
+      <h2>Crear campaña</h2>
+      <input
+        type="text"
+        name="nombre"
+        placeholder="Nombre"
+        onChange={handleChange}
+        required
+      />
+      <textarea
+        name="descripcion"
+        placeholder="Descripción"
+        rows="4"
+        onChange={handleChange}
+        required
+      />
+      <input
+        type="number"
+        name="monto_objetivo"
+        placeholder="Monto objetivo"
+        onChange={handleChange}
+        required
+      />
+      <input
+        type="number"
+        name="dias"
+        placeholder="Días de duración"
+        onChange={handleChange}
+        min="1"
+        required
+      />
+      <input
+        type="file"
+        name="imagen"
+        accept="image/*"
+        onChange={handleChange}
+      />
       <button type="submit" disabled={loading}>
-        {loading ? "Registrando..." : "Registrarse"}
+        {loading ? "Creando..." : "Crear campaña"}
       </button>
     </FormStyled>
   );
 }
 
 const FormStyled = styled.form`
-  margin-top: 20px;
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
 
-  input, button {
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: bold;
+  }
+
+  input, textarea, button {
     width: 100%;
     border-radius: 20px;
     padding: 15px 20px;
     margin-top: 15px;
-    box-shadow: #cff0ff 0px 10px 10px -5px;
-    border: none;
     font-size: 14px;
+    border: none;
+    box-shadow: #cff0ff 0px 10px 10px -5px;
   }
 
-  input::placeholder {
+  input::placeholder,
+  textarea::placeholder {
     color: rgb(170, 170, 170);
   }
 
-  input:focus {
+  input:focus,
+  textarea:focus {
     outline: none;
     border-inline: 2px solid #12b1d1;
   }
 
   button {
-    background: linear-gradient(45deg, rgba(107, 16, 211, 1) 0%, rgb(18, 177, 209) 100%);
+    background: linear-gradient(
+      45deg,
+      rgba(107, 16, 211, 1) 0%,
+      rgb(18, 177, 209) 100%
+    );
     color: white;
     font-weight: bold;
-    border: none;
     cursor: pointer;
     box-shadow: rgba(133, 189, 215, 0.87) 0px 20px 10px -15px;
     transition: all 0.2s ease-in-out;
+    border: none;
   }
 
   button:hover {

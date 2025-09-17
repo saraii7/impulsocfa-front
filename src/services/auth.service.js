@@ -42,11 +42,12 @@ export async function login(email, password) {
 
   const data = await res.json();
 
-  if (!res.ok) {
+  if (!res.ok || !data.access_token) {
     throw new Error(data.error || 'Error al iniciar sesión');
   }
 
   localStorage.setItem('access_token', data.access_token);
+  window.dispatchEvent(new Event("storage"));
   
   return data;
 }

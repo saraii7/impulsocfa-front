@@ -2,7 +2,6 @@ import{ BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Header from "./components/header/header";
 import Donar from "./pages/Donar/Donar";
-import Campanas from "./pages/Campanas/Campanas";
 import Nosotros from "./pages/Nosotros/Nosotros";
 import Footer from "./components/footer/Footer";
 import IniciarSesion from "./pages/IniciarSesion/IniciarSesion";
@@ -11,6 +10,8 @@ import EmailConfirmed from "./components/EmailConfirmed";
 import RecuperarContrasenia from "./pages/RecuperarContrasenia/RecuperarContrasenia";
 import GoogleCallback from "./components/GoogleCallback";
 import MostrarLlaveMaestra from "./components/LlaveMaestra/MostrarLLaveMaestra";
+import CreateCampaignForm from "./components/campañas/CreateCampaignForm/CreateCampaignForm";
+import CampanasPage from "./components/campañas/CampanasPage/CampanasPage";
 
 
 function App() {
@@ -24,7 +25,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/donar" element={<Donar />} />
-        <Route path="/campanas" element={<Campanas />} />
         <Route path="/nosotros" element={<Nosotros />} />
         <Route path="/iniciarsesion" element={<IniciarSesion />} />
         <Route path="/registrarse" element={<Registrarse />} />
@@ -32,6 +32,9 @@ function App() {
         <Route path="/email-confirmed" element={<EmailConfirmed />} />
         <Route path="/google-callback" element={<GoogleCallback />} /> 
         <Route path="/mostrarllavemaestra" element={<MostrarLlaveMaestra />} /> 
+        <Route path="/campanas" element={<CampanasPage/>} /> 
+        <Route path="/crearcampana" element={<CreateCampaignForm />} /> 
+        
 
       </Routes>
        <div className="cover-container d-flex w-100 p-3 mx-auto flex-column">
