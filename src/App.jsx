@@ -12,6 +12,7 @@ import GoogleCallback from "./components/GoogleCallback";
 import MostrarLlaveMaestra from "./components/LlaveMaestra/MostrarLLaveMaestra";
 import CreateCampaignForm from "./components/campañas/CreateCampaignForm/CreateCampaignForm";
 import CampanasPage from "./components/campañas/CampanasPage/CampanasPage";
+import DetalleCampana from "./pages/Campanas/DetalleCampana";
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
         <Route path="/campanas" element={<CampanasPage/>} /> 
         <Route path="/crearcampana" element={<CreateCampaignForm />} /> 
         
+        <Route path="/campanas/:id" element={<DetalleCampana />} />
 
       </Routes>
        <div className="cover-container d-flex w-100 p-3 mx-auto flex-column">
