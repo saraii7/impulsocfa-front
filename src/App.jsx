@@ -11,6 +11,7 @@ import EmailConfirmed from "./components/EmailConfirmed";
 import RecuperarContrasenia from "./pages/RecuperarContrasenia/RecuperarContrasenia";
 import GoogleCallback from "./components/GoogleCallback";
 import MostrarLlaveMaestra from "./components/LlaveMaestra/MostrarLLaveMaestra";
+import DetalleCampana from "./pages/Campanas/DetalleCampana";
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <Route path="/email-confirmed" element={<EmailConfirmed />} />
         <Route path="/google-callback" element={<GoogleCallback />} /> 
         <Route path="/mostrarllavemaestra" element={<MostrarLlaveMaestra />} /> 
+        <Route path="/campanas/:id" element={<DetalleCampana />} />
 
       </Routes>
        <div className="cover-container d-flex w-100 p-3 mx-auto flex-column">
