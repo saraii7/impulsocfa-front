@@ -1,4 +1,3 @@
-import { useState } from "react";
 import RegistrarseForm from "../../components/RegistrarseForm/RegistrarseForm";
 import GoogleRegistrarseButton from "../../components/GoogleRegistrarseButton/GoogleRegistrarseButton";
 import styled from 'styled-components';
@@ -18,7 +17,7 @@ export default function Registrarse() {
         <div className="social-account-container">
           <span className="title">O registrate con Google</span>
       
-      {/*{<GoogleRegistrarseButton />}*/}
+      <GoogleRegistrarseButton />
         
                 </div>
 
