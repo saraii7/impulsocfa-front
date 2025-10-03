@@ -6,7 +6,7 @@ export default function GoogleRegistrarseButton() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: "http://localhost:5173/google-callback", // la ruta a la que vuelve
+        redirectTo: import.meta.env.VITE_GOOGLE_REDIRECT, // la ruta a la que vuelve
       },
     });
 

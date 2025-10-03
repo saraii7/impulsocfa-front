@@ -24,9 +24,9 @@ export default function GoogleCallback() {
                 setTimeout(() => {
                     // Redirigir según si es usuario nuevo o existente
                     if (data.isNewUser) {
-                        window.location.href = "http://localhost:5173/mostrarllavemaestra";
+                        window.location.href =  import.meta.env.VITE_REDIRECT_NEWUSER;
                     } else {
-                        window.location.href = "http://localhost:5173/home";
+                        window.location.href = import.meta.env.VITE_REDIRECT_EXISTINGUSER;
                     }
                 }, 2000);
             } catch (err) {
