@@ -1,4 +1,3 @@
-import Pattern from "../../components/Pattern";
 
 export default function Donar() {
   return (
