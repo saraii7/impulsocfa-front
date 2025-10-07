@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import styled from "styled-components";
 import { registerUser } from "../../services/auth.service";
 
 export default function RegistrarseForm() {
@@ -39,59 +38,67 @@ export default function RegistrarseForm() {
 
 
   return (
-    <FormStyled onSubmit={handleSubmit}>
-      <input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} required />
-      <input type="text" name="apellido" placeholder="Apellido" onChange={handleChange} required />
-      <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-      <input type="password" name="password" placeholder="Contraseña" onChange={handleChange} required />
-      <input type="date" name="fecha_nacimiento" onChange={handleChange} />
-      <input type="text" name="nacionalidad" placeholder="Nacionalidad" onChange={handleChange} required />
-      <button type="submit" disabled={loading}>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <div className="flex gap-3">
+        <input
+          type="text"
+          name="nombre"
+          placeholder="Nombre"
+          onChange={handleChange}
+          required
+          className="w-1/2 bg-slate-800/50 border border-violet-500/30 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-300 hover:border-violet-500/50"
+        />
+        <input
+          type="text"
+          name="apellido"
+          placeholder="Apellido"
+          onChange={handleChange}
+          required
+          className="w-1/2 bg-slate-800/50 border border-violet-500/30 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-300 hover:border-violet-500/50"
+        />
+      </div>
+
+      <input
+        type="email"
+        name="email"
+        placeholder="Correo electrónico"
+        onChange={handleChange}
+        required
+        className="bg-slate-800/50 border border-violet-500/30 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-300 hover:border-violet-500/50"
+      />
+
+      <input
+        type="password"
+        name="password"
+        placeholder="Contraseña"
+        onChange={handleChange}
+        required
+        className="bg-slate-800/50 border border-violet-500/30 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-300 hover:border-violet-500/50"
+      />
+
+      <input
+        type="date"
+        name="fecha_nacimiento"
+        onChange={handleChange}
+        className="bg-slate-800/50 border border-violet-500/30 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-300 hover:border-violet-500/50 [color-scheme:dark]"
+      />
+
+      <input
+        type="text"
+        name="nacionalidad"
+        placeholder="Nacionalidad"
+        onChange={handleChange}
+        required
+        className="bg-slate-800/50 border border-violet-500/30 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-300 hover:border-violet-500/50"
+      />
+
+      <button
+        type="submit"
+        disabled={loading}
+        className="mt-2 bg-gradient-to-r from-blue-600 via-violet-600 to-pink-600 hover:from-blue-500 hover:via-violet-500 hover:to-pink-500 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 shadow-[0_0_30px_rgba(139,92,246,0.5)] hover:shadow-[0_0_40px_rgba(139,92,246,0.8)] hover:scale-105 border border-violet-400/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+      >
         {loading ? "Registrando..." : "Registrarse"}
       </button>
-    </FormStyled>
+    </form>
   );
 }
-
-const FormStyled = styled.form`
-  margin-top: 20px;
-
-  input, button {
-    width: 100%;
-    border-radius: 20px;
-    padding: 15px 20px;
-    margin-top: 15px;
-    box-shadow: #cff0ff 0px 10px 10px -5px;
-    border: none;
-    font-size: 14px;
-  }
-
-  input::placeholder {
-    color: rgb(170, 170, 170);
-  }
-
-  input:focus {
-    outline: none;
-    border-inline: 2px solid #12b1d1;
-  }
-
-  button {
-    background: linear-gradient(45deg, rgba(107, 16, 211, 1) 0%, rgb(18, 177, 209) 100%);
-    color: white;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    box-shadow: rgba(133, 189, 215, 0.87) 0px 20px 10px -15px;
-    transition: all 0.2s ease-in-out;
-  }
-
-  button:hover {
-    transform: scale(1.03);
-    box-shadow: rgba(133, 189, 215, 0.87) 0px 23px 10px -20px;
-  }
-
-  button:active {
-    transform: scale(0.95);
-    box-shadow: rgba(133, 189, 215, 0.87) 0px 15px 10px -10px;
-  }
-`;

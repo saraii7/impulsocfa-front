@@ -17,30 +17,29 @@ import Campanas from "./pages/Campanas/Campanas";
 
 function App() {
   return (
-    <Router>
+     <Router>
+      <div className="flex flex-col min-h-screen">
+        <Header />
 
-      <div className="cover-container d-flex w-100 p-3 mx-auto flex-column">
-      <Header />
-      </div>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/donar" element={<Campanas />} />
-        <Route path="/nosotros" element={<Nosotros />} />
-        <Route path="/iniciarsesion" element={<IniciarSesion />} />
-        <Route path="/registrarse" element={<Registrarse />} />
-        <Route path="/recuperar-contrasenia" element={<RecuperarContrasenia />} />
-        <Route path="/email-confirmed" element={<EmailConfirmed />} />
-        <Route path="/google-callback" element={<GoogleCallback />} /> 
-        <Route path="/mostrarllavemaestra" element={<MostrarLlaveMaestra />} /> 
-        <Route path="/campanas" element={<CampanasPage/>} /> 
-        <Route path="/crearcampana" element={<CreateCampaignForm />} /> 
-        
-        <Route path="/campanas/:id" element={<DetalleCampana />} />
+        <main className="flex-1">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/donar" element={<Campanas />} />
+            <Route path="/nosotros" element={<Nosotros />} />
+            <Route path="/iniciarsesion" element={<IniciarSesion />} />
+            <Route path="/registrarse" element={<Registrarse />} />
+            <Route path="/recuperar-contrasenia" element={<RecuperarContrasenia />} />
+            <Route path="/email-confirmed" element={<EmailConfirmed />} />
+            <Route path="/google-callback" element={<GoogleCallback />} />
+            <Route path="/mostrarllavemaestra" element={<MostrarLlaveMaestra />} />
+            <Route path="/campanas" element={<CampanasPage />} />
+            <Route path="/crearcampana" element={<CreateCampaignForm />} />
+            <Route path="/campanas/:id" element={<DetalleCampana />} />
+          </Routes>
+        </main>
 
-      </Routes>
-       <div className="cover-container d-flex w-100 p-3 mx-auto flex-column">
-      <Footer />
+        <Footer />
       </div>
     </Router>
   );

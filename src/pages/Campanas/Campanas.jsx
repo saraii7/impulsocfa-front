@@ -1,4 +1,3 @@
-import Pattern from "../../components/Pattern";
 import CardCampana from "../../components/CardCampana"
 import { getAllCampaigns } from "../../services/campaing.service";
 import { useEffect, useState } from "react";
@@ -29,10 +28,8 @@ export default function Campanas() {
 
 
   return (
-    <div className="d-flex h-100 text-center">
-       {/* Fondo Uiverse */}
-      <Pattern />
-     <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-4">
+    <div>
+     <div >
       {campanas.map((c) => (
         <CardCampana key={c.id_campana} campana={c} />
       ))}
