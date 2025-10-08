@@ -22,7 +22,7 @@ export default function EmailConfirmed() {
 
         setMessage("✅ Cuenta confirmada. Redirigiendo...");
         setTimeout(() => {
-          window.location.href = "http://localhost:5173/mostrarllavemaestra";
+          window.location.href = import.meta.env.VITE_REDIRECT_AFTER_CONFIRM;
         }, 2000);
 
       } catch (err) {

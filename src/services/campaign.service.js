@@ -1,5 +1,5 @@
 import { supabase } from "../supabaseClient";
-const API_URL = 'http://localhost:3000/api/campaigns';
+const API_URL = `${import.meta.env.VITE_API_URL}/campaigns`;
 
 export async function createCampaign(campaignData) {
     const token = localStorage.getItem("access_token");
