@@ -1,5 +1,4 @@
 import { useState } from "react";
-import styled from "styled-components";
 import { createCampaign } from "../../../services/campaign.service";
 
 export default function CreateCampaignForm() {
@@ -40,131 +39,89 @@ export default function CreateCampaignForm() {
     const today = new Date().toISOString().split("T")[0];
 
     return (
-        <FormStyled onSubmit={handleSubmit}>
-            <h2>Crear campaña</h2>
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 px-4 py-8 relative overflow-hidden">
+            {/* Patrón de fondo */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-20" />
+            
+            {/* Esferas de luz animadas */}
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[120px] animate-pulse" />
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-500/20 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
 
-            <label>Nombre</label>
-            <input
-                type="text"
-                name="titulo"
-                placeholder="Nombre de la campaña"
-                onChange={handleChange}
-                required
-            />
+            <form
+                onSubmit={handleSubmit}
+                className="relative z-10 max-w-lg w-full bg-slate-900/50 backdrop-blur-xl p-8 rounded-2xl shadow-[0_0_40px_rgba(139,92,246,0.3)] border border-violet-500/30 flex flex-col gap-5"
+            >
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-400 via-violet-400 to-pink-400 bg-clip-text text-transparent text-center mb-4 drop-shadow-[0_0_20px_rgba(139,92,246,0.5)]">
+                    Crear Campaña
+                </h2>
 
-            <label>Descripción</label>
-            <textarea
-                name="descripcion"
-                placeholder="Descripción de la campaña"
-                rows="4"
-                onChange={handleChange}
-                required
-            />
+                <div>
+                    <label className="block text-slate-300 font-semibold mb-2">Nombre</label>
+                    <input
+                        type="text"
+                        name="titulo"
+                        placeholder="Nombre de la campaña"
+                        onChange={handleChange}
+                        required
+                        className="w-full bg-slate-800/50 border border-violet-500/30 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-300 hover:border-violet-500/50"
+                    />
+                </div>
 
-            <label>Monto objetivo</label>
-            <input
-                type="number"
-                name="monto_objetivo"
-                placeholder="Monto objetivo"
-                onChange={handleChange}
-                required
-            />
+                <div>
+                    <label className="block text-slate-300 font-semibold mb-2">Descripción</label>
+                    <textarea
+                        name="descripcion"
+                        placeholder="Descripción de la campaña"
+                        rows="4"
+                        onChange={handleChange}
+                        required
+                        className="w-full bg-slate-800/50 border border-violet-500/30 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-300 hover:border-violet-500/50 resize-none"
+                    />
+                </div>
 
-            <label>Fecha de finalización de campaña</label>
-            <input
-                type="date"
-                name="tiempo_objetivo"
-                min={today}
-                onChange={handleChange}
-                required
-            />
+                <div>
+                    <label className="block text-slate-300 font-semibold mb-2">Monto objetivo</label>
+                    <input
+                        type="number"
+                        name="monto_objetivo"
+                        placeholder="Monto objetivo"
+                        onChange={handleChange}
+                        required
+                        className="w-full bg-slate-800/50 border border-violet-500/30 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-300 hover:border-violet-500/50"
+                    />
+                </div>
 
-            <label>Imagen de la campaña</label>
-            <input
-                type="file"
-                name="imagen"
-                accept="image/*"
-                onChange={handleChange}
-            />
+                <div>
+                    <label className="block text-slate-300 font-semibold mb-2">Fecha de finalización</label>
+                    <input
+                        type="date"
+                        name="tiempo_objetivo"
+                        min={today}
+                        onChange={handleChange}
+                        required
+                        className="w-full bg-slate-800/50 border border-violet-500/30 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-300 hover:border-violet-500/50 [color-scheme:dark]"
+                    />
+                </div>
 
-            <button type="submit" disabled={loading}>
-                {loading ? "Creando..." : "Crear campaña"}
-            </button>
-        </FormStyled>
+                <div>
+                    <label className="block text-slate-300 font-semibold mb-2">Imagen de la campaña</label>
+                    <input
+                        type="file"
+                        name="imagen"
+                        accept="image/*"
+                        onChange={handleChange}
+                        className="w-full bg-slate-800/50 border border-violet-500/30 rounded-lg px-4 py-3 text-slate-200 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-violet-600 file:text-white file:font-semibold hover:file:bg-violet-500 file:cursor-pointer focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-300 hover:border-violet-500/50"
+                    />
+                </div>
+
+                <button
+                    type="submit"
+                    disabled={loading}
+                    className="mt-4 bg-gradient-to-r from-blue-600 via-violet-600 to-pink-600 hover:from-blue-500 hover:via-violet-500 hover:to-pink-500 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 shadow-[0_0_30px_rgba(139,92,246,0.5)] hover:shadow-[0_0_40px_rgba(139,92,246,0.8)] hover:scale-105 border border-violet-400/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                >
+                    {loading ? "Creando..." : "Crear Campaña"}
+                </button>
+            </form>
+        </div>
     );
 }
-
-const FormStyled = styled.form`
-  max-width: 500px;
-  margin: 40px auto;
-  padding: 30px;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
-
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-    font-weight: bold;
-  }
-
-  label {
-    font-weight: 600;
-    margin-top: 15px;
-    display: block;
-    color: #444;
-  }
-
-  input,
-  textarea,
-  button {
-    width: 100%;
-    border-radius: 20px;
-    padding: 15px 20px;
-    margin-top: 8px;
-    font-size: 14px;
-    border: none;
-    box-shadow: #cff0ff 0px 10px 10px -5px;
-  }
-
-  textarea {
-    resize: none;
-  }
-
-  input::placeholder,
-  textarea::placeholder {
-    color: rgb(170, 170, 170);
-  }
-
-  input:focus,
-  textarea:focus {
-    outline: none;
-    border-inline: 2px solid #12b1d1;
-  }
-
-  button {
-    margin-top: 20px;
-    background: linear-gradient(
-      45deg,
-      rgba(107, 16, 211, 1) 0%,
-      rgb(18, 177, 209) 100%
-    );
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: rgba(133, 189, 215, 0.87) 0px 20px 10px -15px;
-    transition: all 0.2s ease-in-out;
-    border: none;
-  }
-
-  button:hover {
-    transform: scale(1.03);
-    box-shadow: rgba(133, 189, 215, 0.87) 0px 23px 10px -20px;
-  }
-
-  button:active {
-    transform: scale(0.95);
-    box-shadow: rgba(133, 189, 215, 0.87) 0px 15px 10px -10px;
-  }
-`;

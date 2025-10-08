@@ -32,84 +32,58 @@ export default function MostrarLlaveMaestra() {
     };
 
     return (
-        <div
-            style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                minHeight: "80vh",
-                background: "#f5f7fa",
-                padding: "2rem",
-            }}
-        >
-            <div
-                style={{
-                    background: "white",
-                    borderRadius: "15px",
-                    padding: "2.5rem",
-                    maxWidth: "500px",
-                    textAlign: "center",
-                    boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
-                }}
-            >
-                <h2 style={{ color: "#6816eb", marginBottom: "1rem" }}>
+        <div className="min-h-screen flex justify-center items-center bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 px-4 py-8 relative overflow-hidden">
+            {/* Patrón de fondo */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-20" />
+            
+            {/* Esferas de luz animadas */}
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[120px] animate-pulse" />
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-500/20 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
+
+            <div className="relative z-10 bg-slate-900/50 backdrop-blur-xl rounded-2xl p-8 max-w-lg w-full text-center shadow-[0_0_40px_rgba(139,92,246,0.3)] border border-violet-500/30">
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-400 via-violet-400 to-pink-400 bg-clip-text text-transparent mb-4 drop-shadow-[0_0_20px_rgba(139,92,246,0.5)]">
                     🔑 Llave Maestra
                 </h2>
-                <p style={{ color: "#555", marginBottom: "1.5rem", fontSize: "0.95rem" }}>
-                    Esta llave se muestra <strong>solo una vez</strong>.
+                
+                <p className="text-slate-300 mb-6 text-sm leading-relaxed">
+                    Esta llave se muestra <strong className="text-violet-400">solo una vez</strong>.
                     Copiala ahora, porque será tu llave para ejecutar funciones dentro de la aplicación, como donar y recibir donaciones.
                 </p>
 
-                {error && <p style={{ color: "red" }}>❌ {error}</p>}
+                {error && (
+                    <p className="text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg p-3 mb-4">
+                        ❌ {error}
+                    </p>
+                )}
 
                 {llave ? (
                     <div>
-                        <p
-                            style={{
-                                fontWeight: "bold",
-                                fontSize: "1.2rem",
-                                background: "#f0f0f0",
-                                padding: "0.8rem",
-                                borderRadius: "8px",
-                                wordBreak: "break-all",
-                            }}
-                        >
-                            {llave}
-                        </p>
+                        <div className="bg-slate-800/50 border border-violet-500/30 rounded-lg p-4 mb-6">
+                            <p className="text-violet-300 font-mono text-sm break-all">
+                                {llave}
+                            </p>
+                        </div>
 
-                        <button
-                            onClick={handleCopiar}
-                            style={{
-                                marginTop: "1rem",
-                                padding: "0.5rem 1rem",
-                                borderRadius: "8px",
-                                border: "none",
-                                backgroundColor: "#00aaff",
-                                color: "white",
-                                cursor: "pointer",
-                                marginRight: "0.5rem",
-                            }}
-                        >
-                            {copiado ? "Copiado ✅" : "Copiar"}
-                        </button>
+                        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                            <button
+                                onClick={handleCopiar}
+                                className="px-6 py-3 bg-blue-600/80 hover:bg-blue-600 text-white font-semibold rounded-lg transition-all duration-300 border border-blue-500/30 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] hover:scale-105"
+                            >
+                                {copiado ? "Copiado ✅" : "Copiar"}
+                            </button>
 
-                        <button
-                            onClick={handleIrDashboard}
-                            style={{
-                                marginTop: "1rem",
-                                padding: "0.5rem 1rem",
-                                borderRadius: "8px",
-                                border: "none",
-                                backgroundColor: "#6816eb",
-                                color: "white",
-                                cursor: "pointer",
-                            }}
-                        >
-                            Ir al Dashboard
-                        </button>
+                            <button
+                                onClick={handleIrDashboard}
+                                className="px-6 py-3 bg-gradient-to-r from-blue-600 via-violet-600 to-pink-600 hover:from-blue-500 hover:via-violet-500 hover:to-pink-500 text-white font-semibold rounded-lg transition-all duration-300 shadow-[0_0_30px_rgba(139,92,246,0.5)] hover:shadow-[0_0_40px_rgba(139,92,246,0.8)] hover:scale-105 border border-violet-400/30"
+                            >
+                                Ir al Dashboard
+                            </button>
+                        </div>
                     </div>
                 ) : (
-                    !error && <p>⏳ Cargando...</p>
+                    !error && (
+                        <p className="text-slate-400 text-lg">⏳ Cargando...</p>
+                    )
                 )}
             </div>
         </div>

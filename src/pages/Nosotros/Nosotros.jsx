@@ -1,346 +1,315 @@
-import Pattern from "../../components/Pattern";
+import { useEffect, useRef, useState } from "react"
+import { motion, useInView, useScroll, useTransform } from "framer-motion"
+import Inundacion from "../../assets/inundacion.jpg";
+import Inundacion1 from "../../assets/inundacion1.jpg";
+import Icon1 from "../../assets/icon1.jpeg";
+import Icon2 from "../../assets/icon2.jpeg";
 
-export default function Nosotros() {
+function AnimatedCounter({ end, duration = 2, suffix = "" }) {
+  const [count, setCount] = useState(0)
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true })
+
+  useEffect(() => {
+    if (!isInView) return
+
+    let startTime
+    let animationFrame
+
+    const animate = (currentTime) => {
+      if (!startTime) startTime = currentTime
+      const progress = Math.min((currentTime - startTime) / (duration * 1000), 1)
+
+      setCount(Math.floor(progress * end))
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate)
+      }
+    }
+
+    animationFrame = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(animationFrame)
+  }, [isInView, end, duration])
 
   return (
-    <div className="position-relative min-vh-100">
-      {/* Fondo Uiverse */}
-      <Pattern />
-      
-      <div className="container py-5 position-relative" style={{ zIndex: 2 }}>
-        <div className="row justify-content-center">
-          <div className="col-lg-10">
-            {/* Header */}
-            <div className="text-center mb-5">
-              <h1 className="display-4 fw-bold mb-3" style={{ color: '#8B5CF6' }}>
-                Sobre Nosotros
-              </h1>
-              <p className="lead text-muted">
-                Conectando ideas brillantes con personas que creen en ellas, sin fronteras ni limitaciones
-              </p>
-            </div>
+    <span ref={ref}>
+      {count}
+      {suffix}
+    </span>
+  )
+}
 
-            {/* Nuestra Historia */}
-            <div className="card shadow-lg border-0 mb-5">
-              <div className="card-body p-5">
-                <h2 className="h3 mb-4" style={{ color: '#8B5CF6' }}>
-                  <i className="bi bi-heart-fill me-2"></i>
-                  Nuestra Historia
-                </h2>
-                <p className="mb-4">
-                  <strong>Impulso CFA</strong> nació en 2024 tras los hechos en Bahia Blanca donde con una misión revolucionaria: democratizar 
-                  el acceso al financiamiento de proyectos en todo el mundo. Lo que comenzó como una 
-                  idea para eliminar las barreras geográficas y monetarias del crowdfunding, se ha 
-                  convertido en la plataforma global líder que conecta creadores con patrocinadores 
-                  de cualquier país y en cualquier moneda.
-                </p>
-                <p className="mb-0">
-                  Desde nuestro lanzamiento, hemos financiado miles de proyectos únicos: desde 
-                  innovaciones tecnológicas hasta iniciativas artísticas, emprendimientos sociales 
-                  y sueños personales que merecían una oportunidad de hacerse realidad.
-                </p>
-              </div>
-            </div>
+export default function Nosotros() {
+  const containerRef = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  })
 
-            {/* Misión y Visión */}
-            <div className="row mb-5">
-              <div className="col-md-6 mb-4">
-                <div className="card h-100 shadow border-0 border-start border-4" 
-                     style={{ borderColor: '#8B5CF6 !important' }}>
-                  <div className="card-body p-4">
-                    <h3 className="h4 mb-3" style={{ color: '#8B5CF6' }}>
-                      <i className="bi bi-compass me-2"></i>
-                      Nuestra Misión
-                    </h3>
-                    <p className="mb-0">
-                      Facilitar el financiamiento colaborativo de proyectos innovadores a nivel 
-                      global, eliminando barreras geográficas y monetarias. Conectamos creadores 
-                      visionarios con una comunidad internacional de patrocinadores que comparten 
-                      su pasión por la innovación y el progreso.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6 mb-4">
-                <div className="card h-100 shadow border-0 border-start border-4" 
-                     style={{ borderColor: '#06B6D4' }}>
-                  <div className="card-body p-4">
-                    <h3 className="h4 mb-3" style={{ color: '#06B6D4' }}>
-                      <i className="bi bi-eye me-2"></i>
-                      Nuestra Visión
-                    </h3>
-                    <p className="mb-0">
-                      Ser la plataforma de crowdfunding más inclusiva y accesible del mundo, 
-                      donde cualquier persona, desde cualquier país y con cualquier moneda, 
-                      pueda financiar o apoyar proyectos que transformen ideas en realidades.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.3])
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95])
 
-            {/* Nuestros Valores */}
-            <div className="card shadow-lg border-0 mb-5">
-              <div className="card-body p-5">
-                <h2 className="h3 mb-4" style={{ color: '#8B5CF6' }}>
-                  <i className="bi bi-star-fill me-2"></i>
-                  Nuestros Valores
-                </h2>
-                <div className="row">
-                  <div className="col-md-6 mb-3">
-                    <div className="d-flex align-items-start">
-                      <div className="text-white rounded-circle p-2 me-3 flex-shrink-0" 
-                           style={{ backgroundColor: '#8B5CF6' }}>
-                        <i className="bi bi-shield-check"></i>
-                      </div>
-                      <div>
-                        <h5 className="fw-bold mb-1">Transparencia</h5>
-                        <p className="mb-0 text-muted">
-                          Operamos con total claridad en el uso de recursos y resultados.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6 mb-3">
-                    <div className="d-flex align-items-start">
-                      <div className="text-white rounded-circle p-2 me-3 flex-shrink-0" 
-                           style={{ backgroundColor: '#06B6D4' }}>
-                        <i className="bi bi-people-fill"></i>
-                      </div>
-                      <div>
-                        <h5 className="fw-bold mb-1">Solidaridad</h5>
-                        <p className="mb-0 text-muted">
-                          Creemos en el poder de la comunidad y el apoyo mutuo.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6 mb-3">
-                    <div className="d-flex align-items-start">
-                      <div className="text-white rounded-circle p-2 me-3 flex-shrink-0" 
-                           style={{ backgroundColor: '#A855F7' }}>
-                        <i className="bi bi-arrow-up-circle"></i>
-                      </div>
-                      <div>
-                        <h5 className="fw-bold mb-1">Compromiso</h5>
-                        <p className="mb-0 text-muted">
-                          Nos dedicamos completamente a cumplir nuestra misión.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6 mb-3">
-                    <div className="d-flex align-items-start">
-                      <div className="text-white rounded-circle p-2 me-3 flex-shrink-0" 
-                           style={{ backgroundColor: '#0891B2' }}>
-                        <i className="bi bi-lightbulb-fill"></i>
-                      </div>
-                      <div>
-                        <h5 className="fw-bold mb-1">Innovación</h5>
-                        <p className="mb-0 text-muted">
-                          Buscamos constantemente nuevas formas de generar impacto.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+  return (
+    <div
+      ref={containerRef}
+      className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-center p-6 relative overflow-hidden"
+    >
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-20" />
 
-            {/* Estadísticas de Impacto */}
-            <div className="card shadow-lg border-0 mb-5" 
-                 style={{ 
-                   background: 'linear-gradient(135deg, #8B5CF6 0%, #06B6D4 50%, #3B82F6 100%)',
-                   position: 'relative',
-                   overflow: 'hidden'
-                 }}>
-              {/* Overlay para mejor contraste */}
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: 'rgba(0, 0, 0, 0.2)',
-                zIndex: 1
-              }}></div>
-              
-              <div className="card-body p-5 text-white position-relative" style={{ zIndex: 2 }}>
-                <h2 className="h3 mb-4 text-center text-white">
-                  <i className="bi bi-graph-up me-2"></i>
-                  Nuestro Impacto
-                </h2>
-                <div className="row text-center">
-                  <div className="col-md-3 mb-4">
-                    <div className="pe-3">
-                      <div className="bg-white bg-opacity-10 rounded-3 p-3 mb-2 backdrop-blur">
-                        <h3 className="display-5 fw-bold mb-1 text-white">15,000+</h3>
-                        <p className="mb-0 text-white-75 fw-medium">Proyectos Financiados</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-3 mb-4">
-                    <div className="pe-3">
-                      <div className="bg-white bg-opacity-10 rounded-3 p-3 mb-2 backdrop-blur">
-                        <h3 className="display-5 fw-bold mb-1 text-white">180+</h3>
-                        <p className="mb-0 text-white-75 fw-medium">Países Participantes</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-3 mb-4">
-                    <div className="pe-3">
-                      <div className="bg-white bg-opacity-10 rounded-3 p-3 mb-2 backdrop-blur">
-                        <h3 className="display-5 fw-bold mb-1 text-white">50+</h3>
-                        <p className="mb-0 text-white-75 fw-medium">Monedas Aceptadas</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-3 mb-4">
-                    <div>
-                      <div className="bg-white bg-opacity-10 rounded-3 p-3 mb-2 backdrop-blur">
-                        <h3 className="display-5 fw-bold mb-1 text-white">$50M+</h3>
-                        <p className="mb-0 text-white-75 fw-medium">Fondos Recaudados</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <motion.div
+        className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[120px]"
+        animate={{
+          scale: [1, 1.2, 1],
+          x: [0, 50, 0],
+          y: [0, 30, 0],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Number.POSITIVE_INFINITY,
+          ease: "easeInOut",
+        }}
+      />
+      <motion.div
+        className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-500/20 rounded-full blur-[120px]"
+        animate={{
+          scale: [1, 1.3, 1],
+          x: [0, -50, 0],
+          y: [0, -30, 0],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Number.POSITIVE_INFINITY,
+          ease: "easeInOut",
+        }}
+      />
+      <motion.div
+        className="absolute top-1/2 right-1/3 w-72 h-72 bg-pink-500/15 rounded-full blur-[100px]"
+        animate={{
+          scale: [1, 1.4, 1],
+          x: [0, 30, 0],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Number.POSITIVE_INFINITY,
+          ease: "easeInOut",
+        }}
+      />
 
-            {/* Nuestros Programas */}
-            <div className="card shadow-lg border-0 mb-5">
-              <div className="card-body p-5">
-                <h2 className="h3 mb-4" style={{ color: '#8B5CF6' }}>
-                  <i className="bi bi-grid-3x3-gap-fill me-2"></i>
-                  Categorías Populares
-                </h2>
-                <div className="row">
-                  <div className="col-lg-4 mb-4">
-                    <div className="text-center p-3">
-                      <div className="rounded-circle p-3 d-inline-flex mb-3" 
-                           style={{ backgroundColor: 'rgba(139, 92, 246, 0.1)' }}>
-                        <i className="bi bi-cpu fs-2" style={{ color: '#8B5CF6' }}></i>
-                      </div>
-                      <h5 className="fw-bold">Tecnología e Innovación</h5>
-                      <p className="text-muted">
-                        Apps, gadgets, inteligencia artificial y soluciones tech disruptivas.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 mb-4">
-                    <div className="text-center p-3">
-                      <div className="rounded-circle p-3 d-inline-flex mb-3" 
-                           style={{ backgroundColor: 'rgba(6, 182, 212, 0.1)' }}>
-                        <i className="bi bi-palette fs-2" style={{ color: '#06B6D4' }}></i>
-                      </div>
-                      <h5 className="fw-bold">Arte y Creatividad</h5>
-                      <p className="text-muted">
-                        Películas, música, libros, videojuegos y proyectos artísticos únicos.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 mb-4">
-                    <div className="text-center p-3">
-                      <div className="rounded-circle p-3 d-inline-flex mb-3" 
-                           style={{ backgroundColor: 'rgba(168, 85, 247, 0.1)' }}>
-                        <i className="bi bi-rocket-takeoff fs-2" style={{ color: '#A855F7' }}></i>
-                      </div>
-                      <h5 className="fw-bold">Emprendimientos</h5>
-                      <p className="text-muted">
-                        Startups, productos innovadores y negocios con impacto social.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <div className="relative z-10 max-w-4xl">
+        <motion.h1
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-blue-400 via-violet-400 to-pink-400 bg-clip-text text-transparent mb-6 drop-shadow-[0_0_30px_rgba(139,92,246,0.5)]"
+        >
+          Nosotros
+        </motion.h1>
 
-            {/* Equipo */}
-            <div className="card shadow-lg border-0 mb-5">
-              <div className="card-body p-5">
-                <h2 className="h3 text-center mb-4" style={{ color: '#8B5CF6' }}>
-                  <i className="bi bi-people-fill me-2"></i>
-                  Nuestro Equipo
-                </h2>
-                <p className="text-center text-muted mb-5">
-                  El equipo que hace posible la conexión global entre ideas y patrocinadores.
-                </p>
-                <div className="row justify-content-center">
-                  <div className="col-lg-4 mb-4">
-                    <div className="text-center">
-                      <div className="rounded-circle p-4 d-inline-flex mb-3" 
-                           style={{ backgroundColor: 'rgba(139, 92, 246, 0.1)' }}>
-                        <i className="bi bi-person-fill fs-1" style={{ color: '#8B5CF6' }}></i>
-                      </div>
-                      <h5 className="fw-bold">Franco Jarc</h5>
-                      <p className="mb-2" style={{ color: '#8B5CF6' }}>CEO & Fundador</p>
-                      <p className="text-muted small">
-                        Visionario en fintech y crowdfunding con 15 años revolucionando el acceso global al financiamiento.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 mb-4">
-                    <div className="text-center">
-                      <div className="rounded-circle p-4 d-inline-flex mb-3" 
-                           style={{ backgroundColor: 'rgba(6, 182, 212, 0.1)' }}>
-                        <i className="bi bi-person-fill fs-1" style={{ color: '#06B6D4' }}></i>
-                      </div>
-                      <h5 className="fw-bold">Camila Ocaña</h5>
-                      <p className="mb-2" style={{ color: '#06B6D4' }}>CTO & Co-fundadora</p>
-                      <p className="text-muted small">
-                        Experta en tecnología blockchain y sistemas de pagos internacionales multi-moneda.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="text-slate-300 text-lg md:text-xl max-w-3xl mx-auto mb-12 leading-relaxed space-y-6"
+        >
+          <motion.p
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            Impulso CFA nació en 2024 como respuesta a las devastadoras inundaciones que afectaron a Bahía Blanca. En
+            medio de la crisis, muchas personas querían ayudar, pero enfrentaban un problema: donar monetariamente era
+            complicado y no había garantías de que los fondos llegaran correctamente a quienes realmente los
+            necesitaban.
+          </motion.p>
 
-            {/* Call to Action */}
+          <motion.p
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
+            Fue entonces cuando decidimos crear una solución diferente. Una plataforma donde la transparencia no fuera
+            una promesa, sino una realidad verificable. Donde cualquier persona, desde cualquier lugar del mundo,
+            pudiera contribuir con confianza y seguridad.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="grid grid-cols-3 gap-6 my-12 p-8 bg-gradient-to-br from-violet-500/10 to-blue-500/10 backdrop-blur-sm border border-violet-500/30 rounded-2xl shadow-[0_0_40px_rgba(139,92,246,0.3)]"
+          >
             <div className="text-center">
-              <div className="card shadow-lg border-0 position-relative overflow-hidden" 
-                   style={{ 
-                     background: 'linear-gradient(135deg, #8B5CF6 0%, #06B6D4 50%, #A855F7 100%)',
-                   }}>
-                {/* Patrón decorativo */}
-                <div style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  zIndex: 1
-                }}></div>
-                
-                <div className="card-body p-5 text-white position-relative" style={{ zIndex: 2 }}>
-                  <h2 className="h2 mb-3 fw-bold">¡Impulsa el próximo gran proyecto!</h2>
-                  <p className="lead mb-4">
-                    Desde cualquier país, con cualquier moneda. Conecta con creadores únicos 
-                    o lanza tu propia idea al mundo. El futuro se construye con tu apoyo.
-                  </p>
-                  <div className="d-flex flex-column flex-sm-row gap-3 justify-content-center">
-                    <button className="btn btn-light btn-lg px-5 py-3 fw-bold shadow-sm">
-                      <i className="bi bi-plus-circle-fill me-2" style={{ color: '#8B5CF6' }}></i>
-                      Crear Proyecto
-                    </button>
-                    <button className="btn btn-outline-light btn-lg px-5 py-3 fw-bold">
-                      <i className="bi bi-search me-2"></i>
-                      Explorar Proyectos
-                    </button>
-                  </div>
-                  <div className="mt-4">
-                    <small className="text-white-75">
-                      <i className="bi bi-shield-check me-1"></i>
-                      Transacciones seguras • Sin fronteras • Múltiples monedas
-                    </small>
-                  </div>
-                </div>
+              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent mb-2">
+                <AnimatedCounter end={500} suffix="+" />
               </div>
+              <div className="text-sm md:text-base text-slate-400">Familias Ayudadas</div>
             </div>
-          </div>
-        </div>
+            <div className="text-center border-x border-violet-500/20">
+              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-violet-400 to-pink-400 bg-clip-text text-transparent mb-2">
+                <AnimatedCounter end={100} suffix="%" />
+              </div>
+              <div className="text-sm md:text-base text-slate-400">Transparencia</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-pink-400 to-blue-400 bg-clip-text text-transparent mb-2">
+                <AnimatedCounter end={24} suffix="/7" />
+              </div>
+              <div className="text-sm md:text-base text-slate-400">Disponibilidad</div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-12"
+          >
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent mb-6 flex items-center justify-center gap-2">
+              La Crisis que nos Inspiró
+            </h3>
+            <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+              <motion.div
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ duration: 0.3 }}
+                className="group relative overflow-hidden rounded-2xl border-2 border-violet-500/30 shadow-[0_0_20px_rgba(139,92,246,0.2)] hover:shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-all duration-300 hover:border-violet-400/50"
+              >
+                <img
+                  src={Inundacion || "/placeholder.svg"}
+                  alt="Zona Inundada 1"
+                  className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-950/95 via-slate-950/80 to-transparent p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                  <p className="text-white text-base font-semibold">Inundaciones 2024</p>
+                  <p className="text-slate-300 text-sm">Bahía Blanca</p>
+                </div>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ duration: 0.3 }}
+                className="group relative overflow-hidden rounded-2xl border-2 border-violet-500/30 shadow-[0_0_20px_rgba(139,92,246,0.2)] hover:shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-all duration-300 hover:border-violet-400/50"
+              >
+                <img
+                  src={Inundacion1 || "/placeholder.svg"}
+                  alt="Zona Inundada 2"
+                  className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-950/95 via-slate-950/80 to-transparent p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                  <p className="text-white text-base font-semibold">Comunidades Afectadas</p>
+                  <p className="text-slate-300 text-sm">Bahía Blanca</p>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm border border-violet-500/30 rounded-2xl p-8 my-8 shadow-[0_0_30px_rgba(139,92,246,0.2)] hover:shadow-[0_0_50px_rgba(139,92,246,0.4)] transition-all duration-500"
+          >
+            <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent mb-6">
+              ¿Por qué Impulso CFA es diferente?
+            </h2>
+            <div className="space-y-4 text-left max-w-2xl mx-auto">
+              {[
+                { icon: "🔒", title: "Seguridad garantizada", desc: "cada transacción es verificable y transparente" },
+                { icon: "🌍", title: "Acceso universal", desc: "dona desde cualquier lugar del mundo" },
+                { icon: "💳", title: "Múltiples métodos de pago", desc: "elige la forma que más te convenga" },
+                { icon: "❤️", title: "Impacto real", desc: "tu ayuda llega directamente a quien la necesita" },
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  whileHover={{ x: 10, scale: 1.02 }}
+                  className="flex items-start p-4 rounded-xl bg-slate-800/30 hover:bg-slate-800/50 border border-transparent hover:border-violet-500/20 transition-all duration-300 group"
+                >
+                  <span className="text-3xl mr-4 group-hover:scale-125 transition-transform duration-300">
+                    {item.icon}
+                  </span>
+                  <div>
+                    <span className="text-violet-300 font-semibold text-lg">{item.title}:</span>
+                    <span className="text-slate-300 ml-2">{item.desc}</span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Removed the "Tu Donación Cambia Vidas" CTA section since donation button is in Home */}
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-12"
+          >
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent mb-8">
+              Nuestros Fundadores
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+              {[
+                { name: "Camila Ocaña", role: "Co-fundadora", image: Icon1 },
+                { name: "Franco Jarc", role: "Co-fundador", image: Icon2 },
+              ].map((founder, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.2 }}
+                  whileHover={{ y: -10, scale: 1.03 }}
+                  className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm border border-violet-500/30 rounded-2xl p-6 shadow-[0_0_20px_rgba(139,92,246,0.2)] hover:shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-all duration-300 hover:border-violet-400/50"
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    transition={{ duration: 0.3 }}
+                    className="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full border-4 border-violet-400/40 shadow-[0_0_20px_rgba(139,92,246,0.4)]"
+                  >
+                    <img
+                      src={founder.image || "/placeholder.svg"}
+                      alt={founder.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </motion.div>
+                  <h3 className="text-xl font-semibold text-violet-300 mb-2">{founder.name}</h3>
+                  <p className="text-slate-400 text-sm">{founder.role}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mt-12 flex flex-wrap justify-center gap-6 text-slate-400 text-sm"
+          >
+            <div className="flex items-center gap-2">
+              <span className="text-green-400">✓</span>
+              <span>Plataforma Verificada</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-green-400">✓</span>
+              <span>Transacciones Seguras</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-green-400">✓</span>
+              <span>100% Transparente</span>
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
-  );
+  )
 }
