@@ -1,62 +1,59 @@
+"use client"
+
 import CardCampana from "../../components/CardCampana"
-import { getAllCampaigns } from "../../services/campaing.service";
-import { useEffect, useState } from "react";
+import { getAllCampaigns } from "../../services/campaing.service"
+import { useEffect, useState } from "react"
 
 export default function Campanas() {
-  const [campanas, setCampanas] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [campanas, setCampanas] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchCampanas = async () => {
       try {
-        const data = await getAllCampaigns();
-        console.log("Campañas obtenidas:", data);
-        setCampanas(data);
+        const data = await getAllCampaigns()
+        console.log("Campañas obtenidas:", data)
+        setCampanas(data)
       } catch (err) {
-        setError(err.message);
+        setError(err.message)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchCampanas();
-  }, []);
+    fetchCampanas()
+  }, [])
 
-   if (loading)
+  if (loading)
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-950 via-slate-900 to-violet-950">
-        <p className="text-violet-400 text-lg font-semibold animate-pulse">
-          Cargando campañas...
-        </p>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50">
+        <p className="text-violet-600 text-lg font-semibold animate-pulse">Cargando campañas...</p>
       </div>
-    );
+    )
 
   if (error)
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-950 via-slate-900 to-violet-950">
-        <p className="text-red-400 font-medium">Error: {error}</p>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50">
+        <p className="text-red-600 font-medium">Error: {error}</p>
       </div>
-    );
+    )
 
   if (campanas.length === 0)
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-950 via-slate-900 to-violet-950">
-        <p className="text-slate-400 text-lg">
-          No hay campañas disponibles por el momento.
-        </p>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50">
+        <p className="text-slate-600 text-lg">No hay campañas disponibles por el momento.</p>
       </div>
-    );
+    )
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-violet-950 py-16 px-6 text-white">
+    <div className="min-h-screen bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 py-16 px-6 text-slate-800">
       <div className="max-w-6xl mx-auto text-center mb-12">
-        <h1 className="text-4xl font-extrabold bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent mb-4">
+        <h1 className="text-4xl font-extrabold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-4">
           Campañas Activas
         </h1>
-        <p className="text-slate-300 max-w-2xl mx-auto">
-          Explorá las campañas solidarias en curso y descubrí cómo podés
-          aportar para generar un impacto real.
+        <p className="text-slate-700 max-w-2xl mx-auto">
+          Explorá las campañas solidarias en curso y descubrí cómo podés aportar para generar un impacto real.
         </p>
       </div>
 
@@ -66,5 +63,5 @@ export default function Campanas() {
         ))}
       </div>
     </div>
-  );
+  )
 }

@@ -81,7 +81,7 @@ export default function Home() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-violet-950 to-slate-900 text-white overflow-hidden">
+   <div className="min-h-screen bg-gradient-to-br from-violet-50 via-blue-50 to-purple-50 text-slate-800 overflow-hidden">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -91,7 +91,7 @@ export default function Home() {
             opacity: [0.3, 0.5, 0.3],
           }}
           transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-          className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-violet-500/20 to-transparent rounded-full blur-3xl"
+          className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-violet-200/40 to-transparent rounded-full blur-3xl"
         />
         <motion.div
           animate={{
@@ -100,7 +100,7 @@ export default function Home() {
             opacity: [0.3, 0.5, 0.3],
           }}
           transition={{ duration: 25, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-          className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-blue-500/20 to-transparent rounded-full blur-3xl"
+          className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-blue-200/40 to-transparent rounded-full blur-3xl"
         />
       </div>
 
@@ -118,15 +118,17 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="inline-block mb-6"
             >
-              <div className="bg-gradient-to-r from-violet-500 to-blue-500 p-4 rounded-2xl shadow-2xl shadow-violet-500/50">
-                <Heart className="w-16 h-16" />
-              </div>
             </motion.div>
 
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-violet-400 via-blue-400 to-violet-400 bg-clip-text text-transparent">
-              Impulso CFA
-            </h1>
-            <p className="text-xl md:text-2xl text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+           <h1 className="flex items-baseline justify-center gap-3 mb-6">
+            <span className="text-5xl md:text-7xl font-serif italic bg-gradient-to-r from-violet-500 to-blue-500 bg-clip-text text-transparent">
+            Impulso
+             </span>
+            <span className="text-5xl md:text-7xl font-bold uppercase bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+              CFA
+           </span>
+           </h1>
+            <p className="text-xl md:text-2xl text-slate-700 mb-8 max-w-3xl mx-auto leading-relaxed">
               Juntos reconstruimos vidas. Tu donación transforma comunidades afectadas por las inundaciones en Bahía
               Blanca.
             </p>
@@ -139,12 +141,12 @@ export default function Home() {
           >
             <Link to="/campanas">
               <motion.button
-                whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(139, 92, 246, 0.6)" }}
+                whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(167, 139, 250, 0.6)" }}
                 whileTap={{ scale: 0.95 }}
-                className="group relative px-12 py-6 bg-gradient-to-r from-violet-600 to-blue-600 rounded-2xl text-xl font-bold shadow-2xl shadow-violet-500/50 overflow-hidden"
+                className="group relative px-12 py-6 bg-gradient-to-r from-violet-400 to-blue-400 rounded-2xl text-xl font-bold text-white shadow-2xl shadow-violet-300/50 overflow-hidden"
               >
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-blue-600 to-violet-600"
+                  className="absolute inset-0 bg-gradient-to-r from-blue-400 to-violet-400"
                   initial={{ x: "100%" }}
                   whileHover={{ x: 0 }}
                   transition={{ duration: 0.3 }}
@@ -171,12 +173,12 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isStatsInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
-                className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
+                className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-violet-200 shadow-lg shadow-violet-100/50"
               >
-                <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
+                <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-violet-500 to-blue-500 bg-clip-text text-transparent">
                   <AnimatedCounter end={stat.value} suffix={stat.suffix} />
                 </div>
-                <div className="text-sm text-slate-400 mt-2">{stat.label}</div>
+                <div className="text-sm text-slate-600 mt-2">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
@@ -190,8 +192,9 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent"
+            className="text-4xl md:text-5xl font-bold text-center mb-16 leading-snug bg-gradient-to-r from-violet-500 to-blue-500 bg-clip-text text-transparent"
           >
+          
             ¿Por qué elegirnos?
           </motion.h2>
 
@@ -220,17 +223,17 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 whileHover={{ y: -10, scale: 1.02 }}
-                className="group bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-violet-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-violet-500/20"
+                className="group bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-violet-200 hover:border-violet-400 transition-all duration-300 hover:shadow-2xl hover:shadow-violet-200/50"
               >
                 <motion.div
                   whileHover={{ rotate: 360, scale: 1.1 }}
                   transition={{ duration: 0.6 }}
-                  className="inline-block mb-4 p-3 bg-gradient-to-br from-violet-500 to-blue-500 rounded-xl"
+                  className="inline-block mb-4 p-3 bg-gradient-to-br from-violet-300 to-blue-300 rounded-xl"
                 >
                   {feature.icon}
                 </motion.div>
-                <h3 className="text-2xl font-bold mb-3 text-white">{feature.title}</h3>
-                <p className="text-slate-400 leading-relaxed">{feature.description}</p>
+                <h3 className="text-2xl font-bold mb-3 text-slate-800">{feature.title}</h3>
+                <p className="text-slate-600 leading-relaxed">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -246,10 +249,10 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-violet-500 to-blue-500 bg-clip-text text-transparent">
               Campañas Finalizadas
             </h2>
-            <p className="text-xl text-slate-400">Gracias a tu apoyo, logramos estos increíbles resultados</p>
+            <p className="text-xl text-slate-600">Gracias a tu apoyo, logramos estos increíbles resultados</p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -260,7 +263,7 @@ export default function Home() {
                 animate={isCampaignsInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 whileHover={{ y: -10 }}
-                className="group bg-white/5 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/10 hover:border-violet-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-violet-500/20"
+                className="group bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden border border-violet-200 hover:border-violet-400 transition-all duration-300 hover:shadow-2xl hover:shadow-violet-200/50"
               >
                 <div className="relative h-48 overflow-hidden">
                   <img
@@ -268,26 +271,26 @@ export default function Home() {
                     alt={campaign.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent" />
-                  <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-2">
+                 
+                  <div className="absolute top-4 right-4 bg-green-400 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4" />
                     Completada
                   </div>
                 </div>
 
                 <div className="p-6 space-y-4">
-                  <div className="flex items-center gap-2 text-violet-400">
+                  <div className="flex items-center gap-2 text-violet-600">
                     {campaign.icon}
                     <span className="text-sm font-semibold">{campaign.impact}</span>
                   </div>
 
-                  <h3 className="text-xl font-bold text-white">{campaign.title}</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">{campaign.description}</p>
+                  <h3 className="text-xl font-bold text-slate-800">{campaign.title}</h3>
+                  <p className="text-slate-600 text-sm leading-relaxed">{campaign.description}</p>
 
-                  <div className="pt-4 border-t border-white/10">
+                  <div className="pt-4 border-t border-violet-200">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-slate-400">Recaudado</span>
-                      <span className="text-2xl font-bold bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
+                      <span className="text-sm text-slate-600">Recaudado</span>
+                      <span className="text-2xl font-bold bg-gradient-to-r from-violet-500 to-blue-500 bg-clip-text text-transparent">
                         {campaign.raised}
                       </span>
                     </div>
@@ -307,17 +310,17 @@ export default function Home() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="bg-gradient-to-r from-violet-600/20 to-blue-600/20 backdrop-blur-sm rounded-3xl p-12 border border-violet-500/30"
+            className="bg-white/80 backdrop-blur-sm rounded-3xl p-12 border border-violet-300 shadow-xl shadow-violet-200/50"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Tu ayuda puede cambiar vidas hoy</h2>
-            <p className="text-xl text-slate-300 mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-slate-800">Tu ayuda puede cambiar vidas hoy</h2>
+            <p className="text-xl text-slate-700 mb-8">
               Cada donación cuenta. Sé parte del cambio que Bahía Blanca necesita.
             </p>
             <Link to="/campanas">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-10 py-5 bg-gradient-to-r from-violet-600 to-blue-600 rounded-2xl text-lg font-bold shadow-2xl shadow-violet-500/50 hover:shadow-violet-500/70 transition-shadow"
+                className="px-10 py-5 bg-gradient-to-r from-violet-400 to-blue-400 text-white rounded-2xl text-lg font-bold shadow-2xl shadow-violet-300/50 hover:shadow-violet-300/70 transition-shadow"
               >
                 Donar Ahora
               </motion.button>
