@@ -1,32 +1,56 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate} from "react-router-dom";
-import { getCampaignById } from "../../services/campaing.service";
+import { useEffect, useState } from "react"
+import { useParams, useNavigate } from "react-router-dom"
+import { getCampaignById } from "../../services/campaing.service"
+import { ArrowLeft, Target, Calendar, TrendingUp, Clock } from "lucide-react"
 
 export default function DetalleCampana() {
-    const { id } = useParams(); // viene de la ruta /campanas/:id
-    const navigate = useNavigate();
-    const [campana, setCampana] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const [campana, setCampana] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchCampana = async () => {
       try {
-        const data = await getCampaignById(id);
-        setCampana(data);
+        const data = await getCampaignById(id)
+        setCampana(data)
       } catch (err) {
-        setError(err.message);
+        setError(err.message)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchCampana();
-  }, [id]);
+    fetchCampana()
+  }, [id])
 
-    if (loading) return <p>Cargando campaña...</p>;
-  if (error) return <p>Error: {error}</p>;
-  if (!campana) return <p>No se encontró la campaña.</p>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 flex items-center justify-center">
+        <p className="text-slate-700 text-lg">Cargando campaña...</p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 flex items-center justify-center">
+        <p className="text-red-600 text-lg">Error: {error}</p>
+      </div>
+    )
+  }
+
+  if (!campana) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 flex items-center justify-center">
+        <p className="text-slate-700 text-lg">No se encontró la campaña.</p>
+      </div>
+    )
+  }
+
+  // Calcular porcentaje de progreso
+  const porcentaje = Math.min((campana.monto_actual / campana.monto_objetivo) * 100, 100)
 
   return (
     <div className="p-6 max-w-2xl mx-auto bg-white shadow rounded-xl">

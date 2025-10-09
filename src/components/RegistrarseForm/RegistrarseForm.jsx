@@ -38,7 +38,7 @@ export default function RegistrarseForm() {
 
 
   return (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div className="flex gap-3">
         <input
           type="text"
@@ -46,7 +46,7 @@ export default function RegistrarseForm() {
           placeholder="Nombre"
           onChange={handleChange}
           required
-          className="w-1/2 bg-slate-800/50 border border-violet-500/30 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-300 hover:border-violet-500/50"
+          className="w-1/2 bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
         />
         <input
           type="text"
@@ -54,7 +54,7 @@ export default function RegistrarseForm() {
           placeholder="Apellido"
           onChange={handleChange}
           required
-          className="w-1/2 bg-slate-800/50 border border-violet-500/30 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-300 hover:border-violet-500/50"
+          className="w-1/2 bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
         />
       </div>
 
@@ -64,7 +64,7 @@ export default function RegistrarseForm() {
         placeholder="Correo electrónico"
         onChange={handleChange}
         required
-        className="bg-slate-800/50 border border-violet-500/30 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-300 hover:border-violet-500/50"
+        className="bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
       />
 
       <input
@@ -73,14 +73,14 @@ export default function RegistrarseForm() {
         placeholder="Contraseña"
         onChange={handleChange}
         required
-        className="bg-slate-800/50 border border-violet-500/30 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-300 hover:border-violet-500/50"
+        className="bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
       />
 
       <input
         type="date"
         name="fecha_nacimiento"
         onChange={handleChange}
-        className="bg-slate-800/50 border border-violet-500/30 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-300 hover:border-violet-500/50 [color-scheme:dark]"
+        className="bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400 [color-scheme:light]"
       />
 
       <input
@@ -89,13 +89,13 @@ export default function RegistrarseForm() {
         placeholder="Nacionalidad"
         onChange={handleChange}
         required
-        className="bg-slate-800/50 border border-violet-500/30 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all duration-300 hover:border-violet-500/50"
+        className="bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
       />
 
       <button
         type="submit"
         disabled={loading}
-        className="mt-2 bg-gradient-to-r from-blue-600 via-violet-600 to-pink-600 hover:from-blue-500 hover:via-violet-500 hover:to-pink-500 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 shadow-[0_0_30px_rgba(139,92,246,0.5)] hover:shadow-[0_0_40px_rgba(139,92,246,0.8)] hover:scale-105 border border-violet-400/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+        className="mt-2 bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 hover:from-blue-500 hover:via-violet-500 hover:to-purple-500 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] hover:scale-105 border border-violet-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
       >
         {loading ? "Registrando..." : "Registrarse"}
       </button>
