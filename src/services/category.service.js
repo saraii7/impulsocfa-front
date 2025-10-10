@@ -12,6 +12,11 @@ export async function getCategories() {
 
 // Crear categoría (solo admin)
 export async function createCategory(nombre) {
+
+   if (typeof nombre !== "string" || !nombre.trim()) {
+    throw new Error("Nombre inválido");
+  }
+
   const token = localStorage.getItem("access_token");
   if (!token) throw new Error("No estás autenticado");
 
