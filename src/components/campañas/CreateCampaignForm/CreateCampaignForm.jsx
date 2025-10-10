@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; // 🟣 Agregué useEffect para poder cargar las categorías cuando el componente monte
 import { createCampaign } from "../../../services/campaign.service";
+import { getCategories } from "../../../services/category.service"; // 🟣 Corregí el import (tenía un typo: “serive”)
 
 export default function CreateCampaignForm() {
     const [formData, setFormData] = useState({
-        id_categoria: 26,    
+        id_categoria: "26",    
         titulo: "",
         descripcion: "",
         monto_objetivo: "",
@@ -12,6 +13,22 @@ export default function CreateCampaignForm() {
     });
 
     const [loading, setLoading] = useState(false);
+
+    // 🟣 Nuevo estado para guardar las categorías obtenidas del backend
+    const [categories, setCategories] = useState([]);
+
+    // 🟣 useEffect que obtiene las categorías al montar el componente
+    useEffect(() => {
+        async function fetchCategories() {
+            try {
+                const data = await getCategories();
+                setCategories(data); // guarda las categorías en el estado
+            } catch (error) {
+                console.error("❌ Error al cargar categorías:", error);
+            }
+        }
+        fetchCategories();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
@@ -35,7 +52,7 @@ export default function CreateCampaignForm() {
         }
     };
 
-    // Fecha mínima (hoy) para no permitir fechas anteriores
+    // Fecha mínima (hoy) para no permitir fechas anteriores (🟣 se mantiene igual)
     const today = new Date().toISOString().split("T")[0];
 
     return (
@@ -80,6 +97,26 @@ export default function CreateCampaignForm() {
           />
         </div>
 
+        {/* 🟣 NUEVO CAMPO: selector dinámico de categorías */}
+        <div>
+          <label className="block text-slate-700 font-semibold mb-2">Categoría</label>
+          <select
+            name="id_categoria"
+            value={formData.id_categoria}
+            onChange={handleChange}
+            required
+            className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
+          >
+            <option value="">Seleccionar categoría</option>
+            {categories.map((cat) => (
+              <option key={cat.id_categoria} value={cat.id_categoria}>
+                {cat.nombre}
+              </option>
+            ))}
+          </select>
+        </div>
+        {/* 🟣 Hasta acá el nuevo bloque de categorías */}
+
         <div>
           <label className="block text-slate-700 font-semibold mb-2">Monto objetivo</label>
           <input
@@ -97,7 +134,7 @@ export default function CreateCampaignForm() {
           <input
             type="date"
             name="tiempo_objetivo"
-            min={today}
+            min={today} // 🟣 lógica existente: mantiene la validación de fecha mínima
             onChange={handleChange}
             required
             className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400 [color-scheme:light]"
