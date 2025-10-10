@@ -13,7 +13,7 @@ import CreateCampaignForm from "./components/campañas/CreateCampaignForm/Create
 import CampanasPage from "./components/campañas/CampanasPage/CampanasPage";
 import DetalleCampana from "./pages/Campanas/DetalleCampana";
 import Campanas from "./pages/Campanas/Campanas";
-
+import EditarCampana from "./components/campañas/CreateCampaignForm/EditarCampana";
 
 function App() {
   return (
@@ -36,6 +36,7 @@ function App() {
             <Route path="/campanas" element={<CampanasPage />} />
             <Route path="/crearcampana" element={<CreateCampaignForm />} />
             <Route path="/campanas/:id" element={<DetalleCampana />} />
+            <Route path="/editarcampana/:id" element={<EditarCampana />} />
           </Routes>
         </main>
 
