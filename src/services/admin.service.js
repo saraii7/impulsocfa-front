@@ -1,4 +1,4 @@
-const API_URL = `${import.meta.env.VITE_API_URL}/admin`;
+const API_URL = `${import.meta.env.VITE_API_URL}/api/admin`;
 
 export async function getAdmins() {
   const token = localStorage.getItem("access_token");
