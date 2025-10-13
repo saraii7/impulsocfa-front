@@ -9,14 +9,13 @@ function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const navigate = useNavigate()
 
-  const updateAuthState = () => {
-    const token = localStorage.getItem("access_token")
-    setIsLoggedIn(!!token)
-
-    const rol = localStorage.getItem("user_role")
-    setUserRole(rol)
-
-  }
+  const userData = localStorage.getItem("user");
+if (userData) {
+  const user = JSON.parse(userData);
+  setUserRole(user.rol); //ahora toma el rol real del usuario
+} else {
+  setUserRole(null);
+}
 
   useEffect(() => {
     updateAuthState()
