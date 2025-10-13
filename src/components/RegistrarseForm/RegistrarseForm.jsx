@@ -1,6 +1,7 @@
-
 import { useState } from "react";
 import { registerUser } from "../../services/auth.service";
+import ReactFlagsSelect from "react-flags-select";
+import "./RegistrarseForm.css";
 
 export default function RegistrarseForm() {
   const [formData, setFormData] = useState({
@@ -15,8 +16,15 @@ export default function RegistrarseForm() {
 
   const [loading, setLoading] = useState(false);
 
+  // ✅ Corrige el handleChange
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value || null });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // ✅ Agrega la función que actualiza el país seleccionado
+  const handleCountryChange = (countryCode) => {
+    setFormData({ ...formData, nacionalidad: countryCode });
   };
 
   const handleSubmit = async (e) => {
@@ -25,9 +33,10 @@ export default function RegistrarseForm() {
 
     try {
       const response = await registerUser(formData);
-
-      alert(response.message || "Registro exitoso. Revisa tu correo para confirmar tu cuenta.");
-
+      alert(
+        response.message ||
+          "Registro exitoso. Revisa tu correo para confirmar tu cuenta."
+      );
     } catch (error) {
       console.error(error);
       alert("Error al registrarse: " + error.message);
@@ -36,9 +45,8 @@ export default function RegistrarseForm() {
     }
   };
 
-
   return (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div className="flex gap-3">
         <input
           type="text"
@@ -83,14 +91,17 @@ export default function RegistrarseForm() {
         className="bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400 [color-scheme:light]"
       />
 
-      <input
-        type="text"
-        name="nacionalidad"
-        placeholder="Nacionalidad"
-        onChange={handleChange}
-        required
-        className="bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
-      />
+      {/* ✅ Selector de país */}
+      <div className="country-selector-wrapper">
+        <ReactFlagsSelect
+          selected={formData.nacionalidad}
+          onSelect={handleCountryChange}
+          searchable
+          searchPlaceholder="Buscar país..."
+          placeholder="Selecciona tu nacionalidad"
+          className="country-select"
+        />
+      </div>
 
       <button
         type="submit"

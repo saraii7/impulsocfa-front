@@ -1,0 +1,65 @@
+/* Estilos personalizados para el selector de países */
+.country-selector-wrapper {
+  position: relative;
+}
+
+.country-select button {
+  width: 100%;
+  background-color: rgba(245, 243, 255, 0.5) !important;
+  border: 1px solid rgb(196, 181, 253) !important;
+  border-radius: 0.5rem !important;
+  padding: 0.75rem 1rem !important;
+  color: rgb(30, 41, 59) !important;
+  font-size: 1rem !important;
+  text-align: left !important;
+  transition: all 0.3s ease !important;
+  height: auto !important;
+  min-height: 48px !important;
+}
+
+.country-select button:hover {
+  border-color: rgb(167, 139, 250) !important;
+}
+
+.country-select button:focus {
+  outline: none !important;
+  ring: 2px !important;
+  ring-color: rgb(167, 139, 250) !important;
+  border-color: transparent !important;
+}
+
+.country-select ul {
+  background-color: white !important;
+  border: 1px solid rgb(196, 181, 253) !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+  max-height: 300px !important;
+  overflow-y: auto !important;
+  margin-top: 0.25rem !important;
+  z-index: 50 !important;
+}
+
+.country-select ul li {
+  padding: 0.75rem 1rem !important;
+  color: rgb(30, 41, 59) !important;
+  transition: background-color 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.country-select ul li:hover {
+  background-color: rgba(245, 243, 255, 0.8) !important;
+}
+
+.country-select input[type="text"] {
+  width: calc(100% - 1rem) !important;
+  padding: 0.5rem !important;
+  border: 1px solid rgb(196, 181, 253) !important;
+  border-radius: 0.375rem !important;
+  margin: 0.5rem !important;
+  color: rgb(30, 41, 59) !important;
+}
+
+.country-select input[type="text"]:focus {
+  outline: none !important;
+  border-color: rgb(167, 139, 250) !important;
+}
