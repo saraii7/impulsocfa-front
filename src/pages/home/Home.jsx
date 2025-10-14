@@ -129,8 +129,7 @@ export default function Home() {
            </span>
            </h1>
             <p className="text-xl md:text-2xl text-slate-700 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Juntos reconstruimos vidas. Tu donación transforma comunidades afectadas por las inundaciones en Bahía
-              Blanca.
+              Juntos reconstruimos vidas. Tu donación transforma proyectos que devuelven esperanza.
             </p>
           </motion.div>
 
@@ -314,7 +313,7 @@ export default function Home() {
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-slate-800">Tu ayuda puede cambiar vidas hoy</h2>
             <p className="text-xl text-slate-700 mb-8">
-              Cada donación cuenta. Sé parte del cambio que Bahía Blanca necesita.
+              Cada donación cuenta. Sé parte del cambio que se necesita.
             </p>
             <Link to="/campanas">
               <motion.button
