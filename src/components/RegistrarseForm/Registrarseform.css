@@ -23,8 +23,7 @@
 
 .country-select button:focus {
   outline: none !important;
-  ring: 2px !important;
-  ring-color: rgb(167, 139, 250) !important;
+ 
   border-color: transparent !important;
 }
 
