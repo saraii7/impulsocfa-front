@@ -5,42 +5,47 @@ import { Menu, X } from "lucide-react"
 
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-   const [userRole, setUserRole] = useState(null)
+  const [userRole, setUserRole] = useState(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const navigate = useNavigate()
 
-  const userData = localStorage.getItem("user");
-if (userData) {
-  const user = JSON.parse(userData);
-  setUserRole(user.rol); //ahora toma el rol real del usuario
-} else {
-  setUserRole(null);
-}
+  // ✅ Nueva función centralizada
+  const updateAuthState = () => {
+    const token = localStorage.getItem("access_token");
+    setIsLoggedIn(!!token);
+
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      const user = JSON.parse(userData);
+      setUserRole(user.rol);
+    } else {
+      setUserRole(null);
+    }
+  };
 
   useEffect(() => {
-    updateAuthState()
-    const handleStorageChange = () => updateAuthState()
-    window.addEventListener("storage", handleStorageChange)
-    return () => window.removeEventListener("storage", handleStorageChange)
-  }, [])
+    updateAuthState(); // se ejecuta al montar
+    const handleStorageChange = () => updateAuthState();
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   const handleLogout = async () => {
     try {
-      await logout()
-      setIsLoggedIn(false)
-      setUserRole(null)
-      navigate("/iniciarsesion")
-      setIsMobileMenuOpen(false)
+      await logout();
+      setIsLoggedIn(false);
+      setUserRole(null);
+      navigate("/iniciarsesion");
+      setIsMobileMenuOpen(false);
     } catch (err) {
-      console.error("Error al cerrar sesión:", err.message)
-      alert("Error al cerrar sesión: " + err.message)
+      console.error("Error al cerrar sesión:", err.message);
+      alert("Error al cerrar sesión: " + err.message);
     }
-  }
+  };
 
   const handleLinkClick = () => {
-    setIsMobileMenuOpen(false)
-  }
-
+    setIsMobileMenuOpen(false);
+  };
   return (
       <header className="bg-white/95 backdrop-blur-xl border-b border-blue-200/50 sticky top-0 z-50 shadow-lg shadow-blue-100/20 relative overflow-hidden">
       {/* fondos y animaciones... */}
