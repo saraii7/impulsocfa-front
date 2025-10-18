@@ -2,7 +2,7 @@ import { useState } from "react";
 import { registerUser } from "../../services/auth.service";
 import ReactFlagsSelect from "react-flags-select";
 import toast from "react-hot-toast";
-import "./RegistrarseForm.css";
+import "./Registrarseform.css";
 
 export default function RegistrarseForm() {
   const [formData, setFormData] = useState({
