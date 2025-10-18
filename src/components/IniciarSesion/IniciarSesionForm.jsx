@@ -1,40 +1,78 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { login } from '../../services/auth.service';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../../services/auth.service";
+import toast from "react-hot-toast";
 import GoogleRegistrarseButton from "../GoogleRegistrarseButton/GoogleRegistrarseButton";
 
-
-
 export default function IniciarSesionForm() {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-    const handleChange = (e) => {
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const toastId = toast.loading("Verificando credenciales...", {
+      style: {
+        background: "#1e1e2f",
+        color: "#e2e8f0",
+        border: "1px solid rgba(139,92,246,0.4)",
+        borderRadius: "12px",
+        padding: "12px 16px",
+      },
+    });
+
     try {
       const data = await login(formData.email, formData.password);
       console.log("Usuario logueado:", data);
-      navigate("/home"); 
+
+      toast.dismiss(toastId);
+      toast.success("¡Inicio de sesión exitoso! 🚀", {
+        style: {
+          background: "#1e1e2f",
+          color: "#e2e8f0",
+          border: "1px solid rgba(139,92,246,0.4)",
+          borderRadius: "12px",
+          padding: "12px 16px",
+        },
+        iconTheme: {
+          primary: "#a78bfa",
+          secondary: "#1e1e2f",
+        },
+      });
+
+      setTimeout(() => navigate("/home"), 800);
     } catch (error) {
       console.error("Error al iniciar sesión:", error.message);
-      alert("Error al iniciar sesión: " + error.message);
+      toast.dismiss(toastId);
+      toast.error("Error al iniciar sesión 😕 Verificá tus datos.", {
+        style: {
+          background: "#1e1e2f",
+          color: "#e2e8f0",
+          border: "1px solid rgba(139,92,246,0.4)",
+          borderRadius: "12px",
+          padding: "12px 16px",
+        },
+        iconTheme: {
+          primary: "#a78bfa",
+          secondary: "#1e1e2f",
+        },
+      });
     }
   };
-  
+
   return (
-         <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 px-4 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 px-4 relative overflow-hidden">
       {/* Patrón de fondo */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#e0e7ff_1px,transparent_1px),linear-gradient(to_bottom,#e0e7ff_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-30" />
 
-      {/* Esferas de luz animadas */}
+      {/* Esferas animadas */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-200/40 rounded-full blur-[120px] animate-pulse" />
       <div
         className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-200/40 rounded-full blur-[120px] animate-pulse"
@@ -47,29 +85,25 @@ export default function IniciarSesionForm() {
         </h2>
 
         <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
-          <div>
-            <input
-              required
-              type="email"
-              name="email"
-              placeholder="E-mail"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
-            />
-          </div>
+          <input
+            required
+            type="email"
+            name="email"
+            placeholder="E-mail"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
+          />
 
-          <div>
-            <input
-              required
-              type="password"
-              name="password"
-              placeholder="Contraseña"
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
-            />
-          </div>
+          <input
+            required
+            type="password"
+            name="password"
+            placeholder="Contraseña"
+            value={formData.password}
+            onChange={handleChange}
+            className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
+          />
 
           <div className="text-center text-sm">
             <Link
@@ -94,7 +128,9 @@ export default function IniciarSesionForm() {
               <div className="w-full border-t border-violet-200"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white/80 text-slate-600">O continúa con</span>
+              <span className="px-4 bg-white/80 text-slate-600">
+                O continúa con
+              </span>
             </div>
           </div>
 
@@ -116,5 +152,3 @@ export default function IniciarSesionForm() {
     </div>
   );
 }
-
-
