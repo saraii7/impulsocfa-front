@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { updateCampaign } from "../../../services/campaign.service";
+import { toast } from "react-hot-toast";
 
 export default function EditarCampana() {
   const { id } = useParams();
@@ -28,7 +29,6 @@ export default function EditarCampana() {
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Error al cargar campaña");
 
-        // Rellenar el formulario con los datos existentes
         setFormData({
           titulo: data.titulo || "",
           descripcion: data.descripcion || "",
@@ -38,7 +38,14 @@ export default function EditarCampana() {
         });
       } catch (error) {
         console.error(error);
-        alert("❌ Error al cargar la campaña");
+        toast.error("❌ Error al cargar la campaña", {
+          style: {
+            background: "#fee2e2",
+            color: "#991b1b",
+            border: "1px solid #fecaca",
+            fontWeight: "600",
+          },
+        });
       }
     };
 
@@ -57,13 +64,33 @@ export default function EditarCampana() {
     e.preventDefault();
     setLoading(true);
 
+    const toastId = toast.loading("Guardando cambios...");
+
     try {
       await updateCampaign(id, formData);
-      alert("✅ Campaña actualizada con éxito");
-      navigate("/campanas"); // ajustá esta ruta si tu dashboard usa otro nombre
+
+      toast.success("✅ Campaña actualizada con éxito", {
+        id: toastId,
+        style: {
+          background: "#ecfdf5",
+          color: "#065f46",
+          border: "1px solid #a7f3d0",
+          fontWeight: "600",
+        },
+      });
+
+      setTimeout(() => navigate("/campanas"), 1200);
     } catch (error) {
       console.error(error);
-      alert("❌ Error al editar la campaña: " + error.message);
+      toast.error("❌ Error al editar la campaña: " + error.message, {
+        id: toastId,
+        style: {
+          background: "#fee2e2",
+          color: "#991b1b",
+          border: "1px solid #fecaca",
+          fontWeight: "600",
+        },
+      });
     } finally {
       setLoading(false);
     }
@@ -73,8 +100,8 @@ export default function EditarCampana() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 px-4 py-8 relative overflow-hidden">
+      {/* Fondo decorativo */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#e9d5ff_1px,transparent_1px),linear-gradient(to_bottom,#e9d5ff_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-30" />
-
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-200/40 rounded-full blur-[120px] animate-pulse" />
       <div
         className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-200/40 rounded-full blur-[120px] animate-pulse"
@@ -90,9 +117,7 @@ export default function EditarCampana() {
         </h2>
 
         <div>
-          <label className="block text-slate-700 font-semibold mb-2">
-            Nombre
-          </label>
+          <label className="block text-slate-700 font-semibold mb-2">Nombre</label>
           <input
             type="text"
             name="titulo"
@@ -104,9 +129,7 @@ export default function EditarCampana() {
         </div>
 
         <div>
-          <label className="block text-slate-700 font-semibold mb-2">
-            Descripción
-          </label>
+          <label className="block text-slate-700 font-semibold mb-2">Descripción</label>
           <textarea
             name="descripcion"
             rows="4"
@@ -118,9 +141,7 @@ export default function EditarCampana() {
         </div>
 
         <div>
-          <label className="block text-slate-700 font-semibold mb-2">
-            Monto objetivo
-          </label>
+          <label className="block text-slate-700 font-semibold mb-2">Monto objetivo</label>
           <input
             type="number"
             name="monto_objetivo"

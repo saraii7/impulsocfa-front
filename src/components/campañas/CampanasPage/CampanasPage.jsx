@@ -1,51 +1,118 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getCurrentUser, getUserCampaigns, suspendCampaign } from "../../../services/campaign.service";
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { getCurrentUser, getUserCampaigns, suspendCampaign } from "../../../services/campaign.service"
+import toast, { Toaster } from "react-hot-toast"
 
 export default function CampanasPage() {
-    const [user, setUser] = useState(null);
-    const [campaigns, setCampaigns] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+  const [user, setUser] = useState(null)
+  const [campaigns, setCampaigns] = useState([])
+  const [loading, setLoading] = useState(true)
+  const navigate = useNavigate()
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const user = await getCurrentUser();
-                setUser(user);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const user = await getCurrentUser()
+        setUser(user)
 
-                const campaigns = await getUserCampaigns(user.id);
-                setCampaigns(campaigns);
-            } catch (err) {
-                console.error(err);
-                alert(err.message);
-                navigate("/login");
-            } finally {
-                setLoading(false);
-            }
-        };
+        const campaigns = await getUserCampaigns(user.id)
+        setCampaigns(campaigns)
+      } catch (err) {
+        console.error(err)
+        toast.error("Error al obtener campañas 😕", {
+          style: {
+            borderRadius: "10px",
+            background: "linear-gradient(to right, #fef2f2, #fae8ff)",
+            color: "#7e22ce",
+            fontWeight: 600,
+          },
+          iconTheme: {
+            primary: "#a855f7",
+            secondary: "#fff",
+          },
+        })
+        navigate("/login")
+      } finally {
+        setLoading(false)
+      }
+    }
 
-        fetchData();
-    }, [navigate]);
+    fetchData()
+  }, [navigate])
 
-    const handleDelete = async (id) => {
-        if (!window.confirm("¿Seguro que quieres suspender esta campaña?")) return;
-        try {
-            await suspendCampaign(id);
-            alert("Campaña suspendida con éxito");
-            setCampaigns(campaigns.filter((c) => c.id_campana !== id));
-        } catch (err) {
-            console.error(err);
-            alert(err.message);
-        }
-    };
+  const handleDelete = async (id) => {
+    toast(
+      (t) => (
+        <div className="flex flex-col items-start">
+          <p className="text-violet-800 font-semibold mb-2">¿Seguro que querés suspender esta campaña?</p>
+          <div className="flex gap-2">
+            <button
+              onClick={async () => {
+                toast.dismiss(t.id)
+                try {
+                  await suspendCampaign(id)
+                  setCampaigns(campaigns.filter((c) => c.id_campana !== id))
+                  toast.success("Campaña suspendida con éxito 🌙", {
+                    style: {
+                      borderRadius: "10px",
+                      background: "linear-gradient(to right, #ede9fe, #e0f2fe)",
+                      color: "#4c1d95",
+                      fontWeight: 600,
+                    },
+                    iconTheme: {
+                      primary: "#7c3aed",
+                      secondary: "#fff",
+                    },
+                  })
+                } catch (err) {
+                  console.error(err)
+                  toast.error("Error al suspender la campaña 😢", {
+                    style: {
+                      borderRadius: "10px",
+                      background: "linear-gradient(to right, #fef2f2, #fae8ff)",
+                      color: "#7e22ce",
+                      fontWeight: 600,
+                    },
+                    iconTheme: {
+                      primary: "#a855f7",
+                      secondary: "#fff",
+                    },
+                  })
+                }
+              }}
+              className="px-3 py-1 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-md hover:opacity-90 transition-all"
+            >
+              Sí, suspender
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="px-3 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      ),
+      {
+        duration: 6000,
+        style: {
+          background: "white",
+          border: "1px solid #e0e7ff",
+          borderRadius: "12px",
+        },
+      }
+    )
+  }
 
-    const handleEdit = (id) => navigate(`/editarcampana/${id}`);
+  const handleEdit = (id) => navigate(`/editarcampana/${id}`)
 
-    return (
-         <div className="min-h-screen bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 p-6 relative overflow-hidden">
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 p-6 relative overflow-hidden">
+      {/* 🌟 Contenedor de toasts */}
+      <Toaster position="top-right" reverseOrder={false} />
+
+      {/* Efectos de fondo */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#e9d5ff_1px,transparent_1px),linear-gradient(to_bottom,#e9d5ff_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-30" />
-
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-200/40 rounded-full blur-[120px] animate-pulse" />
       <div
         className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-200/40 rounded-full blur-[120px] animate-pulse"
@@ -116,5 +183,5 @@ export default function CampanasPage() {
         )}
       </div>
     </div>
-    );
+  )
 }
