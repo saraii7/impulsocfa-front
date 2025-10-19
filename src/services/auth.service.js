@@ -2,10 +2,18 @@ const API_URL = 'http://localhost:3000/api/auth';
 
 // Registrarse normal
 export async function registerUser(userData) {
+   const formData = new FormData();
+
+  // Añadimos los campos uno por uno
+  for (const key in userData) {
+    if (userData[key] !== null && userData[key] !== "") {
+      formData.append(key, userData[key]);
+    }
+  }
+
   const res = await fetch(`${API_URL}/register`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(userData),
+    body: formData, // no se pone Content-Type, fetch lo hace solo
   });
 
   const data = await res.json();

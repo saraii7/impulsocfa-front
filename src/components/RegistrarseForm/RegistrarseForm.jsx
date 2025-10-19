@@ -158,6 +158,13 @@ export default function RegistrarseForm() {
           className="country-select"
         />
       </div>
+      <input
+  type="file"
+  name="foto_perfil"
+  accept="image/*"
+  onChange={(e) => setFormData({ ...formData, foto_perfil: e.target.files[0] })}
+  className="bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
+/>
 
       <button
         type="submit"
