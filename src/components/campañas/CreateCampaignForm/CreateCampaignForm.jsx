@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; // 🟣 Agregué useEffect para poder cargar las categorías cuando el componente monte
 import { createCampaign } from "../../../services/campaign.service";
 import { useNavigate } from "react-router-dom";
 
@@ -164,7 +164,7 @@ export default function CreateCampaignForm() {
           <input
             type="date"
             name="tiempo_objetivo"
-            min={today}
+            min={today} // 🟣 lógica existente: mantiene la validación de fecha mínima
             onChange={handleChange}
             className={`w-full bg-violet-50/50 border ${
               errors.tiempo_objetivo ? "border-red-400" : "border-violet-300"

@@ -6,20 +6,30 @@ import toast, { Toaster } from "react-hot-toast"
 
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [userRole, setUserRole] = useState(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const navigate = useNavigate()
 
+  // ✅ Nueva función centralizada
   const updateAuthState = () => {
-    const token = localStorage.getItem("access_token")
-    setIsLoggedIn(!!token)
-  }
+    const token = localStorage.getItem("access_token");
+    setIsLoggedIn(!!token);
+
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      const user = JSON.parse(userData);
+      setUserRole(user.rol);
+    } else {
+      setUserRole(null);
+    }
+  };
 
   useEffect(() => {
-    updateAuthState()
-    const handleStorageChange = () => updateAuthState()
-    window.addEventListener("storage", handleStorageChange)
-    return () => window.removeEventListener("storage", handleStorageChange)
-  }, [])
+    updateAuthState(); // se ejecuta al montar
+    const handleStorageChange = () => updateAuthState();
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -54,12 +64,11 @@ function Header() {
         },
       })
     }
-  }
+  };
 
   const handleLinkClick = () => {
-    setIsMobileMenuOpen(false)
-  }
-
+    setIsMobileMenuOpen(false);
+  };
   return (
     <>
       {/* Toast container */}
