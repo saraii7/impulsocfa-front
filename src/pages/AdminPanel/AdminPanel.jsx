@@ -3,6 +3,7 @@ import AdminList from "../../components/admin/AdminList";
 import UserList from "../../components/admin/UserList";
 import CategoryList from "../../components/admin/CategoryList";
 import CreateAdminForm from "../../components/admin/CreateAdminForm.jsx";
+import CampañasList from "../../components/admin/CampañasList.jsx";
 
 export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState("admins");
@@ -47,6 +48,16 @@ export default function AdminPanel() {
         >
           Categorías
         </button>
+         <button
+          className={`px-4 py-2 rounded-lg font-semibold transition ${
+            activeTab === "campaigns"
+              ? "bg-violet-600 text-white shadow"
+              : "bg-white text-violet-700 border hover:bg-violet-100"
+          }`}
+          onClick={() => setActiveTab("campaigns")}
+        >
+          Campañas
+        </button>
       </div>
 
       {/* Render dinámico */}
@@ -58,6 +69,7 @@ export default function AdminPanel() {
       )}
       {activeTab === "users" && <UserList />}
       {activeTab === "categories" && <CategoryList />}
+      {activeTab === "campaigns" && <CampañasList />}
     </div>
   );
 }

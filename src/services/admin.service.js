@@ -1,4 +1,5 @@
 const API_URL = "http://localhost:3000/api/admin";
+const CAMPAIGN_URL = "http://localhost:3000/api/campaigns";
 
 export async function getAdmins() {
   const token = localStorage.getItem("access_token");
@@ -86,4 +87,42 @@ export async function changeUserState(id, newState) {
 
   if (!res.ok) throw new Error("Error al cambiar el estado del usuario");
   return await res.json();
+}
+// Obtener campañas pendientes
+export async function getPendingCampaigns() {
+  const token = localStorage.getItem("access_token");
+
+  const res = await fetch(`${CAMPAIGN_URL}/pending`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || "Error al obtener campañas pendientes");
+  }
+
+  return await res.json();
+}
+
+// Aprobar o rechazar campaña
+export async function approveCampaign(campaignId, estado) {
+  if (!['aprobada', 'rechazada'].includes(estado)) {
+    throw new Error("Estado inválido");
+  }
+
+  const token = localStorage.getItem("access_token");
+
+  const res = await fetch(`${CAMPAIGN_URL}/${campaignId}/approve`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ estado }), // ⚠️ ahora envía "estado", no "approved"
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Error al actualizar estado de campaña");
+
+  return data;
 }
