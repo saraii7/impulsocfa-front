@@ -1,10 +1,10 @@
-import{ BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Header from "./components/header/header";
 import Nosotros from "./pages/Nosotros/Nosotros";
 import Footer from "./components/footer/Footer";
 import IniciarSesion from "./pages/IniciarSesion/IniciarSesion";
-import Registrarse from "./pages/Registrarse/Registrarse"; 
+import Registrarse from "./pages/Registrarse/Registrarse";
 import EmailConfirmed from "./components/EmailConfirmed";
 import RecuperarContrasenia from "./pages/RecuperarContrasenia/RecuperarContrasenia";
 import GoogleCallback from "./components/GoogleCallback";
@@ -18,7 +18,7 @@ import AdminPanel from "./pages/AdminPanel/AdminPanel";
 
 function App() {
   return (
-     <Router>
+    <Router>
       <div className="flex flex-col min-h-screen">
         <Header />
 

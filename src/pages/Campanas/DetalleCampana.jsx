@@ -95,11 +95,10 @@ export default function DetalleCampana() {
                 {campana.titulo}
               </h1>
               <span
-                className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                  campana.campana_estado === "activa"
+                className={`px-4 py-2 rounded-full text-sm font-semibold ${campana.campana_estado === "activa"
                     ? "bg-green-100 text-green-700 border border-green-300"
                     : "bg-slate-100 text-slate-700 border border-slate-300"
-                }`}
+                  }`}
               >
                 {campana.campana_estado}
               </span>

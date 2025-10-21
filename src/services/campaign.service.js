@@ -27,26 +27,26 @@ export async function createCampaign(campaignData) {
 }
 // Editar campaña
 export async function updateCampaign(id, campaignData) {
-  const token = localStorage.getItem("access_token");
-  if (!token) throw new Error("No estás autenticado");
+    const token = localStorage.getItem("access_token");
+    if (!token) throw new Error("No estás autenticado");
 
-  // Si imagen no existe como columna, no la envíes
-  const dataToSend = { ...campaignData };
-  delete dataToSend.imagen;
+    // Si imagen no existe como columna, no la envíes
+    const dataToSend = { ...campaignData };
+    delete dataToSend.imagen;
 
-  const res = await fetch(`${API_URL}/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(dataToSend),
-  });
+    const res = await fetch(`${API_URL}/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(dataToSend),
+    });
 
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Error al editar campaña");
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Error al editar campaña");
 
-  return data;
+    return data;
 }
 
 // Obtener campañas del usuario logueado

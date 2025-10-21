@@ -18,7 +18,7 @@ export default function CampaignList() {
   async function handleApprove(campaignId, approved) {
     try {
       if (!campaignId) return;
-      const estado = approved ? "aprobada" : "rechazada"; // ✅ string que espera backend
+      const estado = approved ? "aprobada" : "rechazada"; // string que espera backend
       await approveCampaign(campaignId, estado);
       loadCampaigns();
     } catch (error) {

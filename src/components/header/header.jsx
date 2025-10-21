@@ -9,7 +9,7 @@ function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const navigate = useNavigate()
 
-  // ✅ Nueva función centralizada
+
   const updateAuthState = () => {
     const token = localStorage.getItem("access_token");
     setIsLoggedIn(!!token);
@@ -47,7 +47,7 @@ function Header() {
     setIsMobileMenuOpen(false);
   };
   return (
-      <header className="bg-white/95 backdrop-blur-xl border-b border-blue-200/50 sticky top-0 z-50 shadow-lg shadow-blue-100/20 relative overflow-hidden">
+    <header className="bg-white/95 backdrop-blur-xl border-b border-blue-200/50 sticky top-0 z-50 shadow-lg shadow-blue-100/20 relative overflow-hidden">
       {/* fondos y animaciones... */}
 
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4 relative z-10">
@@ -99,7 +99,7 @@ function Header() {
 
             {isLoggedIn ? (
               <>
-                {/* ✅ CAMBIO: Mostrar Dashboard si es admin, Campañas si es usuario normal */}
+                {/* CAMBIO: Mostrar Dashboard si es admin, Campañas si es usuario normal */}
                 {userRole === "administrador" ? (
                   <Link
                     to="/admin"
@@ -137,9 +137,8 @@ function Header() {
 
         {/* menú móvil */}
         <div
-          className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-            isMobileMenuOpen ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0"
-          }`}
+          className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0"
+            }`}
         >
           <nav className="flex flex-col gap-2 py-2">
             {/* Links móviles */}

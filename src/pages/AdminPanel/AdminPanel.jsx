@@ -17,43 +17,39 @@ export default function AdminPanel() {
       {/* Navegación entre secciones */}
       <div className="flex justify-center gap-4 mb-8">
         <button
-          className={`px-4 py-2 rounded-lg font-semibold transition ${
-            activeTab === "admins"
-              ? "bg-violet-600 text-white shadow"
-              : "bg-white text-violet-700 border hover:bg-violet-100"
-          }`}
+          className={`px-4 py-2 rounded-lg font-semibold transition ${activeTab === "admins"
+            ? "bg-violet-600 text-white shadow"
+            : "bg-white text-violet-700 border hover:bg-violet-100"
+            }`}
           onClick={() => setActiveTab("admins")}
         >
           Administradores
         </button>
 
         <button
-          className={`px-4 py-2 rounded-lg font-semibold transition ${
-            activeTab === "users"
-              ? "bg-violet-600 text-white shadow"
-              : "bg-white text-violet-700 border hover:bg-violet-100"
-          }`}
+          className={`px-4 py-2 rounded-lg font-semibold transition ${activeTab === "users"
+            ? "bg-violet-600 text-white shadow"
+            : "bg-white text-violet-700 border hover:bg-violet-100"
+            }`}
           onClick={() => setActiveTab("users")}
         >
           Usuarios
         </button>
 
         <button
-          className={`px-4 py-2 rounded-lg font-semibold transition ${
-            activeTab === "categories"
-              ? "bg-violet-600 text-white shadow"
-              : "bg-white text-violet-700 border hover:bg-violet-100"
-          }`}
+          className={`px-4 py-2 rounded-lg font-semibold transition ${activeTab === "categories"
+            ? "bg-violet-600 text-white shadow"
+            : "bg-white text-violet-700 border hover:bg-violet-100"
+            }`}
           onClick={() => setActiveTab("categories")}
         >
           Categorías
         </button>
-         <button
-          className={`px-4 py-2 rounded-lg font-semibold transition ${
-            activeTab === "campaigns"
-              ? "bg-violet-600 text-white shadow"
-              : "bg-white text-violet-700 border hover:bg-violet-100"
-          }`}
+        <button
+          className={`px-4 py-2 rounded-lg font-semibold transition ${activeTab === "campaigns"
+            ? "bg-violet-600 text-white shadow"
+            : "bg-white text-violet-700 border hover:bg-violet-100"
+            }`}
           onClick={() => setActiveTab("campaigns")}
         >
           Campañas

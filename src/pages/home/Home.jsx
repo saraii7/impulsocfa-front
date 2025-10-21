@@ -81,7 +81,7 @@ export default function Home() {
   ]
 
   return (
-   <div className="min-h-screen bg-gradient-to-br from-violet-50 via-blue-50 to-purple-50 text-slate-800 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-violet-50 via-blue-50 to-purple-50 text-slate-800 overflow-hidden">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -120,14 +120,14 @@ export default function Home() {
             >
             </motion.div>
 
-           <h1 className="flex items-baseline justify-center gap-3 mb-6">
-            <span className="text-5xl md:text-7xl font-serif italic bg-gradient-to-r from-violet-500 to-blue-500 bg-clip-text text-transparent">
-            Impulso
-             </span>
-            <span className="text-5xl md:text-7xl font-bold uppercase bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-              CFA
-           </span>
-           </h1>
+            <h1 className="flex items-baseline justify-center gap-3 mb-6">
+              <span className="text-5xl md:text-7xl font-serif italic bg-gradient-to-r from-violet-500 to-blue-500 bg-clip-text text-transparent">
+                Impulso
+              </span>
+              <span className="text-5xl md:text-7xl font-bold uppercase bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                CFA
+              </span>
+            </h1>
             <p className="text-xl md:text-2xl text-slate-700 mb-8 max-w-3xl mx-auto leading-relaxed">
               Juntos reconstruimos vidas. Tu donación transforma proyectos que devuelven esperanza.
             </p>
@@ -193,7 +193,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-bold text-center mb-16 leading-snug bg-gradient-to-r from-violet-500 to-blue-500 bg-clip-text text-transparent"
           >
-          
+
             ¿Por qué elegirnos?
           </motion.h2>
 
@@ -270,7 +270,7 @@ export default function Home() {
                     alt={campaign.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
-                 
+
                   <div className="absolute top-4 right-4 bg-green-400 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4" />
                     Completada

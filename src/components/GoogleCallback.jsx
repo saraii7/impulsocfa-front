@@ -42,7 +42,7 @@ export default function GoogleCallback() {
         <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 px-4 relative overflow-hidden">
             {/* Patrón de fondo */}
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-20" />
-            
+
             {/* Esferas de luz animadas */}
             <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[120px] animate-pulse" />
             <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-500/20 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
@@ -52,13 +52,12 @@ export default function GoogleCallback() {
                     Login con Google
                 </h2>
                 <p
-                    className={`text-lg ${
-                        message.startsWith("✅")
-                            ? "text-green-400"
-                            : message.startsWith("❌")
+                    className={`text-lg ${message.startsWith("✅")
+                        ? "text-green-400"
+                        : message.startsWith("❌")
                             ? "text-red-400"
                             : "text-slate-300"
-                    }`}
+                        }`}
                 >
                     {message}
                 </p>

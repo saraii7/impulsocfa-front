@@ -2,7 +2,7 @@ const API_URL = 'http://localhost:3000/api/auth';
 
 // Registrarse normal
 export async function registerUser(userData) {
-   const formData = new FormData();
+  const formData = new FormData();
 
   // Añadimos los campos uno por uno
   for (const key in userData) {
