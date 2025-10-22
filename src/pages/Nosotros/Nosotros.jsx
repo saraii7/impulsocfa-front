@@ -50,7 +50,7 @@ export default function Nosotros() {
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95])
 
   return (
-     <div
+    <div
       ref={containerRef}
       className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 text-center p-6 relative overflow-hidden"
     >
@@ -180,7 +180,7 @@ export default function Nosotros() {
                   alt="Zona Inundada 1"
                   className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                
+
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-violet-100/95 via-violet-50/80 to-transparent p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
                   <p className="text-slate-800 text-base font-semibold">Inundaciones 2024</p>
                   <p className="text-slate-700 text-sm">Bahía Blanca</p>
@@ -196,7 +196,7 @@ export default function Nosotros() {
                   alt="Zona Inundada 2"
                   className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-               
+
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-violet-100/95 via-violet-50/80 to-transparent p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
                   <p className="text-slate-800 text-base font-semibold">Comunidades Afectadas</p>
                   <p className="text-slate-700 text-sm">Bahía Blanca</p>

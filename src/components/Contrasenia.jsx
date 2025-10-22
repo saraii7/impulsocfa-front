@@ -8,7 +8,7 @@ export default function Contrasenia() {
     newPassword: "",
   });
   const [mensaje, setMensaje] = useState("");
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,19 +16,19 @@ export default function Contrasenia() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-     setLoading(true);
+    setLoading(true);
     try {
       const res = await changePassword(formData.llave_maestra, formData.newPassword);
       setMensaje("✅ " + res.message);
     } catch (error) {
       setMensaje("❌ " + error.message);
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
 
   return (
-       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 px-4 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 px-4 relative overflow-hidden">
       {/* Patrón de fondo */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#e0e7ff_1px,transparent_1px),linear-gradient(to_bottom,#e0e7ff_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-30" />
 

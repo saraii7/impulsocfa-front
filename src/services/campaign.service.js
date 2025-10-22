@@ -8,45 +8,55 @@ export async function createCampaign(campaignData) {
         throw new Error("No estás autenticado");
     }
 
+    const formData = new FormData();
+    formData.append("id_categoria", campaignData.id_categoria);
+    formData.append("titulo", campaignData.titulo);
+    formData.append("descripcion", campaignData.descripcion);
+    formData.append("monto_objetivo", campaignData.monto_objetivo);
+    formData.append("tiempo_objetivo", campaignData.tiempo_objetivo);
+
+    if (campaignData.imagen) {
+        formData.append("foto_principal", campaignData.imagen);
+    }
+
     const res = await fetch(`${API_URL}`, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+
         },
-        body: JSON.stringify(campaignData),
+        body: formData,
     });
 
     const data = await res.json();
-
-    if (!res.ok) {
-        throw new Error(data.error || "Error al crear campaña");
-    }
+    if (!res.ok) throw new Error(data.error || "Error al crear campaña");
 
     return data;
 }
 // Editar campaña
 export async function updateCampaign(id, campaignData) {
-  const token = localStorage.getItem("access_token");
-  if (!token) throw new Error("No estás autenticado");
+    const token = localStorage.getItem("access_token");
+    if (!token) throw new Error("No estás autenticado");
 
-  // Si imagen no existe como columna, no la envíes
-  const dataToSend = { ...campaignData };
-  delete dataToSend.imagen;
+    const formData = new FormData();
+    if (campaignData.titulo) formData.append("titulo", campaignData.titulo);
+    if (campaignData.descripcion) formData.append("descripcion", campaignData.descripcion);
+    if (campaignData.monto_objetivo) formData.append("monto_objetivo", campaignData.monto_objetivo);
+    if (campaignData.tiempo_objetivo) formData.append("tiempo_objetivo", campaignData.tiempo_objetivo);
+    if (campaignData.imagen) formData.append("foto_principal", campaignData.imagen);
 
-  const res = await fetch(`${API_URL}/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(dataToSend),
-  });
+    const res = await fetch(`${API_URL}/${id}`, {
+        method: "PUT",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+    });
 
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Error al editar campaña");
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Error al editar campaña");
 
-  return data;
+    return data;
 }
 
 // Obtener campañas del usuario logueado

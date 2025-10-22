@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"; // 🟣 Agregué useEffect para poder cargar las categorías cuando el componente monte
+import { useState, useEffect } from "react";
 import { createCampaign } from "../../../services/campaign.service";
 import { useNavigate } from "react-router-dom";
 
@@ -85,11 +85,10 @@ export default function CreateCampaignForm() {
         {/* Mensaje global */}
         {message.text && (
           <div
-            className={`p-3 rounded-lg text-center font-semibold transition-all duration-300 ${
-              message.type === "success"
+            className={`p-3 rounded-lg text-center font-semibold transition-all duration-300 ${message.type === "success"
                 ? "bg-green-100 text-green-700 border border-green-300"
                 : "bg-red-100 text-red-700 border border-red-300"
-            }`}
+              }`}
           >
             {message.text}
           </div>
@@ -103,11 +102,9 @@ export default function CreateCampaignForm() {
             name="titulo"
             placeholder="Nombre de la campaña"
             onChange={handleChange}
-            className={`w-full bg-violet-50/50 border ${
-              errors.titulo ? "border-red-400" : "border-violet-300"
-            } rounded-lg px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 ${
-              errors.titulo ? "focus:ring-red-400" : "focus:ring-violet-400"
-            } focus:border-transparent transition-all duration-300 hover:border-violet-400`}
+            className={`w-full bg-violet-50/50 border ${errors.titulo ? "border-red-400" : "border-violet-300"
+              } rounded-lg px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 ${errors.titulo ? "focus:ring-red-400" : "focus:ring-violet-400"
+              } focus:border-transparent transition-all duration-300 hover:border-violet-400`}
           />
           {errors.titulo && (
             <p className="text-red-500 text-sm mt-1">{errors.titulo}</p>
@@ -124,11 +121,9 @@ export default function CreateCampaignForm() {
             placeholder="Describe tu campaña y su propósito"
             rows="4"
             onChange={handleChange}
-            className={`w-full bg-violet-50/50 border ${
-              errors.descripcion ? "border-red-400" : "border-violet-300"
-            } rounded-lg px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 ${
-              errors.descripcion ? "focus:ring-red-400" : "focus:ring-violet-400"
-            } focus:border-transparent transition-all duration-300 hover:border-violet-400 resize-none`}
+            className={`w-full bg-violet-50/50 border ${errors.descripcion ? "border-red-400" : "border-violet-300"
+              } rounded-lg px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 ${errors.descripcion ? "focus:ring-red-400" : "focus:ring-violet-400"
+              } focus:border-transparent transition-all duration-300 hover:border-violet-400 resize-none`}
           />
           {errors.descripcion && (
             <p className="text-red-500 text-sm mt-1">{errors.descripcion}</p>
@@ -145,11 +140,9 @@ export default function CreateCampaignForm() {
             name="monto_objetivo"
             placeholder="Monto en pesos"
             onChange={handleChange}
-            className={`w-full bg-violet-50/50 border ${
-              errors.monto_objetivo ? "border-red-400" : "border-violet-300"
-            } rounded-lg px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 ${
-              errors.monto_objetivo ? "focus:ring-red-400" : "focus:ring-violet-400"
-            } focus:border-transparent transition-all duration-300 hover:border-violet-400`}
+            className={`w-full bg-violet-50/50 border ${errors.monto_objetivo ? "border-red-400" : "border-violet-300"
+              } rounded-lg px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 ${errors.monto_objetivo ? "focus:ring-red-400" : "focus:ring-violet-400"
+              } focus:border-transparent transition-all duration-300 hover:border-violet-400`}
           />
           {errors.monto_objetivo && (
             <p className="text-red-500 text-sm mt-1">{errors.monto_objetivo}</p>
@@ -166,13 +159,11 @@ export default function CreateCampaignForm() {
             name="tiempo_objetivo"
             min={today} // 🟣 lógica existente: mantiene la validación de fecha mínima
             onChange={handleChange}
-            className={`w-full bg-violet-50/50 border ${
-              errors.tiempo_objetivo ? "border-red-400" : "border-violet-300"
-            } rounded-lg px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 ${
-              errors.tiempo_objetivo
+            className={`w-full bg-violet-50/50 border ${errors.tiempo_objetivo ? "border-red-400" : "border-violet-300"
+              } rounded-lg px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 ${errors.tiempo_objetivo
                 ? "focus:ring-red-400"
                 : "focus:ring-violet-400"
-            } focus:border-transparent transition-all duration-300 hover:border-violet-400 [color-scheme:light]`}
+              } focus:border-transparent transition-all duration-300 hover:border-violet-400 [color-scheme:light]`}
           />
           {errors.tiempo_objetivo && (
             <p className="text-red-500 text-sm mt-1">{errors.tiempo_objetivo}</p>

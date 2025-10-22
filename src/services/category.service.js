@@ -13,7 +13,7 @@ export async function getCategories() {
 // Crear categoría (solo admin)
 export async function createCategory(nombre) {
 
-   if (typeof nombre !== "string" || !nombre.trim()) {
+  if (typeof nombre !== "string" || !nombre.trim()) {
     throw new Error("Nombre inválido");
   }
 

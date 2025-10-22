@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 
 export default function CardCampana({ campana }) {
-    return (
-        <div className="bg-gradient-to-br from-violet-50 to-blue-50 rounded-2xl shadow-lg border border-violet-200 p-6 flex flex-col hover:shadow-xl hover:scale-105 transition-all duration-300">
+  return (
+    <div className="bg-gradient-to-br from-violet-50 to-blue-50 rounded-2xl shadow-lg border border-violet-200 p-6 flex flex-col hover:shadow-xl hover:scale-105 transition-all duration-300">
       {/* Imagen real o placeholder */}
       <img
         src={campana.foto_principal || "https://via.placeholder.com/400x300?text=Sin+imagen"}
