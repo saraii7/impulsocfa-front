@@ -87,7 +87,7 @@ export default function DetalleCampana() {
       </div>
     )
   }
-  // 🔹 Render
+
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 p-6 overflow-hidden">
       {/* Fondo con patrón */}
