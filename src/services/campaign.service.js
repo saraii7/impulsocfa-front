@@ -104,3 +104,29 @@ export async function getCurrentUser() {
 
     return data.user;
 }
+// Obtener campañas pendientes del usuario
+export async function getUserPendingCampaigns() {
+  const token = localStorage.getItem("access_token");
+  if (!token) throw new Error("No estás autenticado");
+
+  const res = await fetch(`${API_URL}/pending/user`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Error al obtener campañas pendientes");
+  return data;
+}
+// Obtener campañas rechazadas del usuario
+export async function getUserRejectedCampaigns() {
+  const token = localStorage.getItem("access_token");
+  if (!token) throw new Error("No estás autenticado");
+
+  const res = await fetch(`${API_URL}/rejected/user`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Error al obtener campañas rechazadas");
+  return data;
+}
