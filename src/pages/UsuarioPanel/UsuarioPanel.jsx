@@ -19,18 +19,7 @@ export default function UsuarioPanel() {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6">
-      <div className="flex gap-4 mb-6">
-        <button
-          onClick={() => setActiveTab("perfil")}
-          className={`px-4 py-2 rounded-lg font-semibold ${
-            activeTab === "perfil" ? "bg-blue-600 text-white" : "bg-gray-100"
-          }`}
-        >
-          Mi Perfil
-        </button>
-      </div>
-
+    <div>
       <div>
         {activeTab === "perfil" && user && <UserProfile user={user} />}
       </div>
