@@ -126,3 +126,17 @@ export async function approveCampaign(campaignId, estado) {
 
   return data;
 }
+// Obtener campaña completa por id
+export async function getCampaignById(id) {
+  const token = localStorage.getItem("access_token");
+  if (!token) throw new Error("No estás autenticado");
+
+  const res = await fetch(`${CAMPAIGN_URL}/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Error al obtener campaña");
+
+  return data;
+}

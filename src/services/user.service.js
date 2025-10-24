@@ -18,13 +18,23 @@ export async function updateUserProfile(profileData) {
 
   const formData = new FormData();
 
-  Object.keys(profileData).forEach((key) => {
+  for (const key in profileData) {
+    // 🧠 solo incluir foto si es realmente un archivo nuevo
+    if (key === "foto_perfil") {
+      const foto = profileData[key];
+      if (foto && typeof foto === "object" && foto.name) {
+        formData.append(key, foto);
+      }
+      continue;
+    }
+
+    // incluir los demás campos si tienen valor
     if (profileData[key] !== null && profileData[key] !== undefined) {
       formData.append(key, profileData[key]);
     }
-  });
+  }
 
-  const res = await fetch(API_URL, { // ✅ solo /api/user
+  const res = await fetch(API_URL, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -35,5 +45,5 @@ export async function updateUserProfile(profileData) {
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || "Error al actualizar perfil");
 
-  return data; // data debería incluir la URL completa de foto_perfil
+  return data; // el backend devuelve el usuario actualizado
 }

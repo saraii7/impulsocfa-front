@@ -27,52 +27,68 @@ export default function UserList() {
   }
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-lg border border-violet-200">
-      <h2 className="text-xl font-semibold text-violet-700 mb-4">
-        Lista de Usuarios
+    <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg border-2 border-blue-100">
+      <h2 className="text-2xl font-bold text-blue-700 mb-6 flex items-center gap-2">
+        <span>👥</span> Lista de Usuarios
       </h2>
       {users.length === 0 ? (
-        <p className="text-gray-500">No hay usuarios registrados.</p>
+        <p className="text-gray-500 text-center py-8">No hay usuarios registrados.</p>
       ) : (
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="bg-violet-100 text-violet-700">
-              <th className="p-2 text-left">Nombre</th>
-              <th className="p-2 text-left">Email</th>
-              <th className="p-2 text-left">Estado</th>
-              <th className="p-2">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id_usuario} className="border-t">
-                <td className="p-2">{user.nombre} {user.apellido}</td>
-                <td className="p-2">{user.email}</td>
-                <td className="p-2 capitalize">{user.estado_cuenta}</td>
-                <td className="p-2 space-x-2 text-center">
-                  <button
-                    onClick={() => handleStateChange(user.id_usuario, "habilitada")}
-                    className="text-green-600 hover:underline"
-                  >
-                    Habilitar
-                  </button>
-                  <button
-                    onClick={() => handleStateChange(user.id_usuario, "deshabilitada")}
-                    className="text-red-500 hover:underline"
-                  >
-                    Deshabilitar
-                  </button>
-                  <button
-                    onClick={() => handleStateChange(user.id_usuario, "suspendida")}
-                    className="text-yellow-600 hover:underline"
-                  >
-                    Suspender
-                  </button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-gradient-to-r from-blue-100 to-cyan-100 border-b-2 border-blue-200">
+                <th className="p-4 text-left font-semibold text-blue-700">Nombre</th>
+                <th className="p-4 text-left font-semibold text-blue-700">Email</th>
+                <th className="p-4 text-left font-semibold text-blue-700">Estado</th>
+                <th className="p-4 text-center font-semibold text-blue-700">Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user.id_usuario} className="border-b border-blue-100 hover:bg-blue-50 transition">
+                  <td className="p-4 font-medium text-gray-800">
+                    {user.nombre} {user.apellido}
+                  </td>
+                  <td className="p-4 text-gray-600">{user.email}</td>
+                  <td className="p-4">
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                        user.estado_cuenta === "habilitada"
+                          ? "bg-green-100 text-green-700"
+                          : user.estado_cuenta === "deshabilitada"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-yellow-100 text-yellow-700"
+                      }`}
+                    >
+                      {user.estado_cuenta}
+                    </span>
+                  </td>
+                  <td className="p-4 space-x-2 text-center">
+                    <button
+                      onClick={() => handleStateChange(user.id_usuario, "habilitada")}
+                      className="text-green-600 hover:text-green-700 font-semibold hover:underline transition"
+                    >
+                      ✓ Habilitar
+                    </button>
+                    <button
+                      onClick={() => handleStateChange(user.id_usuario, "deshabilitada")}
+                      className="text-red-600 hover:text-red-700 font-semibold hover:underline transition"
+                    >
+                      ✕ Deshabilitar
+                    </button>
+                    <button
+                      onClick={() => handleStateChange(user.id_usuario, "suspendida")}
+                      className="text-yellow-600 hover:text-yellow-700 font-semibold hover:underline transition"
+                    >
+                      ⏸ Suspender
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

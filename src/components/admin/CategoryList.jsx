@@ -56,104 +56,94 @@ export default function CategoryList() {
   }
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-lg border border-violet-200">
-      <h2 className="text-xl font-semibold text-violet-700 mb-4">
-        Categorías
+  <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg border-2 border-pink-100">
+      <h2 className="text-2xl font-bold text-pink-700 mb-6 flex items-center gap-2">
+        <span>📂</span> Categorías
       </h2>
 
-      {/* Formulario para crear categoría */}
-      <form onSubmit={handleCreate} className="flex gap-2 mb-4">
+      <form onSubmit={handleCreate} className="flex gap-2 mb-6">
         <input
           type="text"
           placeholder="Nueva categoría"
           value={newCategory}
           onChange={(e) => setNewCategory(e.target.value)}
-          className="border p-2 rounded-lg flex-1"
+          className="flex-1 border-2 border-pink-200 p-3 rounded-lg focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100 transition"
         />
         <button
           type="submit"
-          className="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-lg"
+          className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg"
         >
-          Agregar
+          ➕ Agregar
         </button>
       </form>
 
       {categories.length === 0 ? (
-        <p className="text-gray-500">No hay categorías aún.</p>
+        <p className="text-gray-500 text-center py-8">No hay categorías aún.</p>
       ) : (
-        <ul className="divide-y divide-violet-100">
+        <div className="space-y-2">
           {categories.map((cat) => (
-            <li key={cat.id_categoria} className="flex justify-between items-center py-2">
+            <div
+              key={cat.id_categoria}
+              className="bg-gradient-to-r from-pink-50 to-rose-50 p-4 rounded-xl border-2 border-pink-100 hover:border-pink-300 transition-all flex justify-between items-center"
+            >
               {cat.isEditing ? (
-                // Modo edición
-                <>
+                <div className="flex gap-2 flex-1">
                   <input
                     type="text"
                     value={cat.editName}
                     onChange={(e) => {
                       const updatedCategories = categories.map((c) =>
-                        c.id_categoria === cat.id_categoria
-                          ? { ...c, editName: e.target.value }
-                          : c
-                      );
-                      setCategories(updatedCategories);
+                        c.id_categoria === cat.id_categoria ? { ...c, editName: e.target.value } : c,
+                      )
+                      setCategories(updatedCategories)
                     }}
-                    className="border p-1 rounded-lg flex-1 mr-2"
+                    className="flex-1 border-2 border-pink-200 p-2 rounded-lg focus:outline-none focus:border-pink-400"
                   />
                   <button
                     onClick={() => handleSaveEdit(cat)}
-                    className="text-green-500 hover:underline mr-2"
+                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold transition"
                   >
-                    Guardar
+                    ✓ Guardar
                   </button>
                   <button
                     onClick={() => {
-                      // Cancelar edición
                       const updatedCategories = categories.map((c) =>
-                        c.id_categoria === cat.id_categoria
-                          ? { ...c, isEditing: false, editName: c.nombre }
-                          : c
-                      );
-                      setCategories(updatedCategories);
+                        c.id_categoria === cat.id_categoria ? { ...c, isEditing: false, editName: c.nombre } : c,
+                      )
+                      setCategories(updatedCategories)
                     }}
-                    className="text-gray-500 hover:underline"
+                    className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg font-semibold transition"
                   >
-                    Cancelar
+                    ✕ Cancelar
                   </button>
-                </>
+                </div>
               ) : (
-                // Vista normal
                 <>
-                  <span>{cat.nombre}</span>
+                  <span className="font-semibold text-gray-800">{cat.nombre}</span>
                   <div className="flex gap-2">
-                    {/* BOTÓN DE EDITAR */}
                     <button
                       onClick={() => {
                         const updatedCategories = categories.map((c) =>
-                          c.id_categoria === cat.id_categoria
-                            ? { ...c, isEditing: true }
-                            : c
-                        );
-                        setCategories(updatedCategories);
+                          c.id_categoria === cat.id_categoria ? { ...c, isEditing: true } : c,
+                        )
+                        setCategories(updatedCategories)
                       }}
-                      className="text-blue-500 hover:underline"
+                      className="text-blue-600 hover:text-blue-700 font-semibold hover:underline transition"
                     >
-                      Editar
+                      ✏️ Editar
                     </button>
-
-                    {/* BOTÓN DE ELIMINAR */}
                     <button
                       onClick={() => handleDelete(cat.id_categoria)}
-                      className="text-red-500 hover:underline"
+                      className="text-red-600 hover:text-red-700 font-semibold hover:underline transition"
                     >
-                      Eliminar
+                      🗑️ Eliminar
                     </button>
                   </div>
                 </>
               )}
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
