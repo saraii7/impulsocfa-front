@@ -1,4 +1,4 @@
-const API_URL = `${import.meta.env.VITE_API_URL}/payments`;
+const API_URL = 'http://localhost:3000/api/payments';
 
 /**
  * Crea una preferencia de pago en Mercado Pago
