@@ -15,6 +15,7 @@ import DetalleCampana from "./pages/Campanas/DetalleCampana";
 import Campanas from "./pages/Campanas/Campanas";
 import EditarCampana from "./components/campañas/CreateCampaignForm/EditarCampana";
 import AdminPanel from "./pages/AdminPanel/AdminPanel";
+import UsuarioPanel from "./pages/UsuarioPanel/UsuarioPanel";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
             <Route path="/campanas/:id" element={<DetalleCampana />} />
             <Route path="/editarcampana/:id" element={<EditarCampana />} />
             <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/usuariopanel" element={<UsuarioPanel />} />
           </Routes>
         </main>
 

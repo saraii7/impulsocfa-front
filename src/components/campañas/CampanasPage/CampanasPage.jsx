@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { getCurrentUser, getUserCampaigns, suspendCampaign } from "../../../services/campaign.service"
+import {
+  getCurrentUser,
+  getUserCampaigns,
+  getUserPendingCampaigns,
+  getUserRejectedCampaigns,
+  suspendCampaign
+} from "../../../services/campaign.service"
 import toast, { Toaster } from "react-hot-toast"
 
 export default function CampanasPage() {
   const [user, setUser] = useState(null)
   const [campaigns, setCampaigns] = useState([])
+  const [pendingCampaigns, setPendingCampaigns] = useState([])
+  const [rejectedCampaigns, setRejectedCampaigns] = useState([])
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
@@ -15,8 +23,15 @@ export default function CampanasPage() {
         const user = await getCurrentUser()
         setUser(user)
 
-        const campaigns = await getUserCampaigns(user.id)
-        setCampaigns(campaigns)
+        const [ap, pe, re] = await Promise.all([
+          getUserCampaigns(user.id),
+          getUserPendingCampaigns(user.id),
+          getUserRejectedCampaigns(user.id)
+        ])
+
+        setCampaigns(ap)
+        setPendingCampaigns(pe)
+        setRejectedCampaigns(re)
       } catch (err) {
         console.error(err)
         toast.error("Error al obtener campañas 😕", {
@@ -106,9 +121,71 @@ export default function CampanasPage() {
 
   const handleEdit = (id) => navigate(`/editarcampana/${id}`)
 
+  // Tarjetas con botones (solo aprobadas)
+  const renderApprovedCards = (list) =>
+    list.map((c) => (
+      <div
+        key={c.id_campana}
+        className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-violet-200 p-6 flex flex-col hover:shadow-xl transition-all duration-300 hover:scale-105"
+      >
+        {c.foto_principal && (
+          <img
+            src={c.foto_principal || "/placeholder.svg"}
+            alt={c.titulo}
+            className="rounded-lg mb-4 object-cover h-48 w-full border border-violet-200"
+          />
+        )}
+        <h3 className="text-xl font-semibold mb-2 bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
+          {c.titulo}
+        </h3>
+        <p className="text-slate-700 mb-3 line-clamp-2">{c.descripcion}</p>
+        <p className="text-slate-600 text-sm mb-4">
+          <span className="text-violet-600 font-semibold">Meta:</span> ${c.monto_objetivo} |
+          <span className="text-violet-600 font-semibold"> Duración:</span> {c.tiempo_objetivo} días
+        </p>
+        <div className="flex gap-3 mt-auto">
+          <button
+            onClick={() => handleEdit(c.id_campana)}
+            className="flex-1 px-4 py-2 bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded-lg transition-all duration-300 border border-blue-300 hover:shadow-lg"
+          >
+            Editar
+          </button>
+          <button
+            onClick={() => handleDelete(c.id_campana)}
+            className="flex-1 px-4 py-2 bg-red-400 hover:bg-red-500 text-white font-semibold rounded-lg transition-all duration-300 border border-red-300 hover:shadow-lg"
+          >
+            Suspender
+          </button>
+        </div>
+      </div>
+    ))
+
+  // Tarjetas sin botones (pendientes y rechazadas)
+  const renderInfoCards = (list) =>
+    list.map((c) => (
+      <div
+        key={c.id_campana}
+        className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-violet-200 p-6 flex flex-col hover:shadow-md transition-all duration-300"
+      >
+        {c.foto_principal && (
+          <img
+            src={c.foto_principal || "/placeholder.svg"}
+            alt={c.titulo}
+            className="rounded-lg mb-4 object-cover h-48 w-full border border-violet-200"
+          />
+        )}
+        <h3 className="text-xl font-semibold mb-2">{c.titulo}</h3>
+        <p className="text-slate-700 mb-3 line-clamp-2">{c.descripcion}</p>
+        <p className="text-slate-600 text-sm">
+          <span className="text-violet-600 font-semibold">Meta:</span> ${c.monto_objetivo} |
+          <span className="text-violet-600 font-semibold"> Duración:</span> {c.tiempo_objetivo} días
+        </p>
+        <p className="mt-2 text-sm text-gray-500 font-semibold">Estado: {c.estado}</p>
+      </div>
+    ))
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 p-6 relative overflow-hidden">
-      {/* 🌟 Contenedor de toasts */}
       <Toaster position="top-right" reverseOrder={false} />
 
       {/* Efectos de fondo */}
@@ -120,7 +197,6 @@ export default function CampanasPage() {
       />
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
           <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
             Mis Campañas
@@ -137,49 +213,45 @@ export default function CampanasPage() {
           <div className="text-center py-12">
             <p className="text-slate-700 text-lg">Cargando campañas...</p>
           </div>
-        ) : campaigns.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-slate-700 text-lg">No tienes campañas creadas.</p>
-          </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {campaigns.map((c) => (
-              <div
-                key={c.id_campana}
-                className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-violet-200 p-6 flex flex-col hover:shadow-xl transition-all duration-300 hover:scale-105"
-              >
-                {c.foto_principal && (
-                  <img
-                    src={c.foto_principal || "/placeholder.svg"}
-                    alt={c.titulo}
-                    className="rounded-lg mb-4 object-cover h-48 w-full border border-violet-200"
-                  />
+          <>
+            {/* Aprobadas */}
+            <div className="mb-10">
+              <h2 className="text-2xl font-semibold mb-4">Aprobadas</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {campaigns.length > 0 ? renderApprovedCards(campaigns) : (
+                  <p className="text-center text-slate-700 col-span-full">No hay campañas aprobadas.</p>
                 )}
-                <h3 className="text-xl font-semibold mb-2 bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
-                  {c.titulo}
-                </h3>
-                <p className="text-slate-700 mb-3 line-clamp-2">{c.descripcion}</p>
-                <p className="text-slate-600 text-sm mb-4">
-                  <span className="text-violet-600 font-semibold">Meta:</span> ${c.monto_objetivo} |
-                  <span className="text-violet-600 font-semibold"> Duración:</span> {c.tiempo_objetivo} días
-                </p>
-                <div className="flex gap-3 mt-auto">
-                  <button
-                    onClick={() => handleEdit(c.id_campana)}
-                    className="flex-1 px-4 py-2 bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded-lg transition-all duration-300 border border-blue-300 hover:shadow-lg"
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => handleDelete(c.id_campana)}
-                    className="flex-1 px-4 py-2 bg-red-400 hover:bg-red-500 text-white font-semibold rounded-lg transition-all duration-300 border border-red-300 hover:shadow-lg"
-                  >
-                    Suspender
-                  </button>
-                </div>
               </div>
-            ))}
-          </div>
+            </div>
+
+            {/* Pendientes */}
+            <div className="mb-10">
+              <h2 className="text-2xl font-semibold mb-4 text-yellow-600">Pendientes</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {pendingCampaigns.length > 0 ? renderInfoCards(pendingCampaigns) : (
+                  <p className="text-center text-slate-700 col-span-full">No hay campañas pendientes.</p>
+                )}
+              </div>
+            </div>
+
+            {/* Rechazadas */}
+            <div className="mb-10">
+              <h2 className="text-2xl font-semibold mb-4 text-red-600">Rechazadas</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {rejectedCampaigns.length > 0 ? renderInfoCards(rejectedCampaigns) : (
+                  <p className="text-center text-slate-700 col-span-full">No hay campañas rechazadas.</p>
+                )}
+              </div>
+            </div>
+
+            {/* Mensaje si no hay ninguna */}
+            {campaigns.length === 0 && pendingCampaigns.length === 0 && rejectedCampaigns.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-slate-700 text-lg">No tienes campañas creadas.</p>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
