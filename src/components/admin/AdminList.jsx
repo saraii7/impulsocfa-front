@@ -47,88 +47,89 @@ export default function AdminList() {
   }
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-lg border border-violet-200">
-      <h2 className="text-xl font-semibold text-violet-700 mb-4">
-        Lista de Administradores
+   <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg border-2 border-violet-100">
+      <h2 className="text-2xl font-bold text-violet-700 mb-6 flex items-center gap-2">
+        <span>👤</span> Lista de Administradores
       </h2>
       {admins.length === 0 ? (
-        <p className="text-gray-500">No hay administradores registrados.</p>
+        <p className="text-gray-500 text-center py-8">No hay administradores registrados.</p>
       ) : (
-        <ul className="divide-y divide-violet-100">
+        <div className="space-y-3">
           {admins.map((admin) => (
-            <li key={admin.id_usuario} className="flex justify-between items-center py-3">
-              <div>
-                {editId === admin.id_usuario ? (
-                  // Formulario inline de edición
-                  <div className="flex gap-2">
-                    <input
-                      className="border px-2 py-1 rounded"
-                      value={editData.nombre}
-                      onChange={(e) => setEditData({ ...editData, nombre: e.target.value })}
-                      placeholder="Nombre"
-                    />
-                    <input
-                      className="border px-2 py-1 rounded"
-                      value={editData.apellido}
-                      onChange={(e) => setEditData({ ...editData, apellido: e.target.value })}
-                      placeholder="Apellido"
-                    />
-                    <input
-                      className="border px-2 py-1 rounded"
-                      value={editData.email}
-                      onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-                      placeholder="Email"
-                    />
-                  </div>
-                ) : (
-                  <>
-                    <p className="font-medium text-slate-700">
-                      {admin.nombre} {admin.apellido}
-                    </p>
-                    <p className="text-sm text-gray-500">{admin.email}</p>
-                  </>
-                )}
-              </div>
+            <div
+              key={admin.id_usuario}
+              className="bg-gradient-to-r from-violet-50 to-blue-50 p-4 rounded-xl border-2 border-violet-100 hover:border-violet-300 transition-all"
+            >
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+                <div className="flex-1">
+                  {editId === admin.id_usuario ? (
+                    <div className="flex flex-col gap-2">
+                      <input
+                        className="border-2 border-violet-200 px-3 py-2 rounded-lg focus:outline-none focus:border-violet-400"
+                        value={editData.nombre}
+                        onChange={(e) => setEditData({ ...editData, nombre: e.target.value })}
+                        placeholder="Nombre"
+                      />
+                      <input
+                        className="border-2 border-violet-200 px-3 py-2 rounded-lg focus:outline-none focus:border-violet-400"
+                        value={editData.apellido}
+                        onChange={(e) => setEditData({ ...editData, apellido: e.target.value })}
+                        placeholder="Apellido"
+                      />
+                      <input
+                        className="border-2 border-violet-200 px-3 py-2 rounded-lg focus:outline-none focus:border-violet-400"
+                        value={editData.email}
+                        onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+                        placeholder="Email"
+                      />
+                    </div>
+                  ) : (
+                    <>
+                      <p className="font-semibold text-gray-800 text-lg">
+                        {admin.nombre} {admin.apellido}
+                      </p>
+                      <p className="text-sm text-gray-600">{admin.email}</p>
+                    </>
+                  )}
+                </div>
 
-              <div className="flex gap-2">
-                {editId === admin.id_usuario ? (
-                  <>
-                    <button
-                      onClick={() => handleSave(admin.id_usuario)}
-                      className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-sm"
-                    >
-                      Guardar
-                    </button>
-                    <button
-                      onClick={() => setEditId(null)}
-                      className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded-lg text-sm"
-                    >
-                      Cancelar
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    {/* Botón de editar */}
-                    <button
-                      onClick={() => handleEditClick(admin)}
-                      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm"
-                    >
-                      Editar
-                    </button>
-
-                    {/* Botón de deshabilitar */}
-                    <button
-                      onClick={() => handleDisable(admin.id_usuario)}
-                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm"
-                    >
-                      Deshabilitar
-                    </button>
-                  </>
-                )}
+                <div className="flex gap-2 flex-wrap">
+                  {editId === admin.id_usuario ? (
+                    <>
+                      <button
+                        onClick={() => handleSave(admin.id_usuario)}
+                        className="bg-gradient-to-r from-green-400 to-emerald-500 hover:from-green-500 hover:to-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all"
+                      >
+                        ✓ Guardar
+                      </button>
+                      <button
+                        onClick={() => setEditId(null)}
+                        className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-lg text-sm font-semibold transition-all"
+                      >
+                        ✕ Cancelar
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => handleEditClick(admin)}
+                        className="bg-gradient-to-r from-blue-400 to-cyan-500 hover:from-blue-500 hover:to-cyan-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all"
+                      >
+                        ✏️ Editar
+                      </button>
+                      <button
+                        onClick={() => handleDisable(admin.id_usuario)}
+                        className="bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all"
+                      >
+                        🚫 Deshabilitar
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

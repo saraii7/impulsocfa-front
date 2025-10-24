@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { updateUserProfile } from "../../services/user.service";
+import toast, { Toaster } from "react-hot-toast";
+
 
 export default function UserProfile({ user, setUserGlobal }) {
   const [formData, setFormData] = useState({
@@ -22,11 +24,14 @@ export default function UserProfile({ user, setUserGlobal }) {
         nacionalidad: storedUser.nacionalidad || "",
         foto_perfil: null,
       });
-      setPreview(
-        storedUser.foto_perfil
-          ? `${import.meta.env.VITE_API_URL}/${storedUser.foto_perfil}`
-          : "/default-avatar.png"
-      );
+      if (storedUser.foto_perfil) {
+        const fotoUrl = storedUser.foto_perfil.startsWith("http")
+          ? storedUser.foto_perfil
+          : `${import.meta.env.VITE_API_URL}/${storedUser.foto_perfil}`;
+        setPreview(fotoUrl);
+      } else {
+        setPreview("/default-avatar.png");
+      }
     }
   }, []);
 
@@ -55,15 +60,39 @@ export default function UserProfile({ user, setUserGlobal }) {
       );
       localStorage.setItem("user", JSON.stringify(updatedUser));
       window.dispatchEvent(new Event("storage"));
-      alert("Perfil actualizado correctamente");
+
+      // ✅ Toast estético de éxito
+      toast.success("Perfil actualizado correctamente 💫", {
+        style: {
+          borderRadius: "10px",
+          background: "linear-gradient(to right, #f0f9ff, #ede9fe)",
+          color: "#4f46e5",
+          fontWeight: 600,
+        },
+        iconTheme: {
+          primary: "#6366f1",
+          secondary: "#fff",
+        },
+      });
     } catch (err) {
       console.error(err);
-      alert("Error al actualizar perfil: " + err.message);
+      // ⚠️ Toast estético de error
+      toast.error("Error al actualizar perfil 😕", {
+        style: {
+          borderRadius: "10px",
+          background: "linear-gradient(to right, #fef2f2, #fae8ff)",
+          color: "#7e22ce",
+          fontWeight: 600,
+        },
+        iconTheme: {
+          primary: "#a855f7",
+          secondary: "#fff",
+        },
+      });
     } finally {
       setSaving(false);
     }
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 px-6 py-10 relative overflow-hidden">
       {/* Fondo decorativo */}
@@ -82,23 +111,25 @@ export default function UserProfile({ user, setUserGlobal }) {
         {/* Foto de perfil */}
         <div className="flex justify-center mb-4">
           <div className="relative group">
-            <img
-              src={preview}
-              alt="Perfil"
-              className="w-28 h-28 rounded-full object-cover border-4 border-purple-300 shadow-md"
-            />
-            <input
-              type="file"
-              name="foto_perfil"
-              accept="image/*"
-              onChange={handleChange}
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer rounded-full"
-            />
-            <div className="absolute inset-0 flex items-center justify-center rounded-full bg-purple-200/50 opacity-0 group-hover:opacity-100 transition">
-              <span className="text-purple-700 font-semibold text-sm">
-                Cambiar
-              </span>
-            </div>
+            <label className="cursor-pointer block relative">
+              <img
+                src={preview}
+                alt="Perfil"
+                className="w-28 h-28 rounded-full object-cover border-4 border-purple-300 shadow-md"
+              />
+              <div className="absolute inset-0 flex items-center justify-center rounded-full bg-purple-200/50 opacity-0 group-hover:opacity-100 transition">
+                <span className="text-purple-700 font-semibold text-sm">
+                  Cambiar
+                </span>
+              </div>
+              <input
+                type="file"
+                name="foto_perfil"
+                accept="image/*"
+                onChange={handleChange}
+                className="hidden"
+              />
+            </label>
           </div>
         </div>
 
@@ -127,6 +158,8 @@ export default function UserProfile({ user, setUserGlobal }) {
           {saving ? "Guardando..." : "Actualizar perfil"}
         </button>
       </form>
+
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 }

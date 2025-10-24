@@ -1,69 +1,98 @@
 import { useEffect, useState } from "react";
-import { getPendingCampaigns, approveCampaign } from "../../services/admin.service";
+import { getPendingCampaigns, approveCampaign, getCampaignById } from "../../services/admin.service";
 
 export default function CampaignList() {
   const [campaigns, setCampaigns] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => { loadCampaigns(); }, []);
+  useEffect(() => {
+    loadCampaigns();
+  }, []);
 
   async function loadCampaigns() {
     try {
-      const data = await getPendingCampaigns();
-      setCampaigns(data);
+      setLoading(true);
+      // obtener resumen de campañas pendientes
+      const summary = await getPendingCampaigns();
+      // obtener detalle completo de cada campaña
+      const detailedCampaigns = await Promise.all(
+        summary.map((c) => getCampaignById(c.id_campana))
+      );
+      setCampaigns(detailedCampaigns);
     } catch (error) {
       console.error("❌ Error al cargar campañas pendientes:", error);
+    } finally {
+      setLoading(false);
     }
   }
 
   async function handleApprove(campaignId, approved) {
     try {
       if (!campaignId) return;
-      const estado = approved ? "aprobada" : "rechazada"; // string que espera backend
+      const estado = approved ? "aprobada" : "rechazada";
       await approveCampaign(campaignId, estado);
-      loadCampaigns();
+      loadCampaigns(); // recargar campañas
     } catch (error) {
       console.error("❌ Error al actualizar estado de campaña:", error);
     }
   }
 
+  if (loading) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-700 text-lg">Cargando campañas...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-lg border border-violet-200">
-      <h2 className="text-xl font-semibold text-violet-700 mb-4">Campañas Pendientes</h2>
+    <div className="min-h-screen bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 p-6">
+      <h2 className="text-2xl font-bold text-violet-700 mb-6 flex items-center gap-2">
+        <span>📢</span> Campañas Pendientes
+      </h2>
 
       {campaigns.length === 0 ? (
-        <p className="text-gray-500">No hay campañas pendientes.</p>
+        <p className="text-gray-500 text-center py-8">No hay campañas pendientes.</p>
       ) : (
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="bg-violet-100 text-violet-700">
-              <th className="p-2 text-left">Título</th>
-              <th className="p-2 text-left">Descripción</th>
-              <th className="p-2 text-left">Usuario</th>
-              <th className="p-2">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {campaigns.map((camp) => (
-              <tr key={camp.id_campana} className="border-t">
-                <td className="p-2">{camp.titulo}</td>
-                <td className="p-2">{camp.descripcion}</td>
-                <td className="p-2">
-                  {camp.usuario?.nombre
-                    ? `${camp.usuario.nombre} ${camp.usuario.apellido}`
-                    : camp.id_usuario}
-                </td>
-                <td className="p-2 space-x-2 text-center">
-                  <button onClick={() => handleApprove(camp.id_campana, true)} className="text-green-600 hover:underline">
-                    Aprobar
-                  </button>
-                  <button onClick={() => handleApprove(camp.id_campana, false)} className="text-red-500 hover:underline">
-                    Rechazar
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {campaigns.map((c) => (
+            <div
+              key={c.id_campana}
+              className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-violet-200 p-6 flex flex-col hover:shadow-md transition-all duration-300"
+            >
+              {c.foto_principal && (
+                <img
+                  src={c.foto_principal || "/placeholder.svg"}
+                  alt={c.titulo}
+                  className="rounded-lg mb-4 object-cover h-48 w-full border border-violet-200"
+                />
+              )}
+              <h3 className="text-xl font-semibold mb-2">{c.titulo}</h3>
+              <p className="text-slate-700 mb-3 line-clamp-3">{c.descripcion}</p>
+              <p className="text-slate-600 text-sm">
+                <span className="text-violet-600 font-semibold">Meta:</span> ${c.monto_objetivo} |{" "}
+                <span className="text-violet-600 font-semibold">Duración:</span> {c.tiempo_objetivo} días
+              </p>
+              <p className="mt-1 text-sm text-gray-500 font-semibold">
+                Usuario: {c.usuario?.nombre ? `${c.usuario.nombre} ${c.usuario.apellido}` : c.id_usuario}
+              </p>
+              <div className="mt-4 flex gap-2">
+                <button
+                  onClick={() => handleApprove(c.id_campana, true)}
+                  className="flex-1 px-4 py-2 bg-gradient-to-r from-green-400 to-emerald-500 hover:from-green-500 hover:to-emerald-600 text-white font-semibold rounded-lg transition-all"
+                >
+                  ✓ Aprobar
+                </button>
+                <button
+                  onClick={() => handleApprove(c.id_campana, false)}
+                  className="flex-1 px-4 py-2 bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white font-semibold rounded-lg transition-all"
+                >
+                  ✕ Rechazar
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
