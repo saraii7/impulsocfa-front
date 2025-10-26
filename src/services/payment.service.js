@@ -1,4 +1,4 @@
-const API_URL = `${import.meta.env.VITE_API_URL}/payments`;git s
+const API_URL = `${import.meta.env.VITE_API_URL}/payments`;
 
 
 /**
