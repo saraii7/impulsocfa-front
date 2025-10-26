@@ -2,13 +2,26 @@ import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { getCampaignById } from "../../services/campaing.service"
 import { ArrowLeft, Target, Calendar, TrendingUp, Clock } from "lucide-react"
+import { initMercadoPago, Wallet } from "@mercadopago/sdk-react"
+import { createPreference } from "../../services/payment.service"
 
 export default function DetalleCampana() {
   const { id } = useParams()
   const navigate = useNavigate()
+
+
   const [campana, setCampana] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [amount, setAmount] = useState("")
+  const [preferenceId, setPreferenceId] = useState(null)
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  useEffect(() => {
+    initMercadoPago(import.meta.env.VITE_MERCADOPAGO_PUBLIC_KEY)
+  }, [])
+
 
   useEffect(() => {
     const fetchCampana = async () => {
@@ -24,6 +37,32 @@ export default function DetalleCampana() {
 
     fetchCampana()
   }, [id])
+  const porcentaje = campana
+    ? Math.min((campana.monto_actual / campana.monto_objetivo) * 100, 100)
+    : 0;
+
+  const handleDonate = async (e) => {
+    e.preventDefault();
+
+    if (!amount || amount <= 0) {
+      alert("Ingresá un monto válido");
+      return;
+    }
+
+    try {
+      const idPreference = await createPreference({
+        amount: parseFloat(amount),
+        campaignTitle: campana.titulo,
+        campaignId: campana.id_campana,
+        userId: user.id_usuario,
+      });
+      setPreferenceId(idPreference);
+    } catch (err) {
+      console.error("Error al crear preferencia:", err);
+      alert("Hubo un error al procesar el pago, intentá nuevamente");
+    }
+  };
+
 
   if (loading) {
     return (
@@ -49,12 +88,9 @@ export default function DetalleCampana() {
     )
   }
 
-  // Calcular porcentaje de progreso
-  const porcentaje = Math.min((campana.monto_actual / campana.monto_objetivo) * 100, 100)
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 p-6 relative overflow-hidden">
-      {/* Patrón de fondo */}
+    <div className="relative min-h-screen bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 p-6 overflow-hidden">
+      {/* Fondo con patrón */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#e9d5ff_1px,transparent_1px),linear-gradient(to_bottom,#e9d5ff_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-30" />
 
       {/* Esferas de luz animadas */}
@@ -65,7 +101,7 @@ export default function DetalleCampana() {
       />
 
       <div className="relative z-10 max-w-5xl mx-auto">
-        {/* Botón de volver */}
+        {/* Botón volver */}
         <button
           onClick={() => navigate("/campanas")}
           className="mb-6 flex items-center gap-2 px-4 py-2 bg-white/80 hover:bg-white border border-violet-200 rounded-lg text-violet-600 font-semibold transition-all duration-300 hover:shadow-lg hover:scale-105"
@@ -77,15 +113,13 @@ export default function DetalleCampana() {
         {/* Contenedor principal */}
         <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-violet-200 overflow-hidden">
           {/* Imagen principal */}
-          {campana.foto_principal && (
-            <div className="w-full h-80 overflow-hidden">
-              <img
-                src={campana.foto_principal || "/placeholder.svg"}
-                alt={campana.titulo}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          )}
+          <div className="w-full h-80 overflow-hidden">
+            <img
+              src={campana.foto_principal || "/placeholder.svg"}
+              alt={campana.titulo}
+              className="w-full h-full object-cover"
+            />
+          </div>
 
           {/* Contenido */}
           <div className="p-8">
@@ -96,8 +130,8 @@ export default function DetalleCampana() {
               </h1>
               <span
                 className={`px-4 py-2 rounded-full text-sm font-semibold ${campana.campana_estado === "activa"
-                    ? "bg-green-100 text-green-700 border border-green-300"
-                    : "bg-slate-100 text-slate-700 border border-slate-300"
+                  ? "bg-green-100 text-green-700 border border-green-300"
+                  : "bg-slate-100 text-slate-700 border border-slate-300"
                   }`}
               >
                 {campana.campana_estado}
@@ -129,7 +163,7 @@ export default function DetalleCampana() {
               </div>
             </div>
 
-            {/* Estadísticas en tarjetas */}
+            {/* Estadísticas */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               <div className="bg-gradient-to-br from-blue-50 to-violet-50 rounded-xl p-4 border border-violet-200">
                 <div className="flex items-center gap-3 mb-2">
@@ -166,10 +200,28 @@ export default function DetalleCampana() {
               </div>
             </div>
 
-            {/* Botón de acción */}
-            <button className="w-full bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 hover:from-blue-500 hover:via-violet-500 hover:to-purple-500 text-white font-semibold px-6 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border border-violet-300">
-              Apoyar esta campaña
-            </button>
+            {/* Formulario de donación */}
+            <form onSubmit={handleDonate} className="flex flex-col gap-4">
+              <input
+                type="number"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                placeholder="Ingresa el monto a donar"
+                className="p-3 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-400"
+              />
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 hover:from-blue-500 hover:to-violet-500 text-white font-semibold px-6 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+              >
+                Donar con Mercado Pago
+              </button>
+
+              {preferenceId && (
+                <div className="mt-4">
+                  <Wallet initialization={{ preferenceId }} />
+                </div>
+              )}
+            </form>
           </div>
         </div>
       </div>
