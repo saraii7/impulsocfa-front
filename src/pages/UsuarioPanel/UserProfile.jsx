@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { updateUserProfile } from "../../services/user.service";
 import toast, { Toaster } from "react-hot-toast";
-
+import "./../../components/RegistrarseForm/Registrarseform.css";
+import ReactFlagsSelect from "react-flags-select";
 
 export default function UserProfile({ user, setUserGlobal }) {
   const [formData, setFormData] = useState({
@@ -139,15 +140,32 @@ export default function UserProfile({ user, setUserGlobal }) {
             <label className="block text-slate-700 font-semibold mb-2 capitalize">
               {field.replace("_", " ")}
             </label>
-            <input
-              type={field === "fecha_nacimiento" ? "date" : "text"}
-              name={field}
-              value={formData[field]}
-              onChange={handleChange}
-              className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
-            />
+
+            {field === "nacionalidad" ? (
+              <div className="country-selector-wrapper">
+                <ReactFlagsSelect
+                  selected={formData.nacionalidad}
+                  onSelect={(code) =>
+                    setFormData((prev) => ({ ...prev, nacionalidad: code }))
+                  }
+                  searchable
+                  searchPlaceholder="Buscar país..."
+                  placeholder="Selecciona tu nacionalidad"
+                  className="country-select"
+                />
+              </div>
+            ) : (
+              <input
+                type={field === "fecha_nacimiento" ? "date" : "text"}
+                name={field}
+                value={formData[field]}
+                onChange={handleChange}
+                className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
+              />
+            )}
           </div>
         ))}
+
 
         {/* Botón */}
         <button
