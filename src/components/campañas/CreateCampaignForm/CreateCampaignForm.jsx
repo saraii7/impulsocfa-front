@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { createCampaign } from "../../../services/campaign.service";
+import { getCategories } from "../../../services/category.service";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateCampaignForm() {
   const [formData, setFormData] = useState({
-    id_categoria: 26,
+    id_categoria: "",
     titulo: "",
     descripcion: "",
     monto_objetivo: "",
@@ -12,10 +13,28 @@ export default function CreateCampaignForm() {
     imagen: null,
   });
 
+  const [categorias, setCategorias] = useState([]);
+  const [loadingCats, setLoadingCats] = useState(true);
+  const [errorCats, setErrorCats] = useState(null);
+
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const data = await getCategories();
+        setCategorias(data);
+      } catch (err) {
+        setErrorCats(err.message);
+      } finally {
+        setLoadingCats(false);
+      }
+    };
+    fetchCategorias();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -35,6 +54,9 @@ export default function CreateCampaignForm() {
       newErrors.monto_objetivo = "El monto debe ser mayor que 0.";
     if (!formData.tiempo_objetivo)
       newErrors.tiempo_objetivo = "Debe ingresar una fecha de finalización.";
+    return newErrors;
+    if (!formData.id_categoria)
+      newErrors.id_categoria = "Debe seleccionar una categoría.";
     return newErrors;
   };
 
@@ -86,13 +108,43 @@ export default function CreateCampaignForm() {
         {message.text && (
           <div
             className={`p-3 rounded-lg text-center font-semibold transition-all duration-300 ${message.type === "success"
-                ? "bg-green-100 text-green-700 border border-green-300"
-                : "bg-red-100 text-red-700 border border-red-300"
+              ? "bg-green-100 text-green-700 border border-green-300"
+              : "bg-red-100 text-red-700 border border-red-300"
               }`}
           >
             {message.text}
           </div>
         )}
+        {/* 🟣 NUEVO: Selector de categoría */}
+        <div>
+          <label className="block text-slate-700 font-semibold mb-2">Categoría</label>
+          {loadingCats ? (
+            <p className="text-violet-600 animate-pulse">Cargando categorías...</p>
+          ) : errorCats ? (
+            <p className="text-red-600">Error al cargar categorías: {errorCats}</p>
+          ) : (
+            <select
+              name="id_categoria"
+              value={formData.id_categoria}
+              onChange={handleChange}
+              className={`w-full bg-violet-50/50 border ${errors.id_categoria ? "border-red-400" : "border-violet-300"
+                } rounded-lg px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 ${errors.id_categoria
+                  ? "focus:ring-red-400"
+                  : "focus:ring-violet-400"
+                } focus:border-transparent transition-all duration-300 hover:border-violet-400`}
+            >
+              <option value="">Selecciona una categoría</option>
+              {categorias.map((cat) => (
+                <option key={cat.id_categoria} value={cat.id_categoria}>
+                  {cat.nombre}
+                </option>
+              ))}
+            </select>
+          )}
+          {errors.id_categoria && (
+            <p className="text-red-500 text-sm mt-1">{errors.id_categoria}</p>
+          )}
+        </div>
 
         {/* Nombre */}
         <div>

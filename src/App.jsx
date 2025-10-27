@@ -16,6 +16,9 @@ import Campanas from "./pages/Campanas/Campanas";
 import EditarCampana from "./components/campañas/CreateCampaignForm/EditarCampana";
 import AdminPanel from "./pages/AdminPanel/AdminPanel";
 import UsuarioPanel from "./pages/UsuarioPanel/UsuarioPanel";
+import PagoExitoso from "./components/pasarela/PagoExitoso";
+import PagoFallido from "./components/pasarela/PagoFallido";
+import PagoPendiente from "./components/pasarela/PagoPendiente";
 
 function App() {
   return (
@@ -41,6 +44,9 @@ function App() {
             <Route path="/editarcampana/:id" element={<EditarCampana />} />
             <Route path="/admin" element={<AdminPanel />} />
             <Route path="/usuariopanel" element={<UsuarioPanel />} />
+            <Route path="/pago-exitoso" element={<PagoExitoso />} />
+            <Route path="/pago-fallido" element={<PagoFallido />} /> 
+            <Route path="/pago-pendiente" element={<PagoPendiente />} />
           </Routes>
         </main>
 
