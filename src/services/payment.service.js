@@ -7,14 +7,17 @@ const API_URL = `${import.meta.env.VITE_API_URL}/payments`;
  * @param {number} paymentData.amount - Monto de la donación
  * @param {string} paymentData.campaignTitle - Título de la campaña
  * @param {number} paymentData.campaignId - ID de la campaña
- * @param {number} paymentData.userId - ID del usuario
  * @returns {Promise<string>} preferenceId - ID de la preferencia de Mercado Pago
  */
 export async function createPreference(paymentData) {
   try {
+    const token = localStorage.getItem("access_token");
     const res = await fetch(`${API_URL}/create_preference`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
       body: JSON.stringify(paymentData),
     });
 
