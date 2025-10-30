@@ -138,7 +138,7 @@ export default function Home() {
             animate={isHeroInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <Link to="/campanas">
+            <Link to="/iniciarsesion">
               <motion.button
                 whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(167, 139, 250, 0.6)" }}
                 whileTap={{ scale: 0.95 }}
@@ -315,7 +315,7 @@ export default function Home() {
             <p className="text-xl text-slate-700 mb-8">
               Cada donación cuenta. Sé parte del cambio que se necesita.
             </p>
-            <Link to="/campanas">
+            <Link to="/iniciarsesion">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

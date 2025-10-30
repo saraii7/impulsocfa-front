@@ -103,7 +103,7 @@ export default function DetalleCampana() {
       <div className="relative z-10 max-w-5xl mx-auto">
         {/* Botón volver */}
         <button
-          onClick={() => navigate("/campanas")}
+          onClick={() => navigate("/donar")}
           className="mb-6 flex items-center gap-2 px-4 py-2 bg-white/80 hover:bg-white border border-violet-200 rounded-lg text-violet-600 font-semibold transition-all duration-300 hover:shadow-lg hover:scale-105"
         >
           <ArrowLeft className="w-5 h-5" />
