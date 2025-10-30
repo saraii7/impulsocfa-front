@@ -54,11 +54,15 @@ export default function UserProfile({ user, setUserGlobal }) {
       if (!formData.foto_perfil) delete dataToUpdate.foto_perfil;
 
       const updatedUser = await updateUserProfile(dataToUpdate);
-      setPreview(
-        updatedUser.foto_perfil
-          ? `${import.meta.env.VITE_API_URL}/${updatedUser.foto_perfil}`
-          : "/default-avatar.png"
-      );
+    
+      if (updatedUser.foto_perfil) {
+        const newFotoUrl = updatedUser.foto_perfil.startsWith("http")
+          ? updatedUser.foto_perfil
+          : `${import.meta.env.VITE_API_URL}/${updatedUser.foto_perfil}`;
+
+        setTimeout(() => setPreview(newFotoUrl), 500);
+      }
+
       localStorage.setItem("user", JSON.stringify(updatedUser));
       window.dispatchEvent(new Event("storage"));
 
