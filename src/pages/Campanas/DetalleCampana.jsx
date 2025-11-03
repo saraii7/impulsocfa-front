@@ -89,7 +89,7 @@ export default function DetalleCampana() {
   }
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 p-6 overflow-hidden">
+    <div className="relative min-h-screen bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 overflow-hidden">
       {/* Fondo con patrón */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#e9d5ff_1px,transparent_1px),linear-gradient(to_bottom,#e9d5ff_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-30" />
 
@@ -100,7 +100,7 @@ export default function DetalleCampana() {
         style={{ animationDelay: "1s" }}
       />
 
-      <div className="relative z-10 max-w-5xl mx-auto">
+      <div className="relative z-10 h-full px-6 py-8 md:px-12 lg:px-20">
         {/* Botón volver */}
         <button
           onClick={() => navigate("/donar")}
@@ -110,18 +110,17 @@ export default function DetalleCampana() {
           Volver a campañas
         </button>
 
-        {/* Contenedor principal */}
+        {/* Contenedor principal - Ahora full-width con márgenes */}
         <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-violet-200 overflow-hidden">
           {/* Imagen principal */}
           <div className="w-full h-80 overflow-hidden">
             <img
               src={campana.foto_principal || "/placeholder.svg"}
               alt={campana.titulo}
-              className="w-full h-full object-cover"
+              className="max-h-full max-w-full object-contain rounded-lg"
             />
           </div>
 
-          {/* Contenido */}
           <div className="p-8">
             {/* Título y estado */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
@@ -129,10 +128,11 @@ export default function DetalleCampana() {
                 {campana.titulo}
               </h1>
               <span
-                className={`px-4 py-2 rounded-full text-sm font-semibold ${campana.campana_estado === "activa"
-                  ? "bg-green-100 text-green-700 border border-green-300"
-                  : "bg-slate-100 text-slate-700 border border-slate-300"
-                  }`}
+                className={`px-4 py-2 rounded-full text-sm font-semibold ${
+                  campana.campana_estado === "activa"
+                    ? "bg-green-100 text-green-700 border border-green-300"
+                    : "bg-slate-100 text-slate-700 border border-slate-300"
+                }`}
               >
                 {campana.campana_estado}
               </span>
