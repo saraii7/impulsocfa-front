@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { updateCampaign } from "../../../services/campaign.service";
+import { getCategories } from "../../../services/category.service";
 import { toast } from "react-hot-toast";
 
 export default function EditarCampana() {
@@ -8,6 +9,7 @@ export default function EditarCampana() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
+    id_categoria: "",
     titulo: "",
     descripcion: "",
     monto_objetivo: "",
@@ -15,21 +17,31 @@ export default function EditarCampana() {
     imagen: null,
   });
 
+  const [categorias, setCategorias] = useState([]);
+  const [loadingCats, setLoadingCats] = useState(true);
+  const [errorCats, setErrorCats] = useState(null);
+
   const [loading, setLoading] = useState(false);
 
-  // Cargar datos actuales de la campaña
+  // 🟣 Cargar datos de campaña y categorías al montar
   useEffect(() => {
-    const fetchCampaign = async () => {
+    const fetchData = async () => {
       try {
         const token = localStorage.getItem("access_token");
-        const res = await fetch(`http://localhost:3000/api/campaigns/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
 
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Error al cargar campaña");
+        const [catRes, campRes] = await Promise.all([
+          getCategories(),
+          fetch(`http://localhost:3000/api/campaigns/${id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
 
+        const data = await campRes.json();
+        if (!campRes.ok) throw new Error(data.error || "Error al cargar campaña");
+
+        setCategorias(catRes);
         setFormData({
+          id_categoria: data.id_categoria || "",
           titulo: data.titulo || "",
           descripcion: data.descripcion || "",
           monto_objetivo: data.monto_objetivo || "",
@@ -38,7 +50,8 @@ export default function EditarCampana() {
         });
       } catch (error) {
         console.error(error);
-        toast.error("❌ Error al cargar la campaña", {
+        setErrorCats(error.message);
+        toast.error("❌ Error al cargar la campaña o categorías", {
           style: {
             background: "#fee2e2",
             color: "#991b1b",
@@ -46,12 +59,15 @@ export default function EditarCampana() {
             fontWeight: "600",
           },
         });
+      } finally {
+        setLoadingCats(false);
       }
     };
 
-    fetchCampaign();
+    fetchData();
   }, [id]);
 
+  // 🟣 Manejador de cambios
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setFormData((prev) => ({
@@ -60,6 +76,7 @@ export default function EditarCampana() {
     }));
   };
 
+  // 🟣 Enviar formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -116,6 +133,31 @@ export default function EditarCampana() {
           Editar Campaña
         </h2>
 
+        {/* 🟣 Selector de Categoría */}
+        <div>
+          <label className="block text-slate-700 font-semibold mb-2">Categoría</label>
+          {loadingCats ? (
+            <p className="text-violet-600 animate-pulse">Cargando categorías...</p>
+          ) : errorCats ? (
+            <p className="text-red-600">Error al cargar categorías: {errorCats}</p>
+          ) : (
+            <select
+              name="id_categoria"
+              value={formData.id_categoria}
+              onChange={handleChange}
+              className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
+            >
+              <option value="">Selecciona una categoría</option>
+              {categorias.map((cat) => (
+                <option key={cat.id_categoria} value={cat.id_categoria}>
+                  {cat.nombre}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
+
+        {/* Nombre */}
         <div>
           <label className="block text-slate-700 font-semibold mb-2">Nombre</label>
           <input
@@ -128,6 +170,7 @@ export default function EditarCampana() {
           />
         </div>
 
+        {/* Descripción */}
         <div>
           <label className="block text-slate-700 font-semibold mb-2">Descripción</label>
           <textarea
@@ -140,6 +183,7 @@ export default function EditarCampana() {
           />
         </div>
 
+        {/* Monto */}
         <div>
           <label className="block text-slate-700 font-semibold mb-2">Monto objetivo</label>
           <input
@@ -151,6 +195,7 @@ export default function EditarCampana() {
           />
         </div>
 
+        {/* Fecha */}
         <div>
           <label className="block text-slate-700 font-semibold mb-2">
             Fecha de finalización
@@ -165,6 +210,7 @@ export default function EditarCampana() {
           />
         </div>
 
+        {/* Imagen */}
         <div>
           <label className="block text-slate-700 font-semibold mb-2">
             Nueva imagen (opcional)
@@ -178,6 +224,7 @@ export default function EditarCampana() {
           />
         </div>
 
+        {/* Botón */}
         <button
           type="submit"
           disabled={loading}
