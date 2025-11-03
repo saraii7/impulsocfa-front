@@ -32,10 +32,12 @@ export async function getCampaignById(id) {
   return await res.json();
 }
 // NUEVO: Obtener campañas filtradas por categoría
-export async function getCampaignsByCategory(id_categoria) {
-  const url = id_categoria
-    ? `${API_URL}?id_categoria=${id_categoria}`
-    : API_URL; // si no hay categoría, trae todas
+export async function getCampaignsByCategory(id_categoria, q) {
+  const params = new URLSearchParams();
+  if (id_categoria) params.append("id_categoria", id_categoria);
+  if (q && q.length >= 3) params.append("q", q);
+
+  const url = `${API_URL}?${params.toString()}`;
 
   const res = await fetch(url, {
     headers: {
@@ -44,6 +46,6 @@ export async function getCampaignsByCategory(id_categoria) {
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Error al obtener campañas por categoría");
+  if (!res.ok) throw new Error(data.error || "Error al obtener campañas");
   return data;
 }
