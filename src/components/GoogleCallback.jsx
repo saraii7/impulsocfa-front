@@ -27,7 +27,7 @@ export default function GoogleCallback() {
       } catch (err) {
         // Mostrar solo un warning simple
         alert(`Error al iniciar sesión: ${err.message}`);
-        navigate("/login"); // opcional: volver al login
+        navigate("/iniciarsesion"); // opcional: volver al login
       }
     };
 
