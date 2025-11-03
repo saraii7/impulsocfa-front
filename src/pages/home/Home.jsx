@@ -41,6 +41,7 @@ export default function Home() {
   const heroRef = useRef(null)
   const statsRef = useRef(null)
   const campaignsRef = useRef(null)
+  const isLoggedIn = !!localStorage.getItem("access_token");
 
   const isHeroInView = useInView(heroRef, { once: true })
   const isStatsInView = useInView(statsRef, { once: true })
@@ -135,10 +136,10 @@ export default function Home() {
 
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
-            animate={isHeroInView ? { opacity: 1, scale: 1 } : {}}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <Link to="/iniciarsesion">
+            <Link to={isLoggedIn ? "/donar" : "/iniciarsesion"}>
               <motion.button
                 whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(167, 139, 250, 0.6)" }}
                 whileTap={{ scale: 0.95 }}
@@ -311,11 +312,13 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="bg-white/80 backdrop-blur-sm rounded-3xl p-12 border border-violet-300 shadow-xl shadow-violet-200/50"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-slate-800">Tu ayuda puede cambiar vidas hoy</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-slate-800">
+              Tu ayuda puede cambiar vidas hoy
+            </h2>
             <p className="text-xl text-slate-700 mb-8">
               Cada donación cuenta. Sé parte del cambio que se necesita.
             </p>
-            <Link to="/iniciarsesion">
+            <Link to={isLoggedIn ? "/donar" : "/iniciarsesion"}>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
