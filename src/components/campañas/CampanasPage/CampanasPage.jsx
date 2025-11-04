@@ -128,9 +128,9 @@ export default function CampanasPage() {
         key={c.id_campana}
         className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-violet-200 p-6 flex flex-col hover:shadow-xl transition-all duration-300 hover:scale-105"
       >
-        {c.foto_principal && (
+        {c.foto1 && (
           <img
-            src={c.foto_principal || "/placeholder.svg"}
+            src={c.foto1 || "/placeholder.svg"}
             alt={c.titulo}
             className="rounded-lg mb-4 object-cover h-48 w-full border border-violet-200"
           />
@@ -167,9 +167,9 @@ export default function CampanasPage() {
         key={c.id_campana}
         className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-violet-200 p-6 flex flex-col hover:shadow-md transition-all duration-300"
       >
-        {c.foto_principal && (
+        {c.foto1 && (
           <img
-            src={c.foto_principal || "/placeholder.svg"}
+            src={c.foto1 || "/placeholder.svg"}
             alt={c.titulo}
             className="rounded-lg mb-4 object-cover h-48 w-full border border-violet-200"
           />

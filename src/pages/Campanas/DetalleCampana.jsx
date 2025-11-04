@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { getCampaignById } from "../../services/campaing.service"
-import { ArrowLeft, Target, Calendar, TrendingUp, Clock } from "lucide-react"
+import { ArrowLeft, Target, Calendar, TrendingUp, Clock, ChevronLeft, ChevronRight } from "lucide-react"
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react"
 import { createPreference } from "../../services/payment.service"
 
@@ -15,6 +15,9 @@ export default function DetalleCampana() {
   const [error, setError] = useState(null)
   const [amount, setAmount] = useState("")
   const [preferenceId, setPreferenceId] = useState(null)
+
+  //carrusel estado
+  const [currentImage, setCurrentImage] = useState(0)
 
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -37,9 +40,30 @@ export default function DetalleCampana() {
 
     fetchCampana()
   }, [id])
+
   const porcentaje = campana
     ? Math.min((campana.monto_actual / campana.monto_objetivo) * 100, 100)
     : 0;
+
+  useEffect(() => {
+    if (!campana) return
+    const imagenes = [campana.foto1, campana.foto2, campana.foto3].filter(Boolean)
+    if (imagenes.length <= 1) return // Si hay solo una imagen, no hay carrusel
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % imagenes.length)
+    }, 3000) // cambia cada 3 segundos
+    return () => clearInterval(interval)
+  }, [campana])
+
+  const handlePrev = () => {
+    const imagenes = [campana.foto1, campana.foto2, campana.foto3].filter(Boolean)
+    setCurrentImage((prev) => (prev - 1 + imagenes.length) % imagenes.length)
+  }
+
+  const handleNext = () => {
+    const imagenes = [campana.foto1, campana.foto2, campana.foto3].filter(Boolean)
+    setCurrentImage((prev) => (prev + 1) % imagenes.length)
+  }
 
   const handleDonate = async (e) => {
     e.preventDefault();
@@ -87,7 +111,7 @@ export default function DetalleCampana() {
       </div>
     )
   }
-
+    const imagenes = [campana.foto1, campana.foto2, campana.foto3].filter(Boolean)
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 overflow-hidden">
       {/* Fondo con patrón */}
@@ -112,15 +136,41 @@ export default function DetalleCampana() {
 
         {/* Contenedor principal - Ahora full-width con márgenes */}
         <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-violet-200 overflow-hidden">
-          {/* Imagen principal */}
-          <div className="w-full h-80 overflow-hidden">
-            <img
-              src={campana.foto_principal || "/placeholder.svg"}
-              alt={campana.titulo}
-              className="max-h-full max-w-full object-contain rounded-lg"
-            />
-          </div>
+          {/* CARRUSEL DE IMÁGENES */}
+ <div className="relative w-full h-80 overflow-hidden flex items-center justify-center bg-violet-50 border-b border-violet-200">
+            {imagenes.length === 0 ? (
+              <img
+                src="https://via.placeholder.com/800x400?text=Sin+imagen"
+                alt="Sin imagen"
+                className="object-contain w-full h-full"
+              />
+            ) : (
+              <img
+                src={imagenes[currentImage]}
+                alt={campana.titulo}
+                className="object-contain w-full h-full transition-opacity duration-700 ease-in-out"
+              />
+            )}
 
+            {/* 🟣 Botones solo si hay más de una imagen */}
+            {imagenes.length > 1 && (
+              <>
+                <button
+                  onClick={handlePrev}
+                  className="absolute left-3 bg-white/70 hover:bg-white text-violet-700 p-2 rounded-full shadow-md transition-all"
+                >
+                  <ChevronLeft size={24} />
+                </button>
+                <button
+                  onClick={handleNext}
+                  className="absolute right-3 bg-white/70 hover:bg-white text-violet-700 p-2 rounded-full shadow-md transition-all"
+                >
+                  <ChevronRight size={24} />
+                </button>
+              </>
+            )}
+          </div>
+          
           <div className="p-8">
             {/* Título y estado */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
@@ -128,11 +178,10 @@ export default function DetalleCampana() {
                 {campana.titulo}
               </h1>
               <span
-                className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                  campana.campana_estado === "activa"
+                className={`px-4 py-2 rounded-full text-sm font-semibold ${campana.campana_estado === "activa"
                     ? "bg-green-100 text-green-700 border border-green-300"
                     : "bg-slate-100 text-slate-700 border border-slate-300"
-                }`}
+                  }`}
               >
                 {campana.campana_estado}
               </span>

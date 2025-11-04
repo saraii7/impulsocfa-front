@@ -16,7 +16,8 @@ export default function Registrarse() {
         style={{ animationDelay: "1s" }}
       />
 
-      <div className="w-full max-w-md bg-white/80 backdrop-blur-xl rounded-2xl shadow-[0_0_40px_rgba(139,92,246,0.15)] border border-violet-200 p-8 relative z-10">
+      <div className="w-full max-w-2xl bg-white/80 backdrop-blur-xl rounded-2xl shadow-[0_0_40px_rgba(139,92,246,0.15)] border border-violet-200 p-8 relative z-10">
+
         <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-violet-600 to-purple-600 bg-clip-text text-transparent text-center mb-8 drop-shadow-sm">
           Crear Cuenta
         </h2>
