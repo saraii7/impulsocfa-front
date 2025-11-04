@@ -210,21 +210,66 @@ export default function EditarCampana() {
           />
         </div>
 
-        {/* Imagen */}
+        {/* Imagen actual y nueva imagen */}
         <div>
+          <label className="block text-slate-700 font-semibold mb-2">
+            Imagen actual
+          </label>
+
+          {formData.foto1 || formData.foto2 || formData.foto3 ? (
+            <div className="flex flex-col items-center mb-4">
+              <img
+                src={formData.foto1 || formData.foto2 || formData.foto3}
+                alt="Imagen actual"
+                className="w-40 h-40 object-cover rounded-xl shadow-md border border-violet-200"
+              />
+              <p className="text-xs text-slate-500 mt-2">Imagen actual de la campaña</p>
+            </div>
+          ) : (
+            <p className="text-sm text-slate-500 italic mb-4">
+              Esta campaña no tiene imagen asignada.
+            </p>
+          )}
+
           <label className="block text-slate-700 font-semibold mb-2">
             Nueva imagen (opcional)
           </label>
-          <input
-            type="file"
-            name="imagen"
-            accept="image/*"
-            onChange={handleChange}
-            className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-violet-400 file:text-white file:font-semibold hover:file:bg-violet-500 file:cursor-pointer"
-          />
+
+          <div className="flex flex-col items-center justify-center gap-3 bg-violet-50/50 border-2 border-dashed border-violet-300 rounded-xl p-6 text-center hover:border-violet-400 transition-all duration-300">
+            <div className="flex flex-col items-center text-violet-500">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-10 h-10 mb-2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 4.5v15m7.5-7.5h-15"
+                />
+              </svg>
+              <p className="text-sm font-medium text-slate-600">
+                Subí una nueva imagen (opcional)
+              </p>
+            </div>
+
+            {/* Botón de subida */}
+            <label className="cursor-pointer mt-2 bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 hover:from-blue-500 hover:via-violet-500 hover:to-purple-500 text-white font-semibold px-5 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105">
+              Seleccionar imagen
+              <input
+                type="file"
+                name="imagen"
+                accept="image/*"
+                onChange={handleChange}
+                className="hidden"
+              />
+            </label>
+          </div>
         </div>
 
-        {/* Botón */}
         <button
           type="submit"
           disabled={loading}

@@ -97,58 +97,90 @@ export default function RegistrarseForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      {/* Nombre y apellido */}
       <div className="flex gap-3">
+        <div className="w-1/2">
+          <label className="block text-slate-700 font-semibold mb-2">
+            Nombre
+          </label>
+          <input
+            type="text"
+            name="nombre"
+            placeholder="Ingresa tu nombre"
+            value={formData.nombre}
+            onChange={handleChange}
+            required
+            className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
+          />
+        </div>
+        <div className="w-1/2">
+          <label className="block text-slate-700 font-semibold mb-2">
+            Apellido
+          </label>
+          <input
+            type="text"
+            name="apellido"
+            placeholder="Ingresa tu apellido"
+            value={formData.apellido}
+            onChange={handleChange}
+            required
+            className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
+          />
+        </div>
+      </div>
+
+      {/* Correo electrónico */}
+      <div>
+        <label className="block text-slate-700 font-semibold mb-2">
+          Correo electrónico
+        </label>
         <input
-          type="text"
-          name="nombre"
-          placeholder="Nombre"
-          value={formData.nombre}
+          type="email"
+          name="email"
+          placeholder="Ingresa tu correo"
+          value={formData.email}
           onChange={handleChange}
           required
-          className="w-1/2 bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
-        />
-        <input
-          type="text"
-          name="apellido"
-          placeholder="Apellido"
-          value={formData.apellido}
-          onChange={handleChange}
-          required
-          className="w-1/2 bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
+          className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
         />
       </div>
 
-      <input
-        type="email"
-        name="email"
-        placeholder="Correo electrónico"
-        value={formData.email}
-        onChange={handleChange}
-        required
-        className="bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
-      />
+      {/* Contraseña */}
+      <div>
+        <label className="block text-slate-700 font-semibold mb-2">
+          Contraseña
+        </label>
+        <input
+          type="password"
+          name="password"
+          placeholder="Crea una contraseña"
+          value={formData.password}
+          onChange={handleChange}
+          required
+          className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
+        />
+      </div>
 
-      <input
-        type="password"
-        name="password"
-        placeholder="Contraseña"
-        value={formData.password}
-        onChange={handleChange}
-        required
-        className="bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
-      />
+      {/* Fecha de nacimiento */}
+      <div>
+        <label className="block text-slate-700 font-semibold mb-2">
+          Fecha de nacimiento
+        </label>
+        <input
+          type="date"
+          name="fecha_nacimiento"
+          value={formData.fecha_nacimiento}
+          onChange={handleChange}
+          className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400 [color-scheme:light]"
+        />
+      </div>
 
-      <input
-        type="date"
-        name="fecha_nacimiento"
-        value={formData.fecha_nacimiento}
-        onChange={handleChange}
-        className="bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400 [color-scheme:light]"
-      />
-
-      {/* Selector de país */}
-      <div className="country-selector-wrapper">
+      {/* Nacionalidad */}
+      <div>
+        <label className="block text-slate-700 font-semibold mb-2">
+          Nacionalidad
+        </label>
         <ReactFlagsSelect
           selected={formData.nacionalidad}
           onSelect={handleCountryChange}
@@ -158,14 +190,59 @@ export default function RegistrarseForm() {
           className="country-select"
         />
       </div>
-      <input
-        type="file"
-        name="foto_perfil"
-        accept="image/*"
-        onChange={(e) => setFormData({ ...formData, foto_perfil: e.target.files[0] })}
-        className="bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
-      />
 
+      {/* Foto de perfil */}
+      <div>
+        <label className="block text-slate-700 font-semibold mb-2">
+          Foto de perfil
+        </label>
+
+        <div className="flex flex-col items-center justify-center gap-3 bg-violet-50/50 border-2 border-dashed border-violet-300 rounded-xl p-6 text-center hover:border-violet-400 transition-all duration-300">
+          {/* Icono o mini preview si ya hay archivo */}
+          {formData.foto_perfil ? (
+            <img
+              src={URL.createObjectURL(formData.foto_perfil)}
+              alt="Preview"
+              className="w-24 h-24 rounded-full object-cover border-4 border-violet-300 shadow-md transition-transform duration-300 hover:scale-105"
+            />
+          ) : (
+            <div className="flex flex-col items-center text-violet-500">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-10 h-10 mb-2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 4.5v15m7.5-7.5h-15"
+                />
+              </svg>
+              <p className="text-sm font-medium text-slate-600">
+                No has seleccionado una imagen
+              </p>
+            </div>
+          )}
+
+          {/* Botón estilizado */}
+          <label className="cursor-pointer mt-2 bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 hover:from-blue-500 hover:via-violet-500 hover:to-purple-500 text-white font-semibold px-5 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105">
+            {formData.foto_perfil ? "Cambiar foto" : "Seleccionar imagen"}
+            <input
+              type="file"
+              name="foto_perfil"
+              accept="image/*"
+              onChange={(e) =>
+                setFormData({ ...formData, foto_perfil: e.target.files[0] })
+              }
+              className="hidden"
+            />
+          </label>
+        </div>
+      </div>
+      {/* Botón */}
       <button
         type="submit"
         disabled={loading}

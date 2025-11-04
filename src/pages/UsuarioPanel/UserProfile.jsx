@@ -54,7 +54,7 @@ export default function UserProfile({ user, setUserGlobal }) {
       if (!formData.foto_perfil) delete dataToUpdate.foto_perfil;
 
       const updatedUser = await updateUserProfile(dataToUpdate);
-    
+
       if (updatedUser.foto_perfil) {
         const newFotoUrl = updatedUser.foto_perfil.startsWith("http")
           ? updatedUser.foto_perfil
@@ -142,7 +142,9 @@ export default function UserProfile({ user, setUserGlobal }) {
         {["nombre", "apellido", "fecha_nacimiento", "nacionalidad"].map((field) => (
           <div key={field}>
             <label className="block text-slate-700 font-semibold mb-2 capitalize">
-              {field.replace("_", " ")}
+              {field === "fecha_nacimiento"
+                ? "Fecha de nacimiento"
+                : field.replace("_", " ")}
             </label>
 
             {field === "nacionalidad" ? (

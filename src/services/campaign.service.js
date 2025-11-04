@@ -15,9 +15,9 @@ export async function createCampaign(campaignData) {
     formData.append("monto_objetivo", campaignData.monto_objetivo);
     formData.append("tiempo_objetivo", campaignData.tiempo_objetivo);
 
-    if (campaignData.imagen) {
-        formData.append("foto_principal", campaignData.imagen);
-    }
+    if (campaignData.foto1) formData.append("foto1", campaignData.foto1);
+    if (campaignData.foto2) formData.append("foto2", campaignData.foto2);
+    if (campaignData.foto3) formData.append("foto3", campaignData.foto3);
 
     const res = await fetch(`${API_URL}`, {
         method: "POST",
@@ -43,8 +43,11 @@ export async function updateCampaign(id, campaignData) {
     if (campaignData.descripcion) formData.append("descripcion", campaignData.descripcion);
     if (campaignData.monto_objetivo) formData.append("monto_objetivo", campaignData.monto_objetivo);
     if (campaignData.tiempo_objetivo) formData.append("tiempo_objetivo", campaignData.tiempo_objetivo);
-    if (campaignData.imagen) formData.append("foto_principal", campaignData.imagen);
 
+    if (campaignData.foto1) formData.append("foto1", campaignData.foto1);
+    if (campaignData.foto2) formData.append("foto2", campaignData.foto2);
+    if (campaignData.foto3) formData.append("foto3", campaignData.foto3);
+    
     const res = await fetch(`${API_URL}/${id}`, {
         method: "PUT",
         headers: {
@@ -106,27 +109,27 @@ export async function getCurrentUser() {
 }
 // Obtener campañas pendientes del usuario
 export async function getUserPendingCampaigns() {
-  const token = localStorage.getItem("access_token");
-  if (!token) throw new Error("No estás autenticado");
+    const token = localStorage.getItem("access_token");
+    if (!token) throw new Error("No estás autenticado");
 
-  const res = await fetch(`${API_URL}/pending/user`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+    const res = await fetch(`${API_URL}/pending/user`, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
 
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Error al obtener campañas pendientes");
-  return data;
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Error al obtener campañas pendientes");
+    return data;
 }
 // Obtener campañas rechazadas del usuario
 export async function getUserRejectedCampaigns() {
-  const token = localStorage.getItem("access_token");
-  if (!token) throw new Error("No estás autenticado");
+    const token = localStorage.getItem("access_token");
+    if (!token) throw new Error("No estás autenticado");
 
-  const res = await fetch(`${API_URL}/rejected/user`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+    const res = await fetch(`${API_URL}/rejected/user`, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
 
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Error al obtener campañas rechazadas");
-  return data;
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Error al obtener campañas rechazadas");
+    return data;
 }
