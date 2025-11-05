@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getCampaignById, updateCampaign } from "../../../services/campaign.service";
+import { getCategories } from "../../../services/category.service";
 import { toast } from "react-hot-toast";
 
 export default function EditarCampana() {
@@ -17,43 +18,38 @@ export default function EditarCampana() {
   });
 
   //estado para saber si tiene donaciones
+  const [categorias, setCategorias] = useState([]);
+  const [loadingCats, setLoadingCats] = useState(true);
+  const [errorCats, setErrorCats] = useState(null);
   const [hasDonations, setHasDonations] = useState(false);
-
   const [loading, setLoading] = useState(false);
-
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getCampaignById(id);
-        
-        if (!campRes.ok) throw new Error(data.error || "Error al cargar campaña");
+        const [cats, camp] = await Promise.all([
+          getCategories(),
+          getCampaignById(id),
+        ]);
 
-        setCategorias(catRes);
+        setCategorias(cats);
         setFormData({
-          id_categoria: data.id_categoria || "",
-          titulo: data.titulo || "",
-          descripcion: data.descripcion || "",
-          monto_objetivo: data.monto_objetivo || "",
-          tiempo_objetivo: data.tiempo_objetivo?.split("T")[0] || "",
+          id_categoria: camp.id_categoria || "",
+          titulo: camp.titulo || "",
+          descripcion: camp.descripcion || "",
+          monto_objetivo: camp.monto_objetivo || "",
+          tiempo_objetivo: camp.tiempo_objetivo?.split("T")[0] || "",
           imagen: null,
-          foto1: data.foto1,
-          foto2: data.foto2,
-          foto3: data.foto3,
+          foto1: camp.foto1,
+          foto2: camp.foto2,
+          foto3: camp.foto3,
         });
 
-        setHasDonations(data.hasDonations);
-      } catch (error) {
-        console.error(error);
-        setErrorCats(error.message);
-        toast.error("❌ Error al cargar la campaña o categorías", {
-          style: {
-            background: "#fee2e2",
-            color: "#991b1b",
-            border: "1px solid #fecaca",
-            fontWeight: "600",
-          },
-        });
+        setHasDonations(camp.hasDonations);
+      } catch (err) {
+        console.error(err);
+        setErrorCats(err.message);
+        toast.error("❌ Error al cargar la información.");
       } finally {
         setLoadingCats(false);
       }
@@ -146,19 +142,20 @@ export default function EditarCampana() {
           </p>
         )}
 
-        {/* 🟣 Selector de Categoría */}
+        {/*  Categoría */}
         <div>
           <label className="block text-slate-700 font-semibold mb-2">Categoría</label>
           {loadingCats ? (
             <p className="text-violet-600 animate-pulse">Cargando categorías...</p>
           ) : errorCats ? (
-            <p className="text-red-600">Error al cargar categorías: {errorCats}</p>
+            <p className="text-red-600">Error: {errorCats}</p>
           ) : (
             <select
               name="id_categoria"
               value={formData.id_categoria}
               onChange={handleChange}
-              className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
+              disabled={hasDonations}
+              className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 focus:ring-2 focus:ring-violet-400"
             >
               <option value="">Selecciona una categoría</option>
               {categorias.map((cat) => (
@@ -170,7 +167,6 @@ export default function EditarCampana() {
           )}
         </div>
 
-        {/* Nombre */}
         <div>
           <label className="block text-slate-700 font-semibold mb-2">Nombre</label>
           <input
