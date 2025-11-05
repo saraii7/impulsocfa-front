@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { updateCampaign } from "../../../services/campaign.service";
+import { getCampaignById, updateCampaign } from "../../../services/campaign.service";
 import { toast } from "react-hot-toast";
 
 export default function EditarCampana() {
@@ -15,19 +15,16 @@ export default function EditarCampana() {
     imagen: null,
   });
 
+  //estado para saber si tiene donaciones
+  const [hasDonations, setHasDonations] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
-  // Cargar datos actuales de la campaña
+
   useEffect(() => {
     const fetchCampaign = async () => {
       try {
-        const token = localStorage.getItem("access_token");
-        const res = await fetch(`http://localhost:3000/api/campaigns/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Error al cargar campaña");
+        const data = await getCampaignById(id);
 
         setFormData({
           titulo: data.titulo || "",
@@ -35,7 +32,12 @@ export default function EditarCampana() {
           monto_objetivo: data.monto_objetivo || "",
           tiempo_objetivo: data.tiempo_objetivo?.split("T")[0] || "",
           imagen: null,
+          foto1: data.foto1,
+          foto2: data.foto2,
+          foto3: data.foto3,
         });
+
+        setHasDonations(data.hasDonations);
       } catch (error) {
         console.error(error);
         toast.error("❌ Error al cargar la campaña", {
@@ -62,8 +64,20 @@ export default function EditarCampana() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
+    // 🟣 si tiene donaciones, no permitir edición
+    if (hasDonations) {
+      toast.error("⚠️ No se puede editar una campaña con donaciones activas.", {
+        style: {
+          background: "#fef9c3",
+          color: "#92400e",
+          border: "1px solid #fcd34d",
+          fontWeight: "600",
+        },
+      });
+      return;
+    }
+    setLoading(true);
     const toastId = toast.loading("Guardando cambios...");
 
     try {
@@ -115,6 +129,12 @@ export default function EditarCampana() {
         <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-violet-600 to-purple-600 bg-clip-text text-transparent text-center mb-4">
           Editar Campaña
         </h2>
+        {/*mostrar aviso si tiene donaciones */}
+        {hasDonations && (
+          <p className="text-center text-amber-700 bg-amber-100 border border-amber-300 rounded-lg p-2 font-medium">
+            ⚠️ Esta campaña tiene donaciones, solo puedes ver los datos.
+          </p>
+        )}
 
         <div>
           <label className="block text-slate-700 font-semibold mb-2">Nombre</label>
@@ -124,6 +144,7 @@ export default function EditarCampana() {
             value={formData.titulo}
             onChange={handleChange}
             required
+            disabled={hasDonations}
             className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-400"
           />
         </div>
@@ -136,6 +157,7 @@ export default function EditarCampana() {
             value={formData.descripcion}
             onChange={handleChange}
             required
+            disabled={hasDonations}
             className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 resize-none focus:outline-none focus:ring-2 focus:ring-violet-400"
           />
         </div>
@@ -147,6 +169,7 @@ export default function EditarCampana() {
             name="monto_objetivo"
             value={formData.monto_objetivo}
             onChange={handleChange}
+            disabled={hasDonations}
             className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-violet-400"
           />
         </div>
@@ -161,6 +184,7 @@ export default function EditarCampana() {
             min={today}
             value={formData.tiempo_objetivo}
             onChange={handleChange}
+            disabled={hasDonations}
             className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-violet-400 [color-scheme:light]"
           />
         </div>
@@ -219,6 +243,7 @@ export default function EditarCampana() {
                 name="imagen"
                 accept="image/*"
                 onChange={handleChange}
+                disabled={hasDonations}
                 className="hidden"
               />
             </label>
@@ -228,7 +253,7 @@ export default function EditarCampana() {
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || hasDonations}
           className="mt-4 bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 hover:from-blue-500 hover:via-violet-500 hover:to-purple-500 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 shadow-lg hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
         >
           {loading ? "Guardando..." : "Guardar cambios"}

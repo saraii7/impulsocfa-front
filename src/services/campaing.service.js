@@ -1,3 +1,4 @@
+// se usa para obtener campañas 
 const API_URL = "http://localhost:3000/api/campaigns";
 
 // Obtener todas las campañas
