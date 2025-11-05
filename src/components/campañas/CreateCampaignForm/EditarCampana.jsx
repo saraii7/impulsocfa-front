@@ -26,8 +26,7 @@ export default function EditarCampana() {
     const fetchData = async () => {
       try {
         const data = await getCampaignById(id);
-
-        const data = await campRes.json();
+        
         if (!campRes.ok) throw new Error(data.error || "Error al cargar campaña");
 
         setCategorias(catRes);
