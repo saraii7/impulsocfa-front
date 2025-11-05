@@ -1,3 +1,5 @@
+// se usa para editar, crear, obtener y suspender campañas
+
 import { supabase } from "../supabaseClient";
 const API_URL = `${import.meta.env.VITE_API_URL}/campaigns`;
 
@@ -132,4 +134,20 @@ export async function getUserRejectedCampaigns() {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Error al obtener campañas rechazadas");
     return data;
+}
+// Obtener campaña por ID (incluye hasDonations)
+export async function getCampaignById(id) {
+  const token = localStorage.getItem("access_token");
+  if (!token) throw new Error("No estás autenticado");
+
+  const res = await fetch(`${API_URL}/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Error al obtener campaña");
+
+  return data; // este data incluye hasDonations desde el backend
 }
