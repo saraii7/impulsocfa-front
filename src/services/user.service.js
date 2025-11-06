@@ -47,3 +47,20 @@ export async function updateUserProfile(profileData) {
 
   return data; // el backend devuelve el usuario actualizado
 }
+export async function disableUserAccount() {
+  const token = localStorage.getItem("access_token");
+  if (!token) throw new Error("No estás autenticado");
+
+  const res = await fetch(`${API_URL}/disable`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) throw new Error(data.error || "Error al deshabilitar la cuenta");
+  return data; // devuelve el usuario deshabilitado
+}
