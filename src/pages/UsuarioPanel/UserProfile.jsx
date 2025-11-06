@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { updateUserProfile } from "../../services/user.service";
+import { updateUserProfile, disableUserAccount } from "../../services/user.service";
 import toast, { Toaster } from "react-hot-toast";
 import "./../../components/RegistrarseForm/Registrarseform.css";
 import ReactFlagsSelect from "react-flags-select";
+import { useNavigate } from "react-router-dom";
 
 export default function UserProfile({ user, setUserGlobal }) {
   const [formData, setFormData] = useState({
@@ -14,6 +15,10 @@ export default function UserProfile({ user, setUserGlobal }) {
   });
   const [preview, setPreview] = useState("/default-avatar.png");
   const [saving, setSaving] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -98,6 +103,53 @@ export default function UserProfile({ user, setUserGlobal }) {
       setSaving(false);
     }
   };
+  // NUEVA FUNCIÓN para deshabilitar la cuenta (abre modal en lugar de window.confirm)
+  const handleDisableAccount = () => {
+    setShowConfirmModal(true);
+  };
+
+  // Confirmar deshabilitación
+  const confirmDisableAccount = async () => {
+    try {
+      await disableUserAccount();
+      toast.success("Tu cuenta fue deshabilitada correctamente 💤", {
+        style: {
+          borderRadius: "10px",
+          background: "linear-gradient(to right, #f0f9ff, #ede9fe)",
+          color: "#4f46e5",
+          fontWeight: 600,
+        },
+        iconTheme: {
+          primary: "#6366f1",
+          secondary: "#fff",
+        },
+      });
+      // Cerramos sesión y redirigimos
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("user");
+      setUserGlobal(null);
+      window.dispatchEvent(new Event("storage"));
+      navigate("/iniciarsesion");
+    } catch (err) {
+      console.error(err);
+      toast.error("Error al deshabilitar la cuenta 😕", {
+        style: {
+          borderRadius: "10px",
+          background: "linear-gradient(to right, #fef2f2, #fae8ff)",
+          color: "#7e22ce",
+          fontWeight: 600,
+        },
+        iconTheme: {
+          primary: "#a855f7",
+          secondary: "#fff",
+        },
+      });
+    } finally {
+      setShowConfirmModal(false);
+    }
+  };
+
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 px-6 py-10 relative overflow-hidden">
       {/* Fondo decorativo */}
@@ -172,7 +224,6 @@ export default function UserProfile({ user, setUserGlobal }) {
           </div>
         ))}
 
-
         {/* Botón */}
         <button
           type="submit"
@@ -181,7 +232,44 @@ export default function UserProfile({ user, setUserGlobal }) {
         >
           {saving ? "Guardando..." : "Actualizar perfil"}
         </button>
+
+        {/* Botón para deshabilitar cuenta */}
+        <button
+          type="button"
+          onClick={handleDisableAccount}
+          className="mt-4 bg-gradient-to-r from-red-400 via-pink-400 to-rose-400 hover:from-red-500 hover:via-pink-500 hover:to-rose-500 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border border-rose-300"
+        >
+          Deshabilitar cuenta
+        </button>
+
       </form>
+      {showConfirmModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50 animate-fadeIn">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full border border-violet-200 text-center animate-scaleIn">
+            <h3 className="text-2xl font-bold text-violet-700 mb-4">
+              ¿Deshabilitar tu cuenta?
+            </h3>
+            <p className="text-slate-600 mb-6">
+              Esta acción desactivará tu cuenta y no podrás acceder hasta que un
+              administrador la reactive. ¿Estás segura/o?
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={() => setShowConfirmModal(false)}
+                className="px-5 py-2 rounded-lg border border-violet-400 text-violet-600 hover:bg-violet-50 transition-all duration-300"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmDisableAccount}
+                className="px-5 py-2 rounded-lg bg-gradient-to-r from-red-500 to-rose-500 text-white font-semibold hover:scale-105 shadow-md transition-all duration-300"
+              >
+                Sí, deshabilitar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Toaster position="top-center" reverseOrder={false} />
     </div>
