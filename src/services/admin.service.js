@@ -118,7 +118,7 @@ export async function approveCampaign(campaignId, estado) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ estado }), // ⚠️ ahora envía "estado", no "approved"
+    body: JSON.stringify({ estado }), // ahora envía "estado", no "approved"
   });
 
   const data = await res.json();
