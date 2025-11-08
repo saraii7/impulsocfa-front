@@ -4,6 +4,7 @@ import { getCampaignById } from "../../services/campaing.service"
 import { ArrowLeft, Target, Calendar, TrendingUp, Clock, ChevronLeft, ChevronRight } from "lucide-react"
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react"
 import { createPreference } from "../../services/payment.service"
+import Comments from "../../components/comentarios/Comments"
 
 export default function DetalleCampana() {
   const { id } = useParams()
@@ -111,7 +112,7 @@ export default function DetalleCampana() {
       </div>
     )
   }
-    const imagenes = [campana.foto1, campana.foto2, campana.foto3].filter(Boolean)
+  const imagenes = [campana.foto1, campana.foto2, campana.foto3].filter(Boolean)
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 overflow-hidden">
       {/* Fondo con patrón */}
@@ -137,7 +138,7 @@ export default function DetalleCampana() {
         {/* Contenedor principal - Ahora full-width con márgenes */}
         <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-violet-200 overflow-hidden">
           {/* CARRUSEL DE IMÁGENES */}
- <div className="relative w-full h-80 overflow-hidden flex items-center justify-center bg-violet-50 border-b border-violet-200">
+          <div className="relative w-full h-80 overflow-hidden flex items-center justify-center bg-violet-50 border-b border-violet-200">
             {imagenes.length === 0 ? (
               <img
                 src="https://via.placeholder.com/800x400?text=Sin+imagen"
@@ -170,7 +171,7 @@ export default function DetalleCampana() {
               </>
             )}
           </div>
-          
+
           <div className="p-8">
             {/* Título y estado */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
@@ -179,8 +180,8 @@ export default function DetalleCampana() {
               </h1>
               <span
                 className={`px-4 py-2 rounded-full text-sm font-semibold ${campana.campana_estado === "activa"
-                    ? "bg-green-100 text-green-700 border border-green-300"
-                    : "bg-slate-100 text-slate-700 border border-slate-300"
+                  ? "bg-green-100 text-green-700 border border-green-300"
+                  : "bg-slate-100 text-slate-700 border border-slate-300"
                   }`}
               >
                 {campana.campana_estado}
@@ -271,6 +272,7 @@ export default function DetalleCampana() {
                 </div>
               )}
             </form>
+            <Comments id_campana={id} />
           </div>
         </div>
       </div>
