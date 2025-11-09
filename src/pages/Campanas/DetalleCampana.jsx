@@ -5,6 +5,7 @@ import { ArrowLeft, Target, Calendar, TrendingUp, Clock, ChevronLeft, ChevronRig
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react"
 import { createPreference } from "../../services/payment.service"
 import Comments from "../../components/comentarios/Comments"
+import UltimasDonaciones from "./UltimasDonaciones"
 
 export default function DetalleCampana() {
   const { id } = useParams()
@@ -273,6 +274,7 @@ export default function DetalleCampana() {
               )}
             </form>
             <Comments id_campana={id} />
+            <UltimasDonaciones id_campana={id} token={localStorage.getItem("access_token")} />
           </div>
         </div>
       </div>
