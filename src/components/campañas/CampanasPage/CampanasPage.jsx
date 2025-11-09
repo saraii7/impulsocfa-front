@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import {
   getCurrentUser,
   getUserCampaigns,
   getUserPendingCampaigns,
-  getUserRejectedCampaigns,
-  suspendCampaign
+  getUserRejectedCampaigns
 } from "../../../services/campaign.service"
 import toast, { Toaster } from "react-hot-toast"
+
 
 export default function CampanasPage() {
   const [user, setUser] = useState(null)
@@ -34,18 +34,7 @@ export default function CampanasPage() {
         setRejectedCampaigns(re)
       } catch (err) {
         console.error(err)
-        toast.error("Error al obtener campañas 😕", {
-          style: {
-            borderRadius: "10px",
-            background: "linear-gradient(to right, #fef2f2, #fae8ff)",
-            color: "#7e22ce",
-            fontWeight: 600,
-          },
-          iconTheme: {
-            primary: "#a855f7",
-            secondary: "#fff",
-          },
-        })
+        toast.error("Error al obtener campañas 😕")
         navigate("/login")
       } finally {
         setLoading(false)
@@ -55,135 +44,98 @@ export default function CampanasPage() {
     fetchData()
   }, [navigate])
 
-  const handleDelete = async (id) => {
-    toast(
-      (t) => (
-        <div className="flex flex-col items-start">
-          <p className="text-violet-800 font-semibold mb-2">¿Seguro que querés suspender esta campaña?</p>
-          <div className="flex gap-2">
-            <button
-              onClick={async () => {
-                toast.dismiss(t.id)
-                try {
-                  await suspendCampaign(id)
-                  setCampaigns(campaigns.filter((c) => c.id_campana !== id))
-                  toast.success("Campaña suspendida con éxito 🌙", {
-                    style: {
-                      borderRadius: "10px",
-                      background: "linear-gradient(to right, #ede9fe, #e0f2fe)",
-                      color: "#4c1d95",
-                      fontWeight: 600,
-                    },
-                    iconTheme: {
-                      primary: "#7c3aed",
-                      secondary: "#fff",
-                    },
-                  })
-                } catch (err) {
-                  console.error(err)
-                  toast.error("Error al suspender la campaña 😢", {
-                    style: {
-                      borderRadius: "10px",
-                      background: "linear-gradient(to right, #fef2f2, #fae8ff)",
-                      color: "#7e22ce",
-                      fontWeight: 600,
-                    },
-                    iconTheme: {
-                      primary: "#a855f7",
-                      secondary: "#fff",
-                    },
-                  })
-                }
-              }}
-              className="px-3 py-1 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-md hover:opacity-90 transition-all"
-            >
-              Sí, suspender
-            </button>
-            <button
-              onClick={() => toast.dismiss(t.id)}
-              className="px-3 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all"
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
-      ),
-      {
-        duration: 6000,
-        style: {
-          background: "white",
-          border: "1px solid #e0e7ff",
-          borderRadius: "12px",
-        },
+  // Card visual reutilizable
+  const Card = ({ c, showButton }) => {
+    const imagenes = [c.foto1, c.foto2, c.foto3].filter(Boolean)
+    const [currentIndex, setCurrentIndex] = useState(0)
+    const [intervalId, setIntervalId] = useState(null)
+
+    const handleMouseEnter = () => {
+      if (imagenes.length > 1) {
+        const interval = setInterval(() => {
+          setCurrentIndex((prev) => (prev + 1) % imagenes.length)
+        }, 1000)
+        setIntervalId(interval)
       }
+    }
+
+    const handleMouseLeave = () => {
+      if (intervalId) clearInterval(intervalId)
+      setIntervalId(null)
+      setCurrentIndex(0)
+    }
+
+    const imagen =
+      imagenes[currentIndex] ||
+      "https://via.placeholder.com/400x300?text=Sin+imagen"
+
+    return (
+      <div
+        className="bg-gradient-to-br from-violet-50 to-blue-50 rounded-2xl shadow-lg border border-violet-200 p-6 flex flex-col hover:shadow-xl hover:scale-105 transition-all duration-300"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden border border-violet-200">
+          <img
+            src={imagen}
+            alt={c.titulo}
+            className="w-full h-full object-cover transition-all duration-700 ease-in-out"
+          />
+          {imagenes.length > 1 && (
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+              {imagenes.map((_, i) => (
+                <span
+                  key={i}
+                  className={`w-2 h-2 rounded-full ${
+                    i === currentIndex ? "bg-violet-600" : "bg-violet-300"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        <h2 className="text-xl font-bold mb-2 bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
+          {c.titulo}
+        </h2>
+
+        <p className="text-slate-700 mb-4 line-clamp-3">{c.descripcion}</p>
+
+        <div className="flex justify-between items-center text-sm mb-3">
+          <span className="text-violet-600 font-semibold">
+            Meta: ${c.monto_objetivo}
+          </span>
+          <span className="text-violet-600 font-semibold">
+            {c.tiempo_objetivo} días
+          </span>
+        </div>
+
+        {c.estado && (
+          <p
+            className={`text-sm font-semibold mb-3 ${
+              c.estado === "pendiente"
+                ? "text-yellow-600"
+                : c.estado === "rechazada"
+                ? "text-red-600"
+                : "text-green-600"
+            }`}
+          >
+            Estado: {c.estado}
+          </p>
+        )}
+
+        {/* Botón solo si showButton es true */}
+        {showButton && (
+          <Link
+            to={`/vermascampana/${c.id_campana}`}
+            className="mt-auto inline-block text-violet-600 hover:text-violet-700 font-semibold transition-colors duration-300 hover:underline"
+          >
+            Ver más →
+          </Link>
+        )}
+      </div>
     )
   }
-
-  const handleEdit = (id) => navigate(`/editarcampana/${id}`)
-
-  // Tarjetas con botones (solo aprobadas)
-  const renderApprovedCards = (list) =>
-    list.map((c) => (
-      <div
-        key={c.id_campana}
-        className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-violet-200 p-6 flex flex-col hover:shadow-xl transition-all duration-300 hover:scale-105"
-      >
-        {c.foto1 && (
-          <img
-            src={c.foto1 || "/placeholder.svg"}
-            alt={c.titulo}
-            className="rounded-lg mb-4 object-cover h-48 w-full border border-violet-200"
-          />
-        )}
-        <h3 className="text-xl font-semibold mb-2 bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
-          {c.titulo}
-        </h3>
-        <p className="text-slate-700 mb-3 line-clamp-2">{c.descripcion}</p>
-        <p className="text-slate-600 text-sm mb-4">
-          <span className="text-violet-600 font-semibold">Meta:</span> ${c.monto_objetivo} |
-          <span className="text-violet-600 font-semibold"> Duración:</span> {c.tiempo_objetivo} días
-        </p>
-        <div className="flex gap-3 mt-auto">
-          <button
-            onClick={() => handleEdit(c.id_campana)}
-            className="flex-1 px-4 py-2 bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded-lg transition-all duration-300 border border-blue-300 hover:shadow-lg"
-          >
-            Editar
-          </button>
-          <button
-            onClick={() => handleDelete(c.id_campana)}
-            className="flex-1 px-4 py-2 bg-red-400 hover:bg-red-500 text-white font-semibold rounded-lg transition-all duration-300 border border-red-300 hover:shadow-lg"
-          >
-            Suspender
-          </button>
-          
-        </div>
-      </div>
-    ))
-
-  // Tarjetas sin botones (pendientes y rechazadas)
-  const renderInfoCards = (list) =>
-    list.map((c) => (
-      <div
-        key={c.id_campana}
-        className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-violet-200 p-6 flex flex-col hover:shadow-md transition-all duration-300"
-      >
-        {c.foto1 && (
-          <img
-            src={c.foto1 || "/placeholder.svg"}
-            alt={c.titulo}
-            className="rounded-lg mb-4 object-cover h-48 w-full border border-violet-200"
-          />
-        )}
-        <h3 className="text-xl font-semibold mb-2">{c.titulo}</h3>
-        <p className="text-slate-700 mb-3 line-clamp-2">{c.descripcion}</p>
-        <p className="text-slate-600 text-sm">
-          <span className="text-violet-600 font-semibold">Meta:</span> ${c.monto_objetivo} |
-          <span className="text-violet-600 font-semibold"> Duración:</span> {c.tiempo_objetivo} días
-        </p>
-        <p className="mt-2 text-sm text-gray-500 font-semibold">Estado: {c.estado}</p>
-      </div>
-    ))
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 p-6 relative overflow-hidden">
@@ -217,41 +169,58 @@ export default function CampanasPage() {
         ) : (
           <>
             {/* Aprobadas */}
-            <div className="mb-10">
-              <h2 className="text-2xl font-semibold mb-4">Aprobadas</h2>
+            <section className="mb-10">
+              <h2 className="text-2xl font-semibold mb-4 text-green-600">
+                Aprobadas
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {campaigns.length > 0 ? renderApprovedCards(campaigns) : (
-                  <p className="text-center text-slate-700 col-span-full">No hay campañas aprobadas.</p>
+                {campaigns.length > 0 ? (
+                  campaigns.map((c) => (
+                    <Card key={c.id_campana} c={c} showButton={true} />
+                  ))
+                ) : (
+                  <p className="text-center text-slate-700 col-span-full">
+                    No hay campañas aprobadas.
+                  </p>
                 )}
               </div>
-            </div>
+            </section>
 
             {/* Pendientes */}
-            <div className="mb-10">
-              <h2 className="text-2xl font-semibold mb-4 text-yellow-600">Pendientes</h2>
+            <section className="mb-10">
+              <h2 className="text-2xl font-semibold mb-4 text-yellow-600">
+                Pendientes
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {pendingCampaigns.length > 0 ? renderInfoCards(pendingCampaigns) : (
-                  <p className="text-center text-slate-700 col-span-full">No hay campañas pendientes.</p>
+                {pendingCampaigns.length > 0 ? (
+                  pendingCampaigns.map((c) => (
+                    <Card key={c.id_campana} c={c} showButton={false} />
+                  ))
+                ) : (
+                  <p className="text-center text-slate-700 col-span-full">
+                    No hay campañas pendientes.
+                  </p>
                 )}
               </div>
-            </div>
+            </section>
 
             {/* Rechazadas */}
-            <div className="mb-10">
-              <h2 className="text-2xl font-semibold mb-4 text-red-600">Rechazadas</h2>
+            <section>
+              <h2 className="text-2xl font-semibold mb-4 text-red-600">
+                Rechazadas
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {rejectedCampaigns.length > 0 ? renderInfoCards(rejectedCampaigns) : (
-                  <p className="text-center text-slate-700 col-span-full">No hay campañas rechazadas.</p>
+                {rejectedCampaigns.length > 0 ? (
+                  rejectedCampaigns.map((c) => (
+                    <Card key={c.id_campana} c={c} showButton={false} />
+                  ))
+                ) : (
+                  <p className="text-center text-slate-700 col-span-full">
+                    No hay campañas rechazadas.
+                  </p>
                 )}
               </div>
-            </div>
-
-            {/* Mensaje si no hay ninguna */}
-            {campaigns.length === 0 && pendingCampaigns.length === 0 && rejectedCampaigns.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-slate-700 text-lg">No tienes campañas creadas.</p>
-              </div>
-            )}
+            </section>
           </>
         )}
       </div>
