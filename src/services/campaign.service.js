@@ -37,31 +37,38 @@ export async function createCampaign(campaignData) {
 }
 // Editar campaña
 export async function updateCampaign(id, campaignData) {
-    const token = localStorage.getItem("access_token");
-    if (!token) throw new Error("No estás autenticado");
+  const token = localStorage.getItem("access_token");
+  if (!token) throw new Error("No estás autenticado");
 
-    const formData = new FormData();
+  // Obtener campaña actual
+  const campaign = await getCampaignById(id); // debería incluir has_donations
+
+  const formData = new FormData();
+
+  // Si tiene donaciones, solo enviar titulo y descripcion
+  if (campaign.has_donations) {
     if (campaignData.titulo) formData.append("titulo", campaignData.titulo);
     if (campaignData.descripcion) formData.append("descripcion", campaignData.descripcion);
-    if (campaignData.monto_objetivo) formData.append("monto_objetivo", campaignData.monto_objetivo);
-    if (campaignData.tiempo_objetivo) formData.append("tiempo_objetivo", campaignData.tiempo_objetivo);
-
-    if (campaignData.foto1) formData.append("foto1", campaignData.foto1);
-    if (campaignData.foto2) formData.append("foto2", campaignData.foto2);
-    if (campaignData.foto3) formData.append("foto3", campaignData.foto3);
-    
-    const res = await fetch(`${API_URL}/${id}`, {
-        method: "PUT",
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-        body: formData,
+  } else {
+    // 3Si NO tiene donaciones, enviar todos los campos
+    Object.entries(campaignData).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        formData.append(key, value);
+      }
     });
+  }
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Error al editar campaña");
+  // Hacer la request
+  const res = await fetch(`${API_URL}/${id}`, {
+    method: "PUT",
+    headers: { Authorization: `Bearer ${token}` },
+    body: formData,
+  });
 
-    return data;
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Error al editar campaña");
+
+  return data;
 }
 
 // Obtener campañas del usuario logueado
