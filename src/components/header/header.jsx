@@ -176,6 +176,13 @@ function Header() {
                     >
                       Perfil
                     </Link>
+                       <Link
+                      to="/todasdonaciones"
+                      className="block px-4 py-3 text-base font-medium text-gray-800 hover:text-violet-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-violet-50 rounded-xl transition-all duration-200 border border-transparent hover:border-blue-200/50"
+                      onClick={handleLinkClick}
+                    >
+                      Donaciones de tus campañas
+                    </Link>
                     <div className="my-1 h-px bg-gradient-to-r from-transparent via-blue-200/40 to-transparent"></div>
                     <button
                       className="w-full text-left px-4 py-3 text-base font-medium text-gray-800 hover:text-red-600 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 rounded-xl transition-all duration-200 border border-transparent hover:border-red-200/50"

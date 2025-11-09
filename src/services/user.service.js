@@ -19,7 +19,7 @@ export async function updateUserProfile(profileData) {
   const formData = new FormData();
 
   for (const key in profileData) {
-    // 🧠 solo incluir foto si es realmente un archivo nuevo
+    //  solo incluir foto si es realmente un archivo nuevo
     if (key === "foto_perfil") {
       const foto = profileData[key];
       if (foto && typeof foto === "object" && foto.name) {

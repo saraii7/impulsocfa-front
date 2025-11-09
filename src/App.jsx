@@ -19,6 +19,7 @@ import UsuarioPanel from "./pages/UsuarioPanel/UsuarioPanel";
 import PagoExitoso from "./components/pasarela/PagoExitoso";
 import PagoFallido from "./components/pasarela/PagoFallido";
 import PagoPendiente from "./components/pasarela/PagoPendiente";
+import TodasDonaciones from "./pages/UsuarioPanel/TodasDonaciones";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
             <Route path="/pago-exitoso" element={<PagoExitoso />} />
             <Route path="/pago-fallido" element={<PagoFallido />} /> 
             <Route path="/pago-pendiente" element={<PagoPendiente />} />
+           <Route path="/todasdonaciones" element={<TodasDonaciones />} />
           </Routes>
         </main>
 

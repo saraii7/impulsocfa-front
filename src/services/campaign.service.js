@@ -151,3 +151,27 @@ export async function getCampaignById(id) {
 
   return data; // este data incluye hasDonations desde el backend
 }
+
+export async function getLatestDonations(id, token) {
+  const res = await fetch(`${API_URL}/latest/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error("Error al obtener las últimas donaciones");
+  return await res.json();
+}
+// Obtener todas las donaciones de una campaña específica
+export async function getDonationsByCampaignId(id) {
+  const token = localStorage.getItem("access_token");
+  if (!token) throw new Error("No estás autenticado");
+
+  const res = await fetch(`${API_URL}/donation/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Error al obtener las donaciones");
+
+  return data;
+}
