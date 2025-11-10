@@ -1,5 +1,5 @@
 // se usa para obtener campañas 
-const API_URL = "http://localhost:3000/api/campaigns";
+const API_URL = `${import.meta.env.VITE_API_URL}/campaigns`;
 
 // Obtener todas las campañas
 export async function getAllCampaigns() {
