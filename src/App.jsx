@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import Home from "./pages/home/Home";
 import Header from "./components/header/header";
 import Nosotros from "./pages/Nosotros/Nosotros";
@@ -24,7 +25,37 @@ import VerMasCampana from "./components/campañas/CampanasPage/VerMasCampana";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
+      {/* 🔔 Toaster global (estilo glassmorphism) */}
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 2000,
+          style: {
+            background: "rgba(60, 60, 70, 0.85)", // fondo translúcido
+            color: "#fff",
+            backdropFilter: "blur(10px)", // efecto vidrio
+            border: "1px solid rgba(255, 255, 255, 0.1)",
+            borderRadius: "12px",
+            fontSize: "14px",
+            padding: "12px 16px",
+            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
+          },
+          success: {
+            iconTheme: {
+              primary: "#22c55e", // verde éxito
+              secondary: "#fff",
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: "#ef4444", // rojo error
+              secondary: "#fff",
+            },
+          },
+        }}
+      />
+
       <div className="flex flex-col min-h-screen">
         <Header />
 
@@ -47,16 +78,17 @@ function App() {
             <Route path="/admin" element={<AdminPanel />} />
             <Route path="/usuariopanel" element={<UsuarioPanel />} />
             <Route path="/pago-exitoso" element={<PagoExitoso />} />
-            <Route path="/pago-fallido" element={<PagoFallido />} /> 
+            <Route path="/pago-fallido" element={<PagoFallido />} />
             <Route path="/pago-pendiente" element={<PagoPendiente />} />
-           <Route path="/todasdonaciones" element={<TodasDonaciones />} />
+            <Route path="/todasdonaciones" element={<TodasDonaciones />} />
             <Route path="/vermascampana/:id" element={<VerMasCampana />} />
           </Routes>
         </main>
 
         <Footer />
       </div>
-    </Router>
+    </BrowserRouter>
   );
 }
+
 export default App;

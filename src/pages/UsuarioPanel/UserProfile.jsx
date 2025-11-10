@@ -270,8 +270,6 @@ export default function UserProfile({ user, setUserGlobal }) {
           </div>
         </div>
       )}
-
-      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 }
