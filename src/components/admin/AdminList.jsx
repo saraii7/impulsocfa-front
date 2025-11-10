@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { getAdmins, disableAdmin, updateAdmin } from "../../services/admin.service";
+import { toast, Toaster } from "react-hot-toast";
 
 export default function AdminList() {
   const [admins, setAdmins] = useState([]);
-  const [editId, setEditId] = useState(null); // admin que estamos editando
+  const [editId, setEditId] = useState(null);
   const [editData, setEditData] = useState({ nombre: "", apellido: "", email: "" });
 
   useEffect(() => {
@@ -15,7 +16,8 @@ export default function AdminList() {
       const data = await getAdmins();
       setAdmins(data);
     } catch (error) {
-      console.error("❌ Error al cargar administradores:", error);
+      toast.error("❌ Error al cargar administradores");
+      console.error("Error al cargar administradores:", error);
     }
   }
 
@@ -23,8 +25,10 @@ export default function AdminList() {
     if (!confirm("¿Seguro que querés deshabilitar este administrador?")) return;
     try {
       await disableAdmin(id);
+      toast.success("Administrador deshabilitado correctamente ✅");
       loadAdmins();
     } catch (error) {
+      toast.error("❌ Error al deshabilitar administrador");
       console.error("❌ Error al deshabilitar administrador:", error);
     }
   }
@@ -39,15 +43,17 @@ export default function AdminList() {
   async function handleSave(id) {
     try {
       await updateAdmin(id, editData);
+      toast.success("Administrador actualizado correctamente ✅");
       setEditId(null); // cerrar edición
       loadAdmins(); // recargar admins
     } catch (error) {
+      toast.error("❌ Error al actualizar administrador");
       console.error("❌ Error al actualizar admin:", error);
     }
   }
 
   return (
-   <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg border-2 border-violet-100">
+    <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg border-2 border-violet-100">
       <h2 className="text-2xl font-bold text-violet-700 mb-6 flex items-center gap-2">
         <span>👤</span> Lista de Administradores
       </h2>

@@ -66,24 +66,6 @@ function Header() {
   };
 
   return (
-    <>
-    <Toaster
-      position="top-right"
-      toastOptions={{
-        style: {
-          borderRadius: "10px",
-          background: "linear-gradient(to right, #fef2f2, #fae8ff)",
-          color: "#7e22ce",
-          fontWeight: 600,
-        },
-        iconTheme: {
-          primary: "#a855f7",
-          secondary: "#fff",
-        },
-      }}
-    />
-
-
     <header className="bg-white/95 backdrop-blur-xl border-b border-blue-200/50 sticky top-0 z-50 shadow-lg shadow-blue-100/20 relative overflow-visible">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-5 relative z-10 flex items-center justify-between">
         {/* Logo */}
@@ -304,7 +286,6 @@ function Header() {
         </nav>
       </div>
     </header>
-    </>
   );
 }
 
