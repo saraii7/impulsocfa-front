@@ -86,9 +86,8 @@ export default function CampanasPage() {
               {imagenes.map((_, i) => (
                 <span
                   key={i}
-                  className={`w-2 h-2 rounded-full ${
-                    i === currentIndex ? "bg-violet-600" : "bg-violet-300"
-                  }`}
+                  className={`w-2 h-2 rounded-full ${i === currentIndex ? "bg-violet-600" : "bg-violet-300"
+                    }`}
                 />
               ))}
             </div>
@@ -102,9 +101,14 @@ export default function CampanasPage() {
         <p className="text-slate-700 mb-4 line-clamp-3">{c.descripcion}</p>
 
         <div className="flex justify-between items-center text-sm mb-3">
-          <span className="text-violet-600 font-semibold">
-            Meta: ${c.monto_objetivo}
-          </span>
+          <div className="flex flex-col">
+            <span className="text-violet-600 font-semibold">
+              Meta: ${Number(c.monto_objetivo).toLocaleString("es-AR")}
+            </span>
+            <span className="text-violet-600 font-semibold">
+              Recaudado: ${Number(c.monto_actual || 0).toLocaleString("es-AR")}
+            </span>
+          </div>
           <span className="text-violet-600 font-semibold">
             {c.tiempo_objetivo} días
           </span>
@@ -112,13 +116,12 @@ export default function CampanasPage() {
 
         {c.estado && (
           <p
-            className={`text-sm font-semibold mb-3 ${
-              c.estado === "pendiente"
-                ? "text-yellow-600"
-                : c.estado === "rechazada"
+            className={`text-sm font-semibold mb-3 ${c.estado === "pendiente"
+              ? "text-yellow-600"
+              : c.estado === "rechazada"
                 ? "text-red-600"
                 : "text-green-600"
-            }`}
+              }`}
           >
             Estado: {c.estado}
           </p>
@@ -139,7 +142,7 @@ export default function CampanasPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 p-6 relative overflow-hidden">
-     
+
 
       {/* Efectos de fondo */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#e9d5ff_1px,transparent_1px),linear-gradient(to_bottom,#e9d5ff_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-30" />
