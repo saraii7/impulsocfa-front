@@ -63,4 +63,37 @@ export async function disableUserAccount() {
 
   if (!res.ok) throw new Error(data.error || "Error al deshabilitar la cuenta");
   return data; // devuelve el usuario deshabilitado
+} 
+// Obtener el total recibido por todas las campañas del usuario
+export async function getUserTotal() {
+  const token = localStorage.getItem("access_token");
+  if (!token) throw new Error("No estás autenticado");
+
+  const res = await fetch(`${API_URL}/total`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Error al obtener el total recibido");
+  return data; // debería devolver { total: ... }
+}
+
+// Obtener el total recibido por una campaña específica
+export async function getUserTotalByCampaign(id_campana) {
+  const token = localStorage.getItem("access_token");
+  if (!token) throw new Error("No estás autenticado");
+
+  const res = await fetch(`${API_URL}/total/${id_campana}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Error al obtener el total de la campaña");
+  return data; // debería devolver { total: ... }
 }

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { getUserCampaigns, getDonationsByCampaignId, getCurrentUser } from "../../services/campaign.service";
+import { getUserTotal } from "../../services/user.service";
 import { toast } from "react-hot-toast";
-import { Heart, Calendar, DollarSign, Trophy, Sparkles } from "lucide-react"
+import { Heart, Calendar, DollarSign, Trophy, Sparkles, Wallet} from "lucide-react"
 
 export default function TodasDonaciones() {
   const [donaciones, setDonaciones] = useState([]);
+  const [totalRecaudado, setTotalRecaudado] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -12,6 +14,9 @@ export default function TodasDonaciones() {
       try {
         const user = await getCurrentUser();
         const userId = user.id;
+
+        const totalData = await getUserTotal();
+        setTotalRecaudado(totalData.total || 0);
 
         // Obtener todas las campañas del usuario
         const campaigns = await getUserCampaigns(userId);
@@ -87,6 +92,14 @@ export default function TodasDonaciones() {
             Total de <span className="text-2xl text-purple-600 font-bold">{donaciones.length}</span> donación
             {donaciones.length !== 1 ? "es" : ""} recibida{donaciones.length !== 1 ? "s" : ""}
           </p>
+          <p className="text-lg font-semibold text-gray-700 flex items-center justify-center gap-2 mt-2">
+            <Wallet className="w-6 h-6 text-purple-600" />
+            Monto total recaudado:
+            <span className="text-2xl text-purple-600 font-bold">
+              ${Number(totalRecaudado).toLocaleString("es-AR", { minimumFractionDigits: 2 })}
+            </span>
+          </p>
+
         </div>
 
         <div className="space-y-4">
@@ -134,7 +147,7 @@ export default function TodasDonaciones() {
                         <p className="font-bold text-lg text-gray-900 truncate">
                           {don.usuario?.nombre} {don.usuario?.apellido}
                         </p>
-                        
+
                       </div>
 
                       <div className="flex items-center gap-2 flex-wrap">
