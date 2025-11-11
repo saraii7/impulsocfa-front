@@ -57,7 +57,7 @@ export default function DetalleCampana() {
     if (imagenes.length <= 1) return // Si hay solo una imagen, no hay carrusel
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % imagenes.length)
-    }, 3000) // cambia cada 3 segundos
+    }, 5000) // cambia cada 5 segundos
     return () => clearInterval(interval)
   }, [campana])
 
@@ -85,11 +85,31 @@ export default function DetalleCampana() {
     }
 
     try {
+      const monto = parseFloat(amount.replace(/\./g, "").replace(",", ".")); // Convierte el string formateado a número real
+
+      //  Cálculo de porcentajes
+      const comisionML = monto * 0.04;
+      const plataforma = monto * 0.03;
+      const donacion = monto * 0.93;
+
+      console.log({
+        montoTotal: monto,
+        donacionReal: donacion,
+        comisionML,
+        plataforma,
+      });
+
+
       const idPreference = await createPreference({
-        amount: parseFloat(amount),
+        amount: monto,
         campaignTitle: campana.titulo,
         campaignId: campana.id_campana,
-        llave_maestra: llaveMaestra, // importante
+        llave_maestra: llaveMaestra,
+
+        comisionML,
+        plataforma,
+        donacion,
+
       });
 
       setPreferenceId(idPreference);
@@ -99,6 +119,7 @@ export default function DetalleCampana() {
       toast.error(err.message || "Hubo un error al procesar el pago, intentá nuevamente");
     }
   };
+
   const formatAmount = (value) => {
     // eliminamos todo excepto dígitos y coma
     let cleanValue = value.replace(/[^\d,]/g, "");
@@ -330,7 +351,19 @@ export default function DetalleCampana() {
                   />
                 </div>
 
+                {/* Nota de transparencia */}
+                <p className="text-xs text-slate-500 mt-1 italic">
+                  💡 Del monto donado, un pequeño porcentaje cubre comisiones y mantenimiento.
+                  <span className="relative ml-1 text-violet-500 cursor-pointer font-semibold group">
+                    ⓘ
+                    {/* Tooltip alineado al icono */}
+                    <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:flex bg-slate-800 text-white text-[11px] leading-snug rounded-lg px-3 py-2 shadow-lg w-64 text-center transition-all duration-200 opacity-0 group-hover:opacity-100 group-hover:translate-y-[-4px] z-10">
+                      Una pequeña parte se destina a cubrir costos de la plataforma y tarifas de pago.
+                    </span>
+                  </span>
+                </p>
               </div>
+
               {/* Llave maestra */}
               <div className="flex flex-col gap-1">
                 <label className="block text-slate-700 font-semibold mb-1">
