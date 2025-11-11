@@ -99,24 +99,24 @@ export default function DetalleCampana() {
       toast.error(err.message || "Hubo un error al procesar el pago, intentá nuevamente");
     }
   };
-   const formatAmount = (value) => {
-  // eliminamos todo excepto dígitos y coma
-  let cleanValue = value.replace(/[^\d,]/g, "");
+  const formatAmount = (value) => {
+    // eliminamos todo excepto dígitos y coma
+    let cleanValue = value.replace(/[^\d,]/g, "");
 
-  // separamos parte entera y decimal
-  const [integerPart, decimalPart] = cleanValue.split(",");
+    // separamos parte entera y decimal
+    const [integerPart, decimalPart] = cleanValue.split(",");
 
-  // agregamos puntos de miles
-  const withDots = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    // agregamos puntos de miles
+    const withDots = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
-  // si hay decimales, los volvemos a agregar con la coma
-  return decimalPart !== undefined ? `${withDots},${decimalPart}` : withDots;
-};
+    // si hay decimales, los volvemos a agregar con la coma
+    return decimalPart !== undefined ? `${withDots},${decimalPart}` : withDots;
+  };
 
-const handleAmountChange = (e) => {
-  const inputValue = e.target.value;
-  setAmount(formatAmount(inputValue));
-};
+  const handleAmountChange = (e) => {
+    const inputValue = e.target.value;
+    setAmount(formatAmount(inputValue));
+  };
 
   if (loading) {
     return (
@@ -311,28 +311,26 @@ const handleAmountChange = (e) => {
 
             {/* Formulario de donación */}
             <form onSubmit={handleDonate} className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1">
-  <label className="block text-slate-700 font-semibold mb-1">
-    Monto a donar 💵
-  </label>
-  <div className="relative">
-    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-lg">
-      $
-    </span>
-    <input
-      type="text"
-      inputMode="decimal"
-      value={amount}
-      onChange={handleAmountChange}
-      placeholder="Ingresá el monto a donar"
-      className="pl-8 pr-3 py-3 rounded-lg border border-violet-300 bg-violet-50/50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-violet-400 transition-all duration-300"
-      required
-    />
-  </div>
-  <p className="text-xs text-slate-500 mt-1">
-    💡 El formato se aplica automáticamente: 1000 → 1.000, podés agregar decimales con coma (,)
-  </p>
-</div>
+              <div className="flex flex-col gap-1">
+                <label className="block text-slate-700 font-semibold mb-1">
+                  Monto a donar 💵
+                </label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-lg">
+                    $
+                  </span>
+                  <input
+                    type="text"
+                    inputMode="decimal"
+                    value={amount}
+                    onChange={handleAmountChange}
+                    placeholder="Ingresá el monto a donar"
+                    className="pl-8 pr-3 py-3 rounded-lg border border-violet-300 bg-violet-50/50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-violet-400 transition-all duration-300"
+                    required
+                  />
+                </div>
+
+              </div>
               {/* Llave maestra */}
               <div className="flex flex-col gap-1">
                 <label className="block text-slate-700 font-semibold mb-1">
