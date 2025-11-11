@@ -6,6 +6,8 @@ import { initMercadoPago, Wallet } from "@mercadopago/sdk-react"
 import { createPreference } from "../../services/payment.service"
 import Comments from "../../components/comentarios/Comments"
 import UltimasDonaciones from "./UltimasDonaciones"
+import toast from "react-hot-toast";
+
 
 export default function DetalleCampana() {
   const { id } = useParams()
@@ -17,6 +19,8 @@ export default function DetalleCampana() {
   const [error, setError] = useState(null)
   const [amount, setAmount] = useState("")
   const [preferenceId, setPreferenceId] = useState(null)
+  const [llaveMaestra, setLlaveMaestra] = useState("");
+
 
   //carrusel estado
   const [currentImage, setCurrentImage] = useState(0)
@@ -71,7 +75,12 @@ export default function DetalleCampana() {
     e.preventDefault();
 
     if (!amount || amount <= 0) {
-      alert("Ingresá un monto válido");
+      toast.error("Ingresá un monto válido");
+      return;
+    }
+
+    if (!llaveMaestra.trim()) {
+      toast.error("Ingresá tu llave maestra para continuar");
       return;
     }
 
@@ -80,12 +89,14 @@ export default function DetalleCampana() {
         amount: parseFloat(amount),
         campaignTitle: campana.titulo,
         campaignId: campana.id_campana,
-        userId: user.id_usuario,
+        llave_maestra: llaveMaestra, // importante
       });
+
       setPreferenceId(idPreference);
+      toast.success("Llave maestra verificada correctamente 🎉");
     } catch (err) {
       console.error("Error al crear preferencia:", err);
-      alert("Hubo un error al procesar el pago, intentá nuevamente");
+      toast.error(err.message || "Hubo un error al procesar el pago, intentá nuevamente");
     }
   };
 
@@ -288,6 +299,13 @@ export default function DetalleCampana() {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="Ingresa el monto a donar"
+                className="p-3 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-400"
+              />
+              <input
+                type="password"
+                value={llaveMaestra}
+                onChange={(e) => setLlaveMaestra(e.target.value)}
+                placeholder="Ingresa tu llave maestra"
                 className="p-3 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-400"
               />
               <button
