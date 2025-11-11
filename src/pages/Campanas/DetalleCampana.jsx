@@ -165,7 +165,7 @@ export default function DetalleCampana() {
               />
             )}
 
-            {/* 🟣 Botones solo si hay más de una imagen */}
+            {/*  Botones solo si hay más de una imagen */}
             {imagenes.length > 1 && (
               <>
                 <button
@@ -301,13 +301,23 @@ export default function DetalleCampana() {
                 placeholder="Ingresa el monto a donar"
                 className="p-3 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-400"
               />
-              <input
-                type="password"
-                value={llaveMaestra}
-                onChange={(e) => setLlaveMaestra(e.target.value)}
-                placeholder="Ingresa tu llave maestra"
-                className="p-3 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-400"
-              />
+              {/* Llave maestra */}
+              <div className="flex flex-col gap-1">
+                <label className="block text-slate-700 font-semibold mb-1">
+                  Llave maestra 🔑
+                </label>
+                <input
+                  type="password"
+                  value={llaveMaestra}
+                  onChange={(e) => setLlaveMaestra(e.target.value)}
+                  placeholder="Ingresá tu llave maestra"
+                  className="p-3 rounded-lg border border-violet-300 bg-violet-50/50 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300"
+                  required
+                />
+                <p className="text-xs text-slate-500 mt-1">
+                  🔒 Pedimos tu llave maestra para confirmar que sos el titular de la cuenta y mantener la seguridad de las donaciones.
+                </p>
+              </div>
               <button
                 type="submit"
                 className="w-full bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 hover:from-blue-500 hover:to-violet-500 text-white font-semibold px-6 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
