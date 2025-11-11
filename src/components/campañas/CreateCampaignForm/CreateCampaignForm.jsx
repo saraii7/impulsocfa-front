@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function CreateCampaignForm() {
   const [formData, setFormData] = useState({
     id_categoria: "",
+    alias: "",
     titulo: "",
     descripcion: "",
     monto_objetivo: "",
@@ -45,20 +46,29 @@ export default function CreateCampaignForm() {
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const validate = () => {
-    const newErrors = {};
-    if (!formData.titulo.trim()) newErrors.titulo = "El nombre es obligatorio.";
-    if (!formData.descripcion.trim())
-      newErrors.descripcion = "La descripción es obligatoria.";
-    if (!formData.monto_objetivo || formData.monto_objetivo <= 0)
-      newErrors.monto_objetivo = "El monto debe ser mayor que 0.";
-    if (!formData.tiempo_objetivo)
-      newErrors.tiempo_objetivo = "Debe ingresar una fecha de finalización.";
-    return newErrors;
-    if (!formData.id_categoria)
-      newErrors.id_categoria = "Debe seleccionar una categoría.";
-    return newErrors;
-  };
+const validate = () => {
+  const newErrors = {};
+
+  if (!formData.titulo.trim())
+    newErrors.titulo = "El nombre es obligatorio.";
+
+  if (!formData.alias.trim())
+    newErrors.alias = "El alias es obligatorio.";
+
+  if (!formData.descripcion.trim())
+    newErrors.descripcion = "La descripción es obligatoria.";
+
+  if (!formData.monto_objetivo || formData.monto_objetivo <= 0)
+    newErrors.monto_objetivo = "El monto debe ser mayor que 0.";
+
+  if (!formData.tiempo_objetivo)
+    newErrors.tiempo_objetivo = "Debe ingresar una fecha de finalización.";
+
+  if (!formData.id_categoria)
+    newErrors.id_categoria = "Debe seleccionar una categoría.";
+
+  return newErrors;
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -162,6 +172,27 @@ export default function CreateCampaignForm() {
             <p className="text-red-500 text-sm mt-1">{errors.titulo}</p>
           )}
         </div>
+
+        {/* Alias */}
+        <div>
+          <label className="block text-slate-700 font-semibold mb-2">
+            Alias
+          </label>
+          <input
+            type="text"
+            name="alias"
+            placeholder="Ej: ayuda-bahia"
+            value={formData.alias}
+            onChange={handleChange}
+            className={`w-full bg-violet-50/50 border ${errors.alias ? "border-red-400" : "border-violet-300"
+              } rounded-lg px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 ${errors.alias ? "focus:ring-red-400" : "focus:ring-violet-400"
+              } focus:border-transparent transition-all duration-300 hover:border-violet-400`}
+          />
+          {errors.alias && (
+            <p className="text-red-500 text-sm mt-1">{errors.alias}</p>
+          )}
+        </div>
+
 
         {/* Descripción */}
         <div>
