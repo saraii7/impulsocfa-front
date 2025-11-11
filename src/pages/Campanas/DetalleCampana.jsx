@@ -333,37 +333,38 @@ export default function DetalleCampana() {
             {/* Formulario de donación */}
             <form onSubmit={handleDonate} className="flex flex-col gap-4">
               <div className="flex flex-col gap-1">
-                <label className="block text-slate-700 font-semibold mb-1">
-                  Monto a donar 💵
-                </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-lg">
-                    $
-                  </span>
-                  <input
-                    type="text"
-                    inputMode="decimal"
-                    value={amount}
-                    onChange={handleAmountChange}
-                    placeholder="Ingresá el monto a donar"
-                    className="pl-8 pr-3 py-3 rounded-lg border border-violet-300 bg-violet-50/50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-violet-400 transition-all duration-300"
-                    required
-                  />
-                </div>
+    <label className="block text-slate-700 font-semibold mb-1">
+      Monto a donar 💵
+    </label>
 
-                {/* Nota de transparencia */}
-                <p className="text-xs text-slate-500 mt-1 italic">
-                  💡 Del monto donado, un pequeño porcentaje cubre comisiones y mantenimiento.
-                  <span className="relative ml-1 text-violet-500 cursor-pointer font-semibold group">
-                    ⓘ
-                    {/* Tooltip alineado al icono */}
-                    <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:flex bg-slate-800 text-white text-[11px] leading-snug rounded-lg px-3 py-2 shadow-lg w-64 text-center transition-all duration-200 opacity-0 group-hover:opacity-100 group-hover:translate-y-[-4px] z-10">
-                      Una pequeña parte se destina a cubrir costos de la plataforma y tarifas de pago.
-                    </span>
-                  </span>
-                </p>
-              </div>
+    <div className="flex items-center gap-2">
+      {/* Input con símbolo $ */}
+      <div className="relative">
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-lg">
+          $
+        </span>
+        <input
+          type="text"
+          inputMode="decimal"
+          value={amount}
+          onChange={handleAmountChange}
+          placeholder="Ingresá el monto a donar"
+          className="pl-8 pr-3 py-3 rounded-lg border border-violet-300 bg-violet-50/50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-violet-400 transition-all duration-300"
+          required
+        />
+      </div>
 
+      {/* Icono con tooltip */}
+      <div className="relative group">
+        <span className="text-violet-500 cursor-pointer font-semibold text-lg">
+          ⓘ
+        </span>
+        <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:flex bg-slate-800 text-white text-[11px] leading-snug rounded-lg px-3 py-2 shadow-lg w-64 text-center transition-all duration-200 opacity-0 group-hover:opacity-100 group-hover:translate-y-[-4px] z-10">
+          Una pequeña parte se destina a cubrir costos de la plataforma y tarifas de pago.
+        </span>
+      </div>
+    </div>
+  </div>
               {/* Llave maestra */}
               <div className="flex flex-col gap-1">
                 <label className="block text-slate-700 font-semibold mb-1">
