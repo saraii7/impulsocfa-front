@@ -11,6 +11,7 @@ export default function EditarCampana() {
   const [formData, setFormData] = useState({
     id_categoria: "",
     titulo: "",
+    alias: "",
     descripcion: "",
     monto_objetivo: "",
     tiempo_objetivo: "",
@@ -37,6 +38,7 @@ export default function EditarCampana() {
         setFormData({
           id_categoria: camp.id_categoria || "",
           titulo: camp.titulo || "",
+          alias: camp.alias || "",
           descripcion: camp.descripcion || "",
           monto_objetivo: camp.monto_objetivo || "",
           tiempo_objetivo: camp.tiempo_objetivo?.split("T")[0] || "",
@@ -74,7 +76,7 @@ export default function EditarCampana() {
     try {
       // 🔹 Si tiene donaciones, solo enviamos título y descripción
       const dataToSend = hasDonations
-        ? { titulo: formData.titulo, descripcion: formData.descripcion }
+        ? { titulo: formData.titulo, descripcion: formData.descripcion, alias: formData.alias }
         : { ...formData }; // si no tiene donaciones, enviar todo
 
       await updateCampaign(id, dataToSend);
@@ -151,6 +153,21 @@ export default function EditarCampana() {
             onChange={handleChange}
             required
             disabled={false} // ✅ Siempre editable
+            className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-400"
+          />
+        </div>
+
+        {/* Alias */}
+        <div>
+          <label className="block text-slate-700 font-semibold mb-2">Alias</label>
+          <input
+            type="text"
+            name="alias"
+            value={formData.alias}
+            onChange={handleChange}
+            required
+            disabled={hasDonations} // ⚠️ Podés decidir si querés permitir editarlo o no
+            placeholder="Ej: ayuda-bahia"
             className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-400"
           />
         </div>
