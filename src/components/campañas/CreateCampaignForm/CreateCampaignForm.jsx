@@ -21,6 +21,7 @@ export default function CreateCampaignForm() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
   const [errors, setErrors] = useState({});
+  const [llaveMaestra, setLlaveMaestra] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,29 +47,29 @@ export default function CreateCampaignForm() {
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-const validate = () => {
-  const newErrors = {};
+  const validate = () => {
+    const newErrors = {};
 
-  if (!formData.titulo.trim())
-    newErrors.titulo = "El nombre es obligatorio.";
+    if (!formData.titulo.trim())
+      newErrors.titulo = "El nombre es obligatorio.";
 
-  if (!formData.alias.trim())
-    newErrors.alias = "El alias es obligatorio.";
+    if (!formData.alias.trim())
+      newErrors.alias = "El alias es obligatorio.";
 
-  if (!formData.descripcion.trim())
-    newErrors.descripcion = "La descripción es obligatoria.";
+    if (!formData.descripcion.trim())
+      newErrors.descripcion = "La descripción es obligatoria.";
 
-  if (!formData.monto_objetivo || formData.monto_objetivo <= 0)
-    newErrors.monto_objetivo = "El monto debe ser mayor que 0.";
+    if (!formData.monto_objetivo || formData.monto_objetivo <= 0)
+      newErrors.monto_objetivo = "El monto debe ser mayor que 0.";
 
-  if (!formData.tiempo_objetivo)
-    newErrors.tiempo_objetivo = "Debe ingresar una fecha de finalización.";
+    if (!formData.tiempo_objetivo)
+      newErrors.tiempo_objetivo = "Debe ingresar una fecha de finalización.";
 
-  if (!formData.id_categoria)
-    newErrors.id_categoria = "Debe seleccionar una categoría.";
+    if (!formData.id_categoria)
+      newErrors.id_categoria = "Debe seleccionar una categoría.";
 
-  return newErrors;
-};
+    return newErrors;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,12 +79,19 @@ const validate = () => {
       setMessage({ type: "error", text: "Por favor, corrige los campos en rojo." });
       return;
     }
+    if (!llaveMaestra.trim()) {
+      setMessage({ type: "error", text: "Ingresá tu llave maestra para continuar." });
+      return;
+    }
 
     setLoading(true);
     setMessage({ type: "", text: "" });
 
     try {
-      await createCampaign(formData);
+      await createCampaign({
+        ...formData,
+        llave_maestra: llaveMaestra,
+      });
       setMessage({ type: "success", text: "✅ Campaña creada con éxito!" });
       setTimeout(() => navigate("/campanas"), 1500);
     } catch (error) {
@@ -110,6 +118,28 @@ const validate = () => {
         onSubmit={handleSubmit}
         className="relative z-10 w-full max-w-lg bg-white/80 backdrop-blur-xl p-8 rounded-2xl shadow-xl border border-violet-200 flex flex-col gap-5"
       >
+        {/* Llave maestra */}
+        <div>
+          <label className="block text-slate-700 font-semibold mb-1">
+            Llave maestra 🔑
+          </label>
+          <p className="text-xs text-slate-500 mb-2">
+            Pedimos tu llave maestra para verificar que sos el titular de la cuenta y
+            mantener la seguridad de la plataforma.
+          </p>
+          <input
+            type="password"
+            name="llave_maestra"
+            placeholder="Ingresá tu llave maestra"
+            value={llaveMaestra}
+            onChange={(e) => setLlaveMaestra(e.target.value)}
+            className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400"
+            required
+          />
+        </div>
+
+
+
         <h2 className="text-3xl font-bold text-center mb-4 bg-gradient-to-r from-blue-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
           Crear Campaña
         </h2>
@@ -125,7 +155,7 @@ const validate = () => {
             {message.text}
           </div>
         )}
-        {/* 🟣 NUEVO: Selector de categoría */}
+
         <div>
           <label className="block text-slate-700 font-semibold mb-2">Categoría</label>
           {loadingCats ? (

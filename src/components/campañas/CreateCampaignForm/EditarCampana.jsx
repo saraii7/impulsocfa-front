@@ -114,7 +114,7 @@ export default function EditarCampana() {
         {/* Aviso si tiene donaciones */}
         {hasDonations && (
           <p className="text-center text-amber-700 bg-amber-100 border border-amber-300 rounded-lg p-2 font-medium">
-            ⚠️ Esta campaña tiene donaciones, solo podés editar el título y la descripción. Los demás cambios requerirán aprobación del admin.
+            ⚠️ Esta campaña tiene donaciones, solo podés editar el título, alias y la descripción. Los demás cambios requerirán aprobación del admin.
           </p>
         )}
 
@@ -166,7 +166,7 @@ export default function EditarCampana() {
             value={formData.alias}
             onChange={handleChange}
             required
-            disabled={hasDonations} // ⚠️ Podés decidir si querés permitir editarlo o no
+            disabled={false} //
             placeholder="Ej: ayuda-bahia"
             className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-400"
           />
