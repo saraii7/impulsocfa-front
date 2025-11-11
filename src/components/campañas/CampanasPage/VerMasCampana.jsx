@@ -107,11 +107,10 @@ export default function VerMasCampana() {
             {campana.titulo}
           </h1>
           <span
-            className={`px-4 py-2 rounded-full text-sm font-semibold ${
-              campana.campana_estado === "activa"
-                ? "bg-green-100 text-green-700 border border-green-300"
-                : "bg-slate-100 text-slate-700 border border-slate-300"
-            }`}
+            className={`px-4 py-2 rounded-full text-sm font-semibold ${campana.campana_estado === "activa"
+              ? "bg-green-100 text-green-700 border border-green-300"
+              : "bg-slate-100 text-slate-700 border border-slate-300"
+              }`}
           >
             {campana.campana_estado}
           </span>
@@ -135,17 +134,47 @@ export default function VerMasCampana() {
           <div className="bg-gradient-to-br from-blue-50 to-violet-50 rounded-xl p-4 border border-violet-200">
             <Target className="w-6 h-6 text-violet-600 mb-1" />
             <p className="text-slate-600 text-sm">Meta</p>
-            <p className="text-2xl font-bold text-violet-600">${campana.monto_objetivo}</p>
+            <p className="text-2xl font-bold text-violet-600">
+              ${Number(campana.monto_objetivo).toLocaleString("es-AR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </p>
           </div>
           <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl p-4 border border-violet-200">
             <TrendingUp className="w-6 h-6 text-violet-600 mb-1" />
             <p className="text-slate-600 text-sm">Recaudado</p>
-            <p className="text-2xl font-bold text-violet-600">${campana.monto_actual}</p>
+            <p className="text-2xl font-bold text-violet-600">
+              ${Number(campana.monto_actual).toLocaleString("es-AR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </p>
           </div>
           <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 border border-violet-200">
             <Clock className="w-6 h-6 text-violet-600 mb-1" />
             <p className="text-slate-600 text-sm">Duración</p>
-            <p className="text-2xl font-bold text-violet-600">{campana.tiempo_objetivo} días</p>
+            <p className="text-2xl font-bold text-violet-600">
+              Finaliza el{" "}
+              {new Date(campana.tiempo_objetivo).toLocaleDateString("es-AR", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}{" "}
+              (
+              {(() => {
+                const diasRestantes = Math.ceil(
+                  (new Date(campana.tiempo_objetivo) - new Date()) /
+                  (1000 * 60 * 60 * 24)
+                );
+                return diasRestantes > 0
+                  ? `faltan ${diasRestantes} ${diasRestantes === 1 ? "día" : "días"}`
+                  : diasRestantes === 0
+                    ? "finaliza hoy"
+                    : "ya finalizó";
+              })()}
+              )
+            </p>
           </div>
           <div className="bg-gradient-to-br from-pink-50 to-blue-50 rounded-xl p-4 border border-violet-200">
             <Calendar className="w-6 h-6 text-violet-600 mb-1" />
