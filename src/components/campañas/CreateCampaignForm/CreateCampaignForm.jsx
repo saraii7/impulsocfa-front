@@ -90,8 +90,12 @@ export default function CreateCampaignForm() {
 
 
     try {
+      const numericMonto = parseFloat(
+        formData.monto_objetivo.replace(/\./g, "").replace(",", ".")
+      );
       await createCampaign({
         ...formData,
+        monto_objetivo: numericMonto,
         llave_maestra: llaveMaestra,
       });
       toast.success("✅ Campaña creada con éxito!");
@@ -103,7 +107,26 @@ export default function CreateCampaignForm() {
       setLoading(false);
     }
   };
+  const handleMontoChange = (e) => {
+    let value = e.target.value;
 
+    // Permitir solo números, puntos y comas
+    value = value.replace(/[^\d.,]/g, "");
+
+    // Reemplazar todas las comas por puntos para convertir a número real
+    const numericValue = parseFloat(value.replace(",", ".").replace(/\./g, (match, offset) => {
+      // evita eliminar el punto decimal si está al final
+      return offset < value.length - 3 ? "" : ".";
+    }));
+
+    // Formatear con puntos para miles (sin afectar coma decimal)
+    const parts = value.split(",");
+    let integerPart = parts[0].replace(/\D/g, "");
+    integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    const formattedValue = parts[1] ? `${integerPart},${parts[1]}` : integerPart;
+
+    setFormData((prev) => ({ ...prev, monto_objetivo: formattedValue }));
+  };
   const today = new Date().toISOString().split("T")[0];
 
   return (
@@ -251,10 +274,11 @@ export default function CreateCampaignForm() {
             Monto objetivo
           </label>
           <input
-            type="number"
+            type="text"
             name="monto_objetivo"
+            value={formData.monto_objetivo}
+            onChange={handleMontoChange}
             placeholder="Monto en pesos"
-            onChange={handleChange}
             className={`w-full bg-violet-50/50 border ${errors.monto_objetivo ? "border-red-400" : "border-violet-300"
               } rounded-lg px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 ${errors.monto_objetivo ? "focus:ring-red-400" : "focus:ring-violet-400"
               } focus:border-transparent transition-all duration-300 hover:border-violet-400`}
@@ -263,6 +287,7 @@ export default function CreateCampaignForm() {
             <p className="text-red-500 text-sm mt-1">{errors.monto_objetivo}</p>
           )}
         </div>
+
 
         {/* Fecha */}
         <div>
