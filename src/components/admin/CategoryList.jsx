@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getCategories, createCategory, updateCategory, deleteCategory } from "../../services/category.service";
+import { toast } from "react-hot-toast";
 
 export default function CategoryList() {
   const [categories, setCategories] = useState([]);
@@ -19,6 +20,7 @@ export default function CategoryList() {
         editName: cat.nombre, // almacena temporalmente el nuevo nombre
       }));
       setCategories(categoriesWithEdit);
+
     } catch (error) {
       console.error("❌ Error al cargar categorías:", error);
     }
@@ -26,37 +28,71 @@ export default function CategoryList() {
 
   async function handleCreate(e) {
     e.preventDefault();
-    if (!newCategory.trim()) return;
+    if (!newCategory.trim())
+      return;
+
     try {
       await createCategory(newCategory); // enviamos solo el nombre
+      toast.success("✅ Categoría creada correctamente");
       setNewCategory("");
-      loadCategories();
+      await loadCategories();
     } catch (error) {
       console.error("❌ Error al crear categoría:", error);
+      toast.error("❌ No se pudo crear la categoría");
     }
   }
 
   async function handleDelete(id) {
-    if (!confirm("¿Eliminar esta categoría?")) return;
-    try {
-      await deleteCategory(id);
-      loadCategories();
-    } catch (error) {
-      console.error("❌ Error al eliminar categoría:", error);
-    }
+    toast((t) => (
+      <div className="flex flex-col items-start">
+        <p className="font-semibold">¿Eliminar esta categoría?</p>
+        <div className="flex gap-2 mt-2">
+          <button
+            onClick={async () => {
+              toast.dismiss(t.id); // cierra el toast
+              try {
+                await deleteCategory(id);
+                toast.success("🗑️ Categoría eliminada correctamente");
+                loadCategories();
+              } catch (error) {
+                console.error("❌ Error al eliminar categoría:", error);
+                toast.error("❌ No se pudo eliminar la categoría");
+              }
+            }}
+            className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+          >
+            Eliminar
+          </button>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    ));
   }
 
+
   async function handleSaveEdit(cat) {
+    if (!cat.editName.trim()) {
+      toast.error("⚠️ El nombre no puede estar vacío");
+      return;
+    }
+
     try {
       await updateCategory(cat.id_categoria, cat.editName);
-      loadCategories();
+      toast.success("✏️ Categoría editada correctamente");
+      await loadCategories();
     } catch (error) {
       console.error("❌ Error al editar categoría:", error);
+      toast.error("❌ No se pudo editar la categoría");
     }
   }
 
   return (
-  <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg border-2 border-pink-100">
+    <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg border-2 border-pink-100">
       <h2 className="text-2xl font-bold text-pink-700 mb-6 flex items-center gap-2">
         <span>📂</span> Categorías
       </h2>

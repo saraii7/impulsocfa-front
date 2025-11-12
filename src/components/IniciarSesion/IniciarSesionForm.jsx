@@ -48,24 +48,48 @@ export default function IniciarSesionForm() {
       });
 
       setTimeout(() => navigate("/home"), 800);
-    } catch (error) {
-      console.error("Error al iniciar sesión:", error.message);
-      toast.dismiss(toastId);
-      toast.error("Error al iniciar sesión 😕 Verificá tus datos.", {
-        style: {
-          background: "#1e1e2f",
-          color: "#e2e8f0",
-          border: "1px solid rgba(139,92,246,0.4)",
-          borderRadius: "12px",
-          padding: "12px 16px",
-        },
-        iconTheme: {
-          primary: "#a78bfa",
-          secondary: "#1e1e2f",
-        },
-      });
     }
+catch (error) {
+  console.error("Error al iniciar sesión:", error.message);
+  toast.dismiss(toastId);
+
+  const errorMsg = error.message || "Error desconocido";
+
+  if (errorMsg.includes("deshabilitada")) {
+    toast.error("Tu cuenta está deshabilitada. No puedes iniciar sesión.", {
+      style: {
+        background: "#1e1e2f",
+        color: "#e2e8f0",
+        border: "1px solid rgba(139,92,246,0.4)",
+        borderRadius: "12px",
+        padding: "12px 16px",
+      },
+      iconTheme: {
+        primary: "#a78bfa",
+        secondary: "#1e1e2f",
+      },
+    });
+
+    // Redirige automáticamente al registro después de 2 segundos
+    setTimeout(() => navigate("/registrarse"), 2000);
+  } else {
+    toast.error("Error al iniciar sesión 😕 Verificá tus datos.", {
+      style: {
+        background: "#1e1e2f",
+        color: "#e2e8f0",
+        border: "1px solid rgba(139,92,246,0.4)",
+        borderRadius: "12px",
+        padding: "12px 16px",
+      },
+      iconTheme: {
+        primary: "#a78bfa",
+        secondary: "#1e1e2f",
+      },
+    });
+  }
+}
   };
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 px-4 relative overflow-hidden">

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getPendingCampaigns, approveCampaign, getCampaignById } from "../../services/admin.service";
+import { toast } from "react-hot-toast";
 
 export default function CampaignList() {
   const [campaigns, setCampaigns] = useState([]);
@@ -19,8 +20,10 @@ export default function CampaignList() {
         summary.map((c) => getCampaignById(c.id_campana))
       );
       setCampaigns(detailedCampaigns);
+      toast.success("✅ Campañas pendientes cargadas correctamente");
     } catch (error) {
-      console.error("❌ Error al cargar campañas pendientes:", error);
+      console.error("Error al cargar campañas pendientes:", error);
+      toast.error("❌ Error al cargar las campañas pendientes");
     } finally {
       setLoading(false);
     }
@@ -31,9 +34,16 @@ export default function CampaignList() {
       if (!campaignId) return;
       const estado = approved ? "aprobada" : "rechazada";
       await approveCampaign(campaignId, estado);
+      toast.success(
+        approved
+          ? "✅ Campaña aprobada correctamente"
+          : "🚫 Campaña rechazada correctamente"
+      );
+
       loadCampaigns(); // recargar campañas
     } catch (error) {
-      console.error("❌ Error al actualizar estado de campaña:", error);
+      console.error(" Error al actualizar estado de campaña:", error);
+      toast.error("❌ Error al actualizar el estado de la campaña");
     }
   }
 

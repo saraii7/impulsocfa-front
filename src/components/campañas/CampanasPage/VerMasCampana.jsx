@@ -155,12 +155,8 @@ export default function VerMasCampana() {
             <Clock className="w-6 h-6 text-violet-600 mb-1" />
             <p className="text-slate-600 text-sm">Duración</p>
             <p className="text-2xl font-bold text-violet-600">
-              Finaliza el{" "}
-              {new Date(campana.tiempo_objetivo).toLocaleDateString("es-AR", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}{" "}
+              {" "}
+              {new Date(campana.tiempo_objetivo).toLocaleDateString("es-AR")}{" "}
               (
               {(() => {
                 const diasRestantes = Math.ceil(
@@ -176,6 +172,7 @@ export default function VerMasCampana() {
               )
             </p>
           </div>
+
           <div className="bg-gradient-to-br from-pink-50 to-blue-50 rounded-xl p-4 border border-violet-200">
             <Calendar className="w-6 h-6 text-violet-600 mb-1" />
             <p className="text-slate-600 text-sm">Inicio</p>

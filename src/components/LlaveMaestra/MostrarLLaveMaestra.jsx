@@ -76,7 +76,7 @@ export default function MostrarLlaveMaestra() {
                                 onClick={handleIrDashboard}
                                 className="px-6 py-3 bg-gradient-to-r from-blue-600 via-violet-600 to-pink-600 hover:from-blue-500 hover:via-violet-500 hover:to-pink-500 text-white font-semibold rounded-lg transition-all duration-300 shadow-[0_0_30px_rgba(139,92,246,0.5)] hover:shadow-[0_0_40px_rgba(139,92,246,0.8)] hover:scale-105 border border-violet-400/30"
                             >
-                                Ir al Dashboard
+                                Ir al inicio
                             </button>
                         </div>
                     </div>

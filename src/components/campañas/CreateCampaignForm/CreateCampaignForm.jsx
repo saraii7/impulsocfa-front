@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { createCampaign } from "../../../services/campaign.service";
 import { getCategories } from "../../../services/category.service";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 export default function CreateCampaignForm() {
   const [formData, setFormData] = useState({
@@ -74,29 +75,30 @@ export default function CreateCampaignForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
+
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      setMessage({ type: "error", text: "Por favor, corrige los campos en rojo." });
+      toast.error("Por favor, corrige los campos en rojo.");
       return;
     }
     if (!llaveMaestra.trim()) {
-      setMessage({ type: "error", text: "Ingresá tu llave maestra para continuar." });
+      toast.error("Ingresá tu llave maestra para continuar.");
       return;
     }
 
     setLoading(true);
-    setMessage({ type: "", text: "" });
+
 
     try {
       await createCampaign({
         ...formData,
         llave_maestra: llaveMaestra,
       });
-      setMessage({ type: "success", text: "✅ Campaña creada con éxito!" });
+      toast.success("✅ Campaña creada con éxito!");
       setTimeout(() => navigate("/campanas"), 1500);
     } catch (error) {
       console.error(error);
-      setMessage({ type: "error", text: "❌ Error al crear la campaña: " + error.message });
+      toast.error("❌ Error al crear la campaña: " + error.message);
     } finally {
       setLoading(false);
     }

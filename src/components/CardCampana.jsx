@@ -10,7 +10,7 @@ export default function CardCampana({ campana }) {
     if (imagenes.length > 1) {
       const interval = setInterval(() => {
         setCurrentIndex((prev) => (prev + 1) % imagenes.length);
-      }, 1000);
+      }, 2000);
       setIntervalId(interval);
     }
   };

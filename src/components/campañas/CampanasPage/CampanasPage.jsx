@@ -100,19 +100,28 @@ export default function CampanasPage() {
 
         <p className="text-slate-700 mb-4 line-clamp-3">{c.descripcion}</p>
 
-        <div className="flex justify-between items-center text-sm mb-3">
+        <div className="flex justify-between items-start text-sm mb-3">
+          {/* Izquierda: montos */}
           <div className="flex flex-col">
             <span className="text-violet-600 font-semibold">
-              Meta: ${Number(c.monto_objetivo).toLocaleString("es-AR")}
+              🎯 Meta: ${Number(c.monto_objetivo).toLocaleString("es-AR")}
             </span>
-            <span className="text-violet-600 font-semibold">
-              Recaudado: ${Number(c.monto_actual || 0).toLocaleString("es-AR")}
+            <span className="text-emerald-600 font-semibold">
+              💰 Recaudado: ${Number(c.monto_actual || 0).toLocaleString("es-AR")}
             </span>
           </div>
-          <span className="text-violet-600 font-semibold">
-            {c.tiempo_objetivo} días
-          </span>
+
+          {/* Derecha: fecha de finalización */}
+          <div className="text-right">
+            <span className="block text-violet-600 font-semibold">
+              📅 Fecha de finalización:
+            </span>
+            <span className="text-slate-700 font-medium">
+              {new Date(c.tiempo_objetivo).toLocaleDateString("es-AR")}
+            </span>
+          </div>
         </div>
+
 
         {c.estado && (
           <p

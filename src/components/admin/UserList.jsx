@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getUsers, changeUserState } from "../../services/admin.service";
+import { toast } from "react-hot-toast";
 
 export default function UserList() {
   const [users, setUsers] = useState([]);
@@ -14,6 +15,7 @@ export default function UserList() {
       setUsers(data);
     } catch (error) {
       console.error("❌ Error al cargar usuarios:", error);
+      toast.error("❌ Error al cargar la lista de usuarios");
     }
   }
 
@@ -23,6 +25,8 @@ export default function UserList() {
       loadUsers();
     } catch (error) {
       console.error("❌ Error al cambiar estado:", error);
+      toast.error("❌ No se pudo cambiar el estado del usuario");
+    
     }
   }
 
