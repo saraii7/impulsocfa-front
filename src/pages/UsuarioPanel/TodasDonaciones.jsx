@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getUserCampaigns, getDonationsByCampaignId, getCurrentUser } from "../../services/campaign.service";
 import { getUserTotal } from "../../services/user.service";
 import { toast } from "react-hot-toast";
-import { Heart, Calendar, DollarSign, Trophy, Sparkles, Wallet} from "lucide-react"
+import { Heart, Calendar, DollarSign, Trophy, Wallet} from "lucide-react"
 
 export default function TodasDonaciones() {
   const [donaciones, setDonaciones] = useState([]);
@@ -52,7 +52,7 @@ export default function TodasDonaciones() {
           <div className="relative w-16 h-16 mx-auto">
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 rounded-full animate-spin"></div>
             <div className="absolute inset-2 bg-white rounded-full"></div>
-            <Sparkles className="absolute inset-0 w-6 h-6 m-auto text-purple-500 animate-pulse" />
+           
           </div>
           <p className="text-lg font-semibold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
             Cargando donaciones...
@@ -82,11 +82,11 @@ export default function TodasDonaciones() {
       <div className="max-w-3xl mx-auto">
         <div className="mb-12 text-center space-y-3">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Sparkles className="w-8 h-8 text-purple-500 animate-bounce" />
+            
             <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 bg-clip-text text-transparent">
               Donaciones Recibidas
             </h1>
-            <Sparkles className="w-8 h-8 text-pink-500 animate-bounce" style={{ animationDelay: "0.2s" }} />
+           
           </div>
           <p className="text-lg font-semibold text-gray-700">
             Total de <span className="text-2xl text-purple-600 font-bold">{donaciones.length}</span> donación
