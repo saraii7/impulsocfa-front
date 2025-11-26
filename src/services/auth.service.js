@@ -4,7 +4,6 @@ const API_URL = `${import.meta.env.VITE_API_URL}/auth`;
 export async function registerUser(userData) {
   const formData = new FormData();
 
-  // Añadimos los campos uno por uno
   for (const key in userData) {
     if (userData[key] !== null && userData[key] !== "") {
       formData.append(key, userData[key]);
@@ -13,11 +12,15 @@ export async function registerUser(userData) {
 
   const res = await fetch(`${API_URL}/register`, {
     method: "POST",
-    body: formData, // no se pone Content-Type, fetch lo hace solo
+    body: formData
   });
 
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || "Error al registrar usuario");
+
+  // GUARDAR EL PERFIL COMPLETO
+  localStorage.setItem("user", JSON.stringify(data.profile));
+  localStorage.setItem("access_token", data.token ?? ""); // si tenés token
 
   return data;
 }
