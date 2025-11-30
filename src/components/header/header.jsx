@@ -104,6 +104,12 @@ function Header() {
           >
             Nosotros
           </Link>
+          <Link
+            to="/historias"
+            className="px-4 py-2 text-base font-semibold text-gray-700 hover:text-violet-600 hover:bg-blue-50 rounded-lg transition-all duration-300 border border-transparent hover:border-blue-200"
+          >
+            Historias
+          </Link>
 
           {isLoggedIn ? (
             userRole === "administrador" ? (
@@ -139,8 +145,8 @@ function Header() {
                 {/* Dropdown */}
                 <div
                   className={`absolute right-0 mt-3 w-56 bg-white/95 backdrop-blur-lg border border-blue-200/60 rounded-2xl shadow-xl shadow-blue-300/30 z-50 transform transition-all duration-200 origin-top-right overflow-hidden ${isDropdownOpen
-                      ? "opacity-100 scale-100 pointer-events-auto"
-                      : "opacity-0 scale-95 pointer-events-none"
+                    ? "opacity-100 scale-100 pointer-events-auto"
+                    : "opacity-0 scale-95 pointer-events-none"
                     }`}
                 >
                   <div className="py-2 px-2">
@@ -158,7 +164,7 @@ function Header() {
                     >
                       Perfil
                     </Link>
-                       <Link
+                    <Link
                       to="/todasdonaciones"
                       className="block px-4 py-3 text-base font-medium text-gray-800 hover:text-violet-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-violet-50 rounded-xl transition-all duration-200 border border-transparent hover:border-blue-200/50"
                       onClick={handleLinkClick}

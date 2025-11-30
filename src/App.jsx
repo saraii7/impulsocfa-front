@@ -22,7 +22,10 @@ import PagoFallido from "./components/pasarela/PagoFallido";
 import PagoPendiente from "./components/pasarela/PagoPendiente";
 import TodasDonaciones from "./pages/UsuarioPanel/TodasDonaciones";
 import VerMasCampana from "./components/campañas/CampanasPage/VerMasCampana";
-
+import Historias from "./pages/Historias/Historias";
+import LeerHist from "./pages/Historias/LeerHist";
+import VerMas from "./pages/Historias/VerMasHist";
+import FormHist from "./pages/Historias/FormHist";
 function App() {
   return (
     <BrowserRouter>
@@ -82,7 +85,12 @@ function App() {
             <Route path="/pago-pendiente" element={<PagoPendiente />} />
             <Route path="/todasdonaciones" element={<TodasDonaciones />} />
             <Route path="/vermascampana/:id" element={<VerMasCampana />} />
+            <Route path="/historias" element={<Historias />} />
+            <Route path="/leerhist" element={<LeerHist />} />
+            <Route path="/vermas" element={<VerMas />} />
+            <Route path="/formhist" element={<FormHist />} />
           </Routes>
+
         </main>
 
         <Footer />
