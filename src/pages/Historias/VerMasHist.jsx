@@ -81,7 +81,7 @@ Esta historia no es solo sobre reconstruir paredes, es sobre reconstruir vidas. 
               whileTap={{ scale: 0.95 }}
               className="p-2 rounded-full hover:bg-violet-100 transition-colors"
             >
-              <Share2 className="w-5 h-5 text-violet-600" />
+              
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.1 }}
@@ -208,14 +208,7 @@ Esta historia no es solo sobre reconstruir paredes, es sobre reconstruir vidas. 
                 <Heart className="w-5 h-5 fill-white" />
                 Me encanta esta historia
               </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex-1 px-6 py-4 bg-white/80 backdrop-blur-sm border-2 border-violet-400 text-violet-600 rounded-2xl font-bold hover:bg-violet-50 transition-colors flex items-center justify-center gap-2"
-              >
-                <Share2 className="w-5 h-5" />
-                Compartir
-              </motion.button>
+        
             </motion.div>
 
             {/* Back Button */}

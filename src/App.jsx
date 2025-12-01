@@ -26,6 +26,7 @@ import Historias from "./pages/Historias/Historias";
 import LeerHist from "./pages/Historias/LeerHist";
 import VerMas from "./pages/Historias/VerMasHist";
 import FormHist from "./pages/Historias/FormHist";
+import TusHist from "./components/historias/TusHist";
 function App() {
   return (
     <BrowserRouter>
@@ -89,6 +90,7 @@ function App() {
             <Route path="/leerhist" element={<LeerHist />} />
             <Route path="/vermas" element={<VerMas />} />
             <Route path="/formhist" element={<FormHist />} />
+            <Route path="/tushist" element={<TusHist />} />
           </Routes>
 
         </main>

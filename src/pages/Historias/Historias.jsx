@@ -127,7 +127,7 @@ export default function Historias() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16"
           >
-   
+
           </motion.div>
 
           {/* CTA Buttons */}
@@ -156,16 +156,18 @@ export default function Historias() {
               </motion.button>
             </Link>
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-10 py-5 bg-white/80 backdrop-blur-sm border-2 border-violet-300 rounded-2xl text-lg font-bold text-violet-600 hover:bg-white transition-all"
-            >
-              <span className="flex items-center gap-2">
-                <Share2 className="w-5 h-5" />
-                Compartir mi Historia
-              </span>
-            </motion.button>
+            <Link to={isLoggedIn ? "/formhist" : "/iniciarsesion"}>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-10 py-5 bg-white/80 backdrop-blur-sm border-2 border-violet-300 rounded-2xl text-lg font-bold text-violet-600 hover:bg-white transition-all"
+              >
+                <span className="flex items-center gap-2">
+                  <Share2 className="w-5 h-5" />
+                  Compartir mi Historia
+                </span>
+              </motion.button>
+            </Link>
           </motion.div>
         </div>
       </section>
@@ -237,7 +239,7 @@ export default function Historias() {
                         {story.likes}
                       </span>
                     </div>
-               
+
                   </div>
                 </div>
               </motion.div>
