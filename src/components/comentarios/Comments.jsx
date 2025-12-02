@@ -66,17 +66,37 @@ export default function Comments({ id_campana }) {
     }
   };
 
-  // Eliminar comentario
-  async function handleDelete(id_comentario) {
-    if (!confirm("¿Seguro que querés eliminar este comentario?")) return;
-    try {
-      await commentService.deleteComment(id_comentario);
-      toast.success("Comentario eliminado");
-      fetchComentarios();
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }
+async function handleDelete(id_comentario) {
+  toast((t) => (
+    <div className="flex flex-col gap-2">
+      <span>¿Seguro que querés eliminar este comentario?</span>
+      <div className="flex justify-end gap-2 mt-2">
+        <button
+          className="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400"
+          onClick={() => toast.dismiss(t.id)}
+        >
+          Cancelar
+        </button>
+        <button
+          className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+          onClick={async () => {
+            toast.dismiss(t.id);
+            try {
+              await commentService.deleteComment(id_comentario);
+              toast.success("Comentario eliminado");
+              fetchComentarios();
+            } catch (error) {
+              toast.error(error.message);
+            }
+          }}
+        >
+          Eliminar
+        </button>
+      </div>
+    </div>
+  ), { duration: Infinity });
+}
+
 
   return (
     <div className="mt-12 pt-8 border-t border-violet-200">

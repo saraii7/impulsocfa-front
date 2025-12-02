@@ -97,3 +97,18 @@ export async function getUserTotalByCampaign(id_campana) {
   if (!res.ok) throw new Error(data.error || "Error al obtener el total de la campaña");
   return data; // debería devolver { total: ... }
 }
+export async function getUserById(id_usuario) {
+  const token = localStorage.getItem("access_token");
+  if (!token) throw new Error("No estás autenticado");
+
+  const res = await fetch(`${API_URL}/${id_usuario}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Error al obtener usuario");
+
+  return data;
+}

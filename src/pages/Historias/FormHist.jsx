@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createHistory } from "../../services/history.service";
+import { getAllCampaigns } from "../../services/campaing.service";
 import { toast } from "react-hot-toast";
-import { motion } from "framer-motion"
-import { Upload, FileText, BookOpen, Camera } from "lucide-react"
+import { motion } from "framer-motion";
+import { Upload, FileText, BookOpen, Camera } from "lucide-react";
 
 export default function FormHist({ campañas = [], onSuccess }) {
   const [form, setForm] = useState({
@@ -18,6 +19,33 @@ export default function FormHist({ campañas = [], onSuccess }) {
   });
 
   const [loading, setLoading] = useState(false);
+
+  // campañas finalizadas filtradas por fecha
+  const [campañasFinalizadas, setCampañasFinalizadas] = useState([]);
+
+useEffect(() => {
+  async function cargarCampañasFinalizadas() {
+    try {
+      const user = JSON.parse(localStorage.getItem("user")); // 👈 dueño actual
+      const todas = await getAllCampaigns();
+
+      const finalizadas = todas.filter((c) => {
+        const fechaFin = new Date(c.tiempo_objetivo);
+
+        return (
+          fechaFin < new Date() && 
+          c.id_usuario === user.id_usuario // 👈 solo suyas
+        );
+      });
+
+      setCampañasFinalizadas(finalizadas);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  cargarCampañasFinalizadas();
+}, []);
 
   const handleChange = (e) => {
     setForm({
@@ -37,6 +65,13 @@ export default function FormHist({ campañas = [], onSuccess }) {
     e.preventDefault();
     setLoading(true);
 
+    // 🔥 Validación extra: solo permitir campañas finalizadas
+    if (!campañasFinalizadas.some((c) => c.id_campana == form.id_campana)) {
+      toast.error("Solo podés crear historias de campañas finalizadas ✋");
+      setLoading(false);
+      return;
+    }
+
     try {
       const result = await createHistory({ ...form, ...files });
 
@@ -54,7 +89,7 @@ export default function FormHist({ campañas = [], onSuccess }) {
   };
 
   return (
-  <div className="min-h-screen bg-gradient-to-br from-violet-50 via-blue-50 to-purple-50 py-12 px-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-violet-50 via-blue-50 to-purple-50 py-12 px-4 relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -143,7 +178,7 @@ export default function FormHist({ campañas = [], onSuccess }) {
               name="contenido"
               value={form.contenido}
               onChange={handleChange}
-              placeholder="Cuéntanos tu historia... Describe el impacto, los desafíos y cómo superaste la situación"
+              placeholder="Cuéntanos tu historia..."
               className="w-full px-4 py-3 bg-white/60 border-2 border-violet-200 rounded-2xl focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-300/50 transition-all placeholder:text-slate-400 text-slate-800 min-h-[160px] resize-none"
               required
             />
@@ -160,6 +195,8 @@ export default function FormHist({ campañas = [], onSuccess }) {
               <span className="w-5 h-5 flex items-center justify-center text-violet-600">🎯</span>
               Campaña <span className="text-red-500">*</span>
             </label>
+
+            {/* 🔥 SOLO CAMPAÑAS FINALIZADAS */}
             <select
               name="id_campana"
               value={form.id_campana}
@@ -167,8 +204,8 @@ export default function FormHist({ campañas = [], onSuccess }) {
               className="w-full px-4 py-3 bg-white/60 border-2 border-violet-200 rounded-2xl focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-300/50 transition-all text-slate-800 font-medium"
               required
             >
-              <option value="">Seleccionar campaña...</option>
-              {campañas.map((c) => (
+              <option value="">Seleccionar campaña finalizada...</option>
+              {campañasFinalizadas.map((c) => (
                 <option key={c.id_campana} value={c.id_campana}>
                   {c.titulo}
                 </option>
@@ -187,11 +224,11 @@ export default function FormHist({ campañas = [], onSuccess }) {
               <Camera className="w-5 h-5 text-indigo-600" />
               Archivos Multimedia <span className="text-slate-500 text-sm font-normal">(Obligatorio 1 foto)</span>
             </label>
-            <p className="text-sm text-slate-600">Sube hasta 3 imágenes o videos para enriquecer tu historia</p>
+            <p className="text-sm text-slate-600">Sube hasta 3 imágenes o videos</p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[1, 2, 3].map((num) => {
-                const fileName = `archivo${num}`
+                const fileName = `archivo${num}`;
                 return (
                   <motion.div key={num} whileHover={{ y: -4 }} className="relative group">
                     <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-violet-300 rounded-xl cursor-pointer hover:bg-white/40 transition-all group relative overflow-hidden">
@@ -210,7 +247,7 @@ export default function FormHist({ campañas = [], onSuccess }) {
                       />
                     </label>
                   </motion.div>
-                )
+                );
               })}
             </div>
           </motion.div>

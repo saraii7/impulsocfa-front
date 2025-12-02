@@ -24,9 +24,10 @@ import TodasDonaciones from "./pages/UsuarioPanel/TodasDonaciones";
 import VerMasCampana from "./components/campañas/CampanasPage/VerMasCampana";
 import Historias from "./pages/Historias/Historias";
 import LeerHist from "./pages/Historias/LeerHist";
-import VerMas from "./pages/Historias/VerMasHist";
+import VerMasHist from "./pages/Historias/VerMasHist";
 import FormHist from "./pages/Historias/FormHist";
-import TusHist from "./components/historias/TusHist";
+import TusHist from "./components/Historias/TusHist";
+import EditHist from "./components/historias/EditHist";
 function App() {
   return (
     <BrowserRouter>
@@ -88,9 +89,10 @@ function App() {
             <Route path="/vermascampana/:id" element={<VerMasCampana />} />
             <Route path="/historias" element={<Historias />} />
             <Route path="/leerhist" element={<LeerHist />} />
-            <Route path="/vermas" element={<VerMas />} />
+            <Route path="/vermashist/:id" element={<VerMasHist />} />
             <Route path="/formhist" element={<FormHist />} />
             <Route path="/tushist" element={<TusHist />} />
+            <Route path="/edithist/:id" element={<EditHist />} />
           </Routes>
 
         </main>
