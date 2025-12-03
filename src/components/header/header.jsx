@@ -127,6 +127,23 @@ function Header() {
                   Cerrar sesión
                 </button>
               </div>
+            ) : userRole === "validador" ? (
+              /* VALIDADOR - SOLO ACEPTAR CAMPAÑAS */
+              <div className="flex items-center gap-2">
+                <Link
+                  to="/admin"
+                  className="px-4 py-2 text-base font-semibold text-gray-700 hover:text-violet-600 hover:bg-blue-50 rounded-lg transition-all duration-300"
+                >
+                  Validar campañas
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-violet-600 rounded-lg shadow-lg transition-all duration-300"
+                >
+                  Cerrar sesión
+                </button>
+              </div>
+
             ) : (
               <div className="relative">
                 {/* Botón avatar */}
@@ -171,7 +188,7 @@ function Header() {
                     >
                       Donaciones de tus campañas
                     </Link>
-                      <Link
+                    <Link
                       to="/tushist"
                       className="block px-4 py-3 text-base font-medium text-gray-800 hover:text-violet-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-violet-50 rounded-xl transition-all duration-200 border border-transparent hover:border-blue-200/50"
                       onClick={handleLinkClick}
@@ -237,24 +254,42 @@ function Header() {
           >
             Nosotros
           </Link>
+          
 
+         
           {isLoggedIn ? (
             userRole === "administrador" ? (
-              <>
+              <div className="flex items-center gap-2">
                 <Link
-                  to="/adminpanel"
-                  className="px-4 py-3 text-base font-semibold text-gray-700 hover:text-violet-600 hover:bg-blue-50 rounded-lg transition-all duration-300"
-                  onClick={handleLinkClick}
+                  to="/admin"
+                  className="px-4 py-2 text-base font-semibold text-gray-700 hover:text-violet-600 hover:bg-blue-50 rounded-lg transition-all duration-300 border border-transparent hover:border-blue-200"
                 >
                   Dashboard
                 </Link>
                 <button
-                  className="px-4 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 rounded-lg shadow-lg shadow-blue-200/50 hover:shadow-violet-200/50 transition-all duration-300"
                   onClick={handleLogout}
+                  className="px-4 py-2 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 rounded-lg shadow-lg shadow-blue-200/50 hover:shadow-violet-200/50 transition-all duration-300"
                 >
                   Cerrar sesión
                 </button>
-              </>
+              </div>
+            ) : userRole === "validador" ? (
+              /* VALIDADOR - SOLO ACEPTAR CAMPAÑAS */
+              <div className="flex items-center gap-2">
+                <Link
+                  to="/admin"
+                  className="px-4 py-2 text-base font-semibold text-gray-700 hover:text-violet-600 hover:bg-blue-50 rounded-lg transition-all duration-300"
+                >
+                  Validar campañas
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-violet-600 rounded-lg shadow-lg transition-all duration-300"
+                >
+                  Cerrar sesión
+                </button>
+              </div>
+
             ) : (
               <>
                 <div className="flex items-center gap-2 px-4 py-3">

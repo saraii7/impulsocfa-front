@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AdminList from "../../components/admin/AdminList";
 import UserList from "../../components/admin/UserList";
 import CategoryList from "../../components/admin/CategoryList";
@@ -7,25 +7,67 @@ import CampañasList from "../../components/admin/CampañasList.jsx";
 
 export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState("admins");
+  const [role, setRole] = useState(null);
+
+  // Obtener rol del usuario desde el localStorage
+  useEffect(() => {
+    const data = localStorage.getItem("user");
+    if (data) {
+      const parsed = JSON.parse(data);
+      setRole(parsed.rol);
+    }
+  }, []);
+
+  if (!role) return <p>Cargando...</p>;
+
+  // 🛑 Bloqueo de acceso para usuarios normales
+  if (role !== "administrador" && role !== "validador") {
+    return (
+      <div className="p-6 text-center text-red-600 font-semibold">
+        No tenés permiso para acceder a este panel.
+      </div>
+    );
+  }
+
+  // 🎯 CASO VALIDADOR → solo ve CampañasList
+  if (role === "validador") {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-violet-50 via-blue-50 to-pink-50 p-6 md:p-8">
+        <div className="mb-10">
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent mb-2">
+            Validación de Campañas
+          </h1>
+          <p className="text-gray-600">
+            Aquí podés aprobar o rechazar campañas pendientes.
+          </p>
+        </div>
+
+        <CampañasList />
+      </div>
+    );
+  }
+
+  // 🎯 CASO ADMINISTRADOR → panel completo
   const tabs = [
     { id: "admins", label: "Administradores", icon: "👤" },
     { id: "users", label: "Usuarios", icon: "👥" },
     { id: "categories", label: "Categorías", icon: "📂" },
     { id: "campaigns", label: "Campañas", icon: "📢" },
-  ]
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-50 via-blue-50 to-pink-50 p-6 md:p-8">
-      {/* Header */}
       <div className="mb-10">
         <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-violet-600 to-pink-600 bg-clip-text text-transparent mb-2">
           Panel de Administración
         </h1>
-        <p className="text-gray-600">Gestiona administradores, usuarios, categorías y campañas</p>
+        <p className="text-gray-600">
+          Gestiona administradores, usuarios, categorías y campañas
+        </p>
       </div>
 
-      {/* Navegación entre secciones */}
-       <div className="flex flex-wrap gap-3 mb-8">
+      {/* Tabs admin */}
+      <div className="flex flex-wrap gap-3 mb-8">
         {tabs.map((tab) => (
           <button
             key={tab.id}
