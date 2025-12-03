@@ -26,7 +26,7 @@ import Historias from "./pages/Historias/Historias";
 import LeerHist from "./pages/Historias/LeerHist";
 import VerMasHist from "./pages/Historias/VerMasHist";
 import FormHist from "./pages/Historias/FormHist";
-import TusHist from "./components/Historias/TusHist";
+import TusHist from "./components/historias/TusHist";
 import EditHist from "./components/historias/EditHist";
 function App() {
   return (
