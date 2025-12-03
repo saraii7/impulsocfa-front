@@ -235,6 +235,12 @@ export default function DetalleCampana() {
 
             {/* Descripción */}
             <p className="text-slate-700 text-lg leading-relaxed mb-8">{campana.descripcion}</p>
+            <button
+              onClick={() => navigate(`/reportcampana/${campana.id_campana}`)}
+              className="mt-4 px-4 py-2 bg-red-100 text-red-700 border border-red-300 rounded-lg hover:bg-red-200 transition"
+            >
+              Reportar campaña
+            </button>
 
             {/* Barra de progreso */}
             <div className="mb-8">
@@ -367,15 +373,15 @@ export default function DetalleCampana() {
                           <p>
                             ⚙️ <span className="font-semibold text-violet-600">${nosotros.toFixed(2)}</span> se destina al mantenimiento de la plataforma
                           </p>
-                             <p className="text-xs text-slate-500 mt-1 italic">
-                  Los porcentajes se calculan automáticamente según el monto ingresado.
-                </p>
+                          <p className="text-xs text-slate-500 mt-1 italic">
+                            Los porcentajes se calculan automáticamente según el monto ingresado.
+                          </p>
                         </>
                       );
                     })()}
                   </div>
                 )}
-             
+
               </div>
 
 

@@ -28,6 +28,7 @@ import VerMasHist from "./pages/Historias/VerMasHist";
 import FormHist from "./pages/Historias/FormHist";
 import TusHist from "./components/historias/TusHist";
 import EditHist from "./components/historias/EditHist";
+import ReportCampana from "./components/ReportCampana";
 function App() {
   return (
     <BrowserRouter>
@@ -93,6 +94,8 @@ function App() {
             <Route path="/formhist" element={<FormHist />} />
             <Route path="/tushist" element={<TusHist />} />
             <Route path="/edithist/:id" element={<EditHist />} />
+            <Route path="/reportcampana/:id" element={<ReportCampana />} />
+            <Route path= "/detallecampana/:id" element= {<DetalleCampana/>}/>
           </Routes>
 
         </main>
