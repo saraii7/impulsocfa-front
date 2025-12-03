@@ -37,26 +37,33 @@ export default function VerMasHist() {
     const fetchStory = async () => {
       try {
         const data = await getHistoryById(id);
-        const [usuarioData, campanaData] = await Promise.all([
-          getUserById(data.id_usuario).catch(() => null),
-          getCampaignById(data.id_campana).catch(() => null),
-        ]);
 
         setStory({
           id_historia: data.id_historia,
           id_usuario: data.id_usuario,
-           id_campana: data.id_campana, 
+
+          // Datos del usuario (devueltos por supabase como "usuario")
+          author: data.usuario?.nombre || "Usuario",
+          authorBio: data.usuario?.descripcion || "Participante de la campaña",
+          authorImage: data.usuario?.nombre?.charAt(0).toUpperCase() || "U",
+
+          // Datos de la campaña asociada (devueltos como "campana")
+          id_campana: data.campana?.id_campana,
+          category: data.campana?.titulo || "Historia",
+
+          // Contenido
           title: data.titulo,
           fullContent: data.contenido,
-          author: usuarioData?.nombre || "Usuario",
-          authorBio: usuarioData?.descripcion || "Participante de la campaña",
-          authorImage: usuarioData?.nombre?.charAt(0).toUpperCase() || "U",
-        date: new Date(data.fecha_creacion).toLocaleDateString("es-AR"),
+          image: data.archivo1 || "/placeholder.svg",
+
+          // Fecha
+          date: new Date(data.fecha_creacion).toLocaleDateString("es-AR"),
+
+          // Datos mock
           views: Math.floor(Math.random() * 4000) + 1000,
           likes: Math.floor(Math.random() * 500) + 50,
-          image: data.archivo1 || "/placeholder.svg",
-          category: campanaData?.titulo || "Historia",
         });
+
       } catch (err) {
         console.error("Error cargando historia:", err);
         toast.error("No se pudo cargar la historia");
@@ -68,40 +75,41 @@ export default function VerMasHist() {
     fetchStory();
   }, [id]);
 
-const handleDelete = () => {
-  toast(
-    (t) => (
-      <div className="flex flex-col gap-2">
-        <span>¿Estás seguro de eliminar esta historia?</span>
-        <div className="flex justify-end gap-2 mt-2">
-          <button
-            className="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400"
-            onClick={() => toast.dismiss(t.id)}
-          >
-            Cancelar
-          </button>
-          <button
-            className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-            onClick={async () => {
-              toast.dismiss(t.id); // Cierra el toast
-              try {
-                await deleteHistory(story.id_historia);
-                toast.success("Historia eliminada");
-                navigate("/tushist");
-              } catch (err) {
-                console.error("Error eliminando historia:", err);
-                toast.error("No se pudo eliminar la historia");
-              }
-            }}
-          >
-            Eliminar
-          </button>
+
+  const handleDelete = () => {
+    toast(
+      (t) => (
+        <div className="flex flex-col gap-2">
+          <span>¿Estás seguro de eliminar esta historia?</span>
+          <div className="flex justify-end gap-2 mt-2">
+            <button
+              className="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400"
+              onClick={() => toast.dismiss(t.id)}
+            >
+              Cancelar
+            </button>
+            <button
+              className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+              onClick={async () => {
+                toast.dismiss(t.id); // Cierra el toast
+                try {
+                  await deleteHistory(story.id_historia);
+                  toast.success("Historia eliminada");
+                  navigate("/tushist");
+                } catch (err) {
+                  console.error("Error eliminando historia:", err);
+                  toast.error("No se pudo eliminar la historia");
+                }
+              }}
+            >
+              Eliminar
+            </button>
+          </div>
         </div>
-      </div>
-    ),
-    { duration: Infinity } // dura hasta que se haga click
-  );
-};
+      ),
+      { duration: Infinity } // dura hasta que se haga click
+    );
+  };
 
   if (loading) return <div className="min-h-screen flex items-center justify-center">Cargando historia...</div>;
   if (!story)
@@ -174,11 +182,13 @@ const handleDelete = () => {
               <div className="w-16 h-16 rounded-full bg-gradient-to-r from-violet-400 to-blue-400 flex items-center justify-center text-white font-bold text-2xl">{story.authorImage}</div>
               <div>
                 <h2 className="text-xl font-bold text-slate-800">{story.author}</h2>
-                <p className="text-sm text-slate-600 mb-2">{story.authorBio}</p>
+                <p className="text-sm text-slate-600">
+                 Creador de la Campaña: <strong>{story.category}</strong>
+                </p>
+
                 <p className="text-xs text-slate-500">{story.date}</p>
               </div>
             </motion.div>
-
             <div className="grid grid-cols-3 gap-4">
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border text-center">
                 <Eye className="w-5 h-5 mx-auto text-violet-600 mb-2" />
@@ -203,11 +213,11 @@ const handleDelete = () => {
               </div>
             </motion.div>
           </motion.div>
-           <Comments id_campana={story.id_campana} />
+          <Comments id_campana={story.id_campana} />
         </div>
-        
+
       </section>
-     
+
     </div>
   );
 }
