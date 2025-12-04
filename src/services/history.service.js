@@ -121,3 +121,15 @@ export async function deleteHistory(id_historia) {
 
   return data;
 }
+// 6. Obtener todas las historias de una campaña (no requiere token)
+export async function getHistoriesByCampaign(id_campana) {
+  try {
+    const res = await fetch(`${API_URL}/campaign/${id_campana}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Error obteniendo historias de la campaña");
+    return data; // [] | [historia50] | [historia50, historia100]
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}

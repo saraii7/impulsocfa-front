@@ -17,6 +17,7 @@ export default function LeerHist() {
   useEffect(() => {
     async function loadStories() {
       try {
+        
         const data = await getAllHistories();
         setStories(data);
       } catch (err) {
@@ -115,16 +116,6 @@ export default function LeerHist() {
                     <p className="text-sm text-slate-600 mb-4 flex-grow line-clamp-3">
                       {story.contenido?.slice(0, 150) + "..."}
                     </p>
-
-                    {/* Author */}
-                    <div className="flex items-center gap-3 mb-6 pb-4 border-b border-violet-100">
-                      <div className="w-9 h-9 rounded-full bg-gradient-to-r from-violet-400 to-blue-400 flex items-center justify-center text-white font-semibold text-sm">
-                        {(story.nombre_autor?.charAt(0) || "?")}
-                      </div>
-                      <span className="text-sm font-semibold text-slate-700">
-                        {story.nombre_autor || "Anónimo"}
-                      </span>
-                    </div>
 
                     {/* Story Stats + Button */}
                     <div className="flex items-center justify-between">

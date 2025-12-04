@@ -4,6 +4,7 @@ import { getCampaignById, suspendCampaign } from "../../../services/campaign.ser
 import Comments from "../../comentarios/Comments"
 import UltimasDonaciones from "../../../pages/Campanas/UltimasDonaciones"
 import { ArrowLeft, Target, Calendar, TrendingUp, Clock, ChevronLeft, ChevronRight, Edit3, Trash2 } from "lucide-react"
+import { getHistoriesByCampaign } from "../../../services/history.service"
 
 export default function VerMasCampana() {
   const { id } = useParams()
@@ -12,20 +13,32 @@ export default function VerMasCampana() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [currentImage, setCurrentImage] = useState(0)
+  const [histories, setHistories] = useState([])
 
   useEffect(() => {
-    const fetchCampana = async () => {
+    const fetchData = async () => {
       try {
-        const data = await getCampaignById(id)
-        setCampana(data)
+        const campanaData = await getCampaignById(id);
+        setCampana(campanaData);
+
+        const historiesData = await getHistoriesByCampaign(id);
+        setHistories(historiesData);
       } catch (err) {
-        setError(err.message)
+        setError(err.message);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    fetchCampana()
-  }, [id])
+    };
+
+    fetchData();
+  }, [id]);
+  const history50 = histories.find(h => Number(h.avance_logrado) === 50);
+  const history100 = histories.find(h => Number(h.avance_logrado) === 100);
+
+  const tienePendientes =
+    (history50 && !history50.editada) ||
+    (history100 && !history100.editada);
+
 
   // Carrusel automático
   useEffect(() => {
@@ -81,6 +94,16 @@ export default function VerMasCampana() {
 
       {/* Card principal */}
       <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-violet-200 overflow-hidden p-6">
+        {/* WARNING SI HAY HISTORIAS AUTOMÁTICAS SIN EDITAR */}
+        {tienePendientes && (
+          <div className="mb-4 p-3 rounded-lg bg-amber-100 border-l-4 border-amber-500 flex items-center gap-3">
+            <span className="text-amber-600 text-xl">⚠️</span>
+            <p className="text-amber-700 font-medium">
+              Hay historias automáticas que necesitan ser editadas antes de finalizar la campaña.
+            </p>
+          </div>
+        )}
+
         {/* Carrusel */}
         <div className="relative h-80 w-full mb-6 rounded-lg overflow-hidden border border-violet-200 flex items-center justify-center bg-violet-50">
           {imagenes.length === 0 ? (
@@ -117,6 +140,69 @@ export default function VerMasCampana() {
         </div>
 
         <p className="text-slate-700 mb-6">{campana.descripcion}</p>
+        {/* HISTORIAS AUTOMÁTICAS */}
+        <div className="mt-10">
+          <h2 className="text-xl font-bold text-violet-700 mb-4">
+            Historias automáticas generadas por el progreso
+          </h2>
+
+          {/* 50% */}
+          <div className="mb-6 p-4 rounded-xl border border-violet-200 bg-white/70 shadow">
+            <h3 className="font-bold text-violet-600 text-lg">Avance 50%</h3>
+
+            {history50 ? (
+              <>
+                <p className="text-slate-700 whitespace-pre-wrap mt-2">
+                  {history50.contenido}
+                </p>
+
+                {!history50.editada && (
+                  <p className="text-amber-600 text-sm mt-2">
+                    ⚠ Esta historia fue generada automáticamente. Edítala para personalizarla.
+                  </p>
+                )}
+
+                <button
+                  onClick={() => navigate(`/edithist/${history50.id_historia}`)}
+                  className="mt-3 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700"
+                >
+                  Editar historia
+                </button>
+              </>
+            ) : (
+              <p className="text-slate-500">Todavía no se alcanzó el 50%.</p>
+            )}
+          </div>
+
+          {/* 100% */}
+          <div className="p-4 rounded-xl border border-violet-200 bg-white/70 shadow">
+            <h3 className="font-bold text-violet-600 text-lg">Avance 100%</h3>
+
+            {history100 ? (
+              <>
+                <p className="text-slate-700 whitespace-pre-wrap mt-2">
+                  {history100.contenido}
+                </p>
+
+                {!history100.editada && (
+                  <p className="text-amber-600 text-sm mt-2">
+                    ⚠ Esta historia fue generada automáticamente. Edítala para finalizar la campaña.
+                  </p>
+                )}
+
+                <button
+                  onClick={() => navigate(`/edithist/${history100.id_historia}`)}
+                  className="mt-3 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700"
+                >
+                  Editar historia
+                </button>
+              </>
+            ) : (
+              <p className="text-slate-500">La campaña aún no se completó.</p>
+            )}
+          </div>
+        </div>
+
 
         {/* Barra de progreso */}
         <div className="mb-6">

@@ -7,6 +7,7 @@ import { createPreference } from "../../services/payment.service"
 import Comments from "../../components/comentarios/Comments"
 import UltimasDonaciones from "./UltimasDonaciones"
 import toast from "react-hot-toast";
+import { getHistoriesByCampaign } from "../../services/history.service";
 
 
 export default function DetalleCampana() {
@@ -20,7 +21,9 @@ export default function DetalleCampana() {
   const [amount, setAmount] = useState("")
   const [preferenceId, setPreferenceId] = useState(null)
   const [llaveMaestra, setLlaveMaestra] = useState("");
-
+  const [histories, setHistories] = useState([]);
+  const [hist50, setHist50] = useState([]);
+  const [hist100, setHist100] = useState([]);
 
   //carrusel estado
   const [currentImage, setCurrentImage] = useState(0)
@@ -33,19 +36,23 @@ export default function DetalleCampana() {
 
 
   useEffect(() => {
-    const fetchCampana = async () => {
+    const fetchData = async () => {
       try {
-        const data = await getCampaignById(id)
-        setCampana(data)
-      } catch (err) {
-        setError(err.message)
-      } finally {
-        setLoading(false)
-      }
-    }
+        const campanaData = await getCampaignById(id);
+        setCampana(campanaData);
 
-    fetchCampana()
-  }, [id])
+        const historiesData = await getHistoriesByCampaign(id);
+        setHistories(historiesData);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
 
   const porcentaje = campana
     ? Math.min((campana.monto_actual / campana.monto_objetivo) * 100, 100)
@@ -87,7 +94,7 @@ export default function DetalleCampana() {
     try {
       const monto = parseFloat(amount.replace(/\./g, "").replace(",", ".")); // Convierte string formateado a número real
 
-      // ✅ Cálculo de porcentajes
+      //  Cálculo de porcentajes
       const comisionMP = monto * 0.03;  // 3%
       const plataforma = monto * 0.02;  // 2%
       const donacion = monto * 0.95;    // 95%
@@ -99,7 +106,7 @@ export default function DetalleCampana() {
         plataforma,
       });
 
-      // ✅ Enviamos al backend solo el monto real (95%)
+      // Enviamos al backend solo el monto real (95%)
       const idPreference = await createPreference({
         amount: donacion,
         campaignTitle: campana.titulo,
@@ -235,6 +242,31 @@ export default function DetalleCampana() {
 
             {/* Descripción */}
             <p className="text-slate-700 text-lg leading-relaxed mb-8">{campana.descripcion}</p>
+            {/* HISTORIAS */}
+            <div className="mt-10">
+              <h2 className="text-2xl font-bold text-violet-700 mb-4">
+                Historias del progreso de la campaña
+              </h2>
+
+              {histories.length === 0 ? (
+                <p className="text-slate-600">Aún no hay historias para esta campaña.</p>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {histories.map((h) => (
+                    <div
+                      key={h.id_historia}
+                      className="bg-white/70 p-4 rounded-xl shadow border border-violet-200"
+                    >
+                      <p className="text-slate-700 whitespace-pre-wrap">{h.titulo}</p>
+                      <p className="text-slate-700 whitespace-pre-wrap">{h.contenido}</p>
+                      
+
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <button
               onClick={() => navigate(`/reportcampana/${campana.id_campana}`)}
               className="mt-4 px-4 py-2 bg-red-100 text-red-700 border border-red-300 rounded-lg hover:bg-red-200 transition"
