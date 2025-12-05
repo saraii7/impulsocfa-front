@@ -148,70 +148,64 @@ export default function VerMasHist() {
                 <Edit className="w-5 h-5 text-yellow-600" />
               </motion.button>
 
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleDelete}
-                className="p-2 rounded-full hover:bg-red-100 transition-colors"
-              >
-                <Trash2 className="w-5 h-5 text-red-500" />
-              </motion.button>
+              
             </div>
           )}
         </div>
       </motion.div>
 
-      {/* Hero y resto del contenido igual */}
-      <section ref={heroRef} className="relative py-8 px-4">
-        <div className="max-w-4xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={heroAnimation} transition={{ duration: 0.8 }} className="rounded-3xl overflow-hidden border border-violet-200 shadow-2xl shadow-violet-200/50 h-96 relative">
-            <img src={story.image} alt={story.title} className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-            <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-              <span className="bg-violet-500/90 text-white px-3 py-1 rounded-full text-sm font-semibold">{story.category}</span>
-              <h1 className="text-4xl md:text-5xl font-bold mt-2">{story.title}</h1>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+
 
       <section ref={contentRef} className="relative py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={contentAnimation} transition={{ duration: 0.8 }} className="space-y-8">
-            <motion.div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border flex items-start gap-4">
+            <motion.div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6  flex items-start gap-4">
               <div className="w-16 h-16 rounded-full bg-gradient-to-r from-violet-400 to-blue-400 flex items-center justify-center text-white font-bold text-2xl">{story.authorImage}</div>
               <div>
                 <h2 className="text-xl font-bold text-slate-800">{story.author}</h2>
                 <p className="text-sm text-slate-600">
-                 Creador de la Campaña: <strong>{story.category}</strong>
+                  Creador de la Campaña: <strong>{story.category}</strong>
                 </p>
 
                 <p className="text-xs text-slate-500">{story.date}</p>
               </div>
             </motion.div>
+
+
+            <motion.div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8  shadow-lg">
+              <div className="prose prose-sm text-slate-700">
+                {story.fullContent?.split("\n").map((p, i) => (<p key={i}>{p}</p>))}
+              </div>
+            </motion.div>
+            {/* Hero y resto del contenido igual */}
+            <section ref={heroRef} className="relative py-8 px-4">
+              <div className="max-w-4xl mx-auto">
+                <motion.div initial={{ opacity: 0, y: 30 }} animate={heroAnimation} transition={{ duration: 0.8 }} className="rounded-3xl overflow-hidden border border-violet-200 shadow-2xl shadow-violet-200/50 h-96 relative">
+                  <img src={story.image} alt={story.title} className="w-full h-full object-cover" />
+                  <div/>
+                  <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+
+                  </div>
+                </motion.div>
+              </div>
+            </section>
             <div className="grid grid-cols-3 gap-4">
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border text-center">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6  text-center">
                 <Eye className="w-5 h-5 mx-auto text-violet-600 mb-2" />
                 <span className="text-2xl font-bold text-violet-600">{(story.views / 1000).toFixed(1)}K</span>
                 <p className="text-xs text-slate-600">Visualizaciones</p>
               </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border text-center">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6  text-center">
                 <Heart className="w-5 h-5 mx-auto text-red-500 mb-2" />
                 <span className="text-2xl font-bold text-red-500">{story.likes}</span>
                 <p className="text-xs text-slate-600">Me encanta</p>
               </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border text-center">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6  text-center">
                 <MessageCircle className="w-5 h-5 mx-auto text-violet-600 mb-2" />
                 <span className="text-2xl font-bold text-violet-600">{Math.floor(story.likes / 10)}</span>
                 <p className="text-xs text-slate-600">Comentarios</p>
               </div>
             </div>
-
-            <motion.div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 border shadow-lg">
-              <div className="prose prose-sm text-slate-700">
-                {story.fullContent?.split("\n").map((p, i) => (<p key={i}>{p}</p>))}
-              </div>
-            </motion.div>
           </motion.div>
           <Comments id_campana={story.id_campana} />
         </div>

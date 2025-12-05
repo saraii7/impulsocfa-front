@@ -178,16 +178,27 @@ export default function DetalleCampana() {
       />
 
       <div className="relative z-10 h-full px-6 py-8 md:px-12 lg:px-20">
-        {/* Botón volver */}
-        <button
-          onClick={() => navigate("/donar")}
-          className="mb-6 flex items-center gap-2 px-4 py-2 bg-white/80 hover:bg-white border border-violet-200 rounded-lg text-violet-600 font-semibold transition-all duration-300 hover:shadow-lg hover:scale-105"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          Volver a campañas
-        </button>
 
+        <div className="flex justify-between items-center mb-6">
+          {/* Botón volver */}
+          <button
+            onClick={() => navigate("/donar")}
+            className="flex items-center gap-2 px-4 py-2 bg-white/80 hover:bg-white border border-violet-200 rounded-lg text-violet-600 font-semibold transition-all duration-300 hover:shadow-lg hover:scale-105"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            Volver a campañas
+          </button>
+
+          {/* Botón reportar */}
+          <button
+            onClick={() => navigate(`/reportcampana/${campana.id_campana}`)}
+            className="px-4 py-2 bg-red-100 text-red-700 border border-red-300 rounded-lg hover:bg-red-200 transition"
+          >
+            Reportar campaña
+          </button>
+        </div>
         {/* Contenedor principal - Ahora full-width con márgenes */}
+
         <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-violet-200 overflow-hidden">
           {/* CARRUSEL DE IMÁGENES */}
           <div className="relative w-full h-80 overflow-hidden flex items-center justify-center bg-violet-50 border-b border-violet-200">
@@ -242,37 +253,9 @@ export default function DetalleCampana() {
 
             {/* Descripción */}
             <p className="text-slate-700 text-lg leading-relaxed mb-8">{campana.descripcion}</p>
-            {/* HISTORIAS */}
-            <div className="mt-10">
-              <h2 className="text-2xl font-bold text-violet-700 mb-4">
-                Historias del progreso de la campaña
-              </h2>
 
-              {histories.length === 0 ? (
-                <p className="text-slate-600">Aún no hay historias para esta campaña.</p>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {histories.map((h) => (
-                    <div
-                      key={h.id_historia}
-                      className="bg-white/70 p-4 rounded-xl shadow border border-violet-200"
-                    >
-                      <p className="text-slate-700 whitespace-pre-wrap">{h.titulo}</p>
-                      <p className="text-slate-700 whitespace-pre-wrap">{h.contenido}</p>
-                      
 
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
 
-            <button
-              onClick={() => navigate(`/reportcampana/${campana.id_campana}`)}
-              className="mt-4 px-4 py-2 bg-red-100 text-red-700 border border-red-300 rounded-lg hover:bg-red-200 transition"
-            >
-              Reportar campaña
-            </button>
 
             {/* Barra de progreso */}
             <div className="mb-8">
@@ -440,6 +423,72 @@ export default function DetalleCampana() {
               >
                 Donar con Mercado Pago
               </button>
+
+{/* HISTORIAS */}
+<div className="mt-12 pt-8 border-t border-violet-200">
+  {/* TÍTULO + ICONO */}
+  <div className="flex items-center gap-3 mb-3">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-7 h-7 text-violet-600"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.8}
+        d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"
+      />
+    </svg>
+
+    <h2 className="text-2xl font-bold text-violet-700">
+      Historias y actualizaciones
+    </h2>
+  </div>
+
+  {/* DESCRIPCIÓN */}
+  <p className="text-slate-600 mb-6">
+    Enterate del progreso de la campaña: avances, compras realizadas,
+    testimonios y otras novedades importantes que el creador compartió.
+  </p>
+
+  {/* LISTA */}
+  {histories.length === 0 ? (
+    <p className="text-slate-600 italic">
+      Aún no hay historias cargadas para esta campaña.
+    </p>
+  ) : (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      {histories.map((h) => (
+        <div
+          key={h.id_historia}
+          className="p-5 rounded-xl border border-violet-200 shadow-sm hover:shadow-md transition-all duration-200"
+        >
+          {/* TITULO */}
+          <h3 className="text-lg font-semibold text-violet-700 mb-2">
+            {h.titulo}
+          </h3>
+
+          {/* CONTENIDO */}
+          <p className="text-slate-700 whitespace-pre-wrap leading-relaxed">
+            {h.contenido}
+          </p>
+
+          {/* FECHA (si la tenés disponible) */}
+          {h.fecha && (
+            <p className="mt-4 text-xs text-slate-500">
+              Publicado el {new Date(h.fecha).toLocaleDateString("es-AR")}
+            </p>
+          )}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+
 
               {preferenceId && (
                 <div className="mt-4">
