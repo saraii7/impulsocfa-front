@@ -26,7 +26,7 @@ export default function CreateAdminForm() {
         apellido: "",
         email: "",
         password: "",
-        nacionalidad: "",
+   
       });
     } catch (error) {
        toast.error(error.message || "Error al crear administrador: " );
