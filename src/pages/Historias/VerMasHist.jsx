@@ -20,6 +20,9 @@ export default function VerMasHist() {
   const isHeroInView = useInView(heroRef, { once: true });
   const isContentInView = useInView(contentRef, { once: true });
   const [selectedImage, setSelectedImage] = useState(null);
+  const isVideo = (url) => {
+    return url.endsWith(".mp4") || url.endsWith(".mov") || url.endsWith(".webm");
+  };
 
 
   // Obtener userId del token para validar si puede editar/eliminar
@@ -197,18 +200,32 @@ export default function VerMasHist() {
             {/* Hero y resto del contenido igual */}
             <section ref={heroRef} className="relative py-8 px-4">
               <div className="max-w-4xl mx-auto">
-                {story.image.map((img, i) => (
+                {story.image.map((file, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, y: 30 }}
                     animate={heroAnimation}
                     transition={{ duration: 0.8, delay: i * 0.2 }}
                     className="rounded-3xl overflow-hidden border border-violet-200 shadow-2xl shadow-violet-200/50 h-96 relative mb-8"
-                    onClick={() => setSelectedImage(img)}
+                    onClick={() => setSelectedImage(file)}
                   >
-                    <img src={img} alt={`img-${i}`} className="w-full h-full object-cover" />
+                    {/* Si es video → mostrar video */}
+                    {isVideo(file) ? (
+                      <video
+                        src={file}
+                        className="w-full h-full object-cover"
+                        controls
+                      />
+                    ) : (
+                      <img
+                        src={file}
+                        alt={`img-${i}`}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
                   </motion.div>
                 ))}
+
 
               </div>
             </section>
