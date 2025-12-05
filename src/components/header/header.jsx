@@ -186,7 +186,7 @@ function Header() {
                       className="block px-4 py-3 text-base font-medium text-gray-800 hover:text-violet-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-violet-50 rounded-xl transition-all duration-200 border border-transparent hover:border-blue-200/50"
                       onClick={handleLinkClick}
                     >
-                      Donaciones de tus campañas
+                      Donaciones recibidas
                     </Link>
                     <Link
                       to="/tushist"

@@ -44,17 +44,7 @@ export default function Historias() {
       likes: 1203,
       category: "Comunidad",
     },
-    {
-      author: "Roberto Silva",
-      title: "Pequeñas acciones, grandes cambios",
-      excerpt:
-        "Una donación puede parecer pequeña, pero el impacto en vidas reales es incalculable. Esta es nuestra historia de transformación.",
-      image: "/helping-hands-community.jpg",
-      date: "01 de noviembre, 2024",
-      views: 1654,
-      likes: 634,
-      category: "Inspiración",
-    },
+
 
   ]
 
@@ -163,7 +153,7 @@ export default function Historias() {
                 className="px-10 py-5 bg-white/80 backdrop-blur-sm border-2 border-violet-300 rounded-2xl text-lg font-bold text-violet-600 hover:bg-white transition-all"
               >
                 <span className="flex items-center gap-2">
-                  <Share2 className="w-5 h-5" />
+                 
                   Compartir mi Historia
                 </span>
               </motion.button>
