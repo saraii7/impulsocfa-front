@@ -19,6 +19,8 @@ export default function VerMasHist() {
   const contentRef = useRef(null);
   const isHeroInView = useInView(heroRef, { once: true });
   const isContentInView = useInView(contentRef, { once: true });
+  const [selectedImage, setSelectedImage] = useState(null);
+
 
   // Obtener userId del token para validar si puede editar/eliminar
   const token = localStorage.getItem("access_token");
@@ -54,7 +56,9 @@ export default function VerMasHist() {
           // Contenido
           title: data.titulo,
           fullContent: data.contenido,
-          image: data.archivo1 || "/placeholder.svg",
+          image: [data.archivo1,
+          data.archivo2,
+          data.archivo3].filter(Boolean),
 
           // Fecha
           date: new Date(data.fecha_creacion).toLocaleDateString("es-AR"),
@@ -148,7 +152,7 @@ export default function VerMasHist() {
                 <Edit className="w-5 h-5 text-yellow-600" />
               </motion.button>
 
-              
+
             </div>
           )}
         </div>
@@ -173,6 +177,12 @@ export default function VerMasHist() {
 
 
             <motion.div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8  shadow-lg">
+              {/* TÍTULO DE LA HISTORIA */}
+              <h1 className="text-2xl font-bold text-slate-700">
+                {story.title}
+              </h1>
+
+
               <div className="prose prose-sm text-slate-700">
                 {story.fullContent?.split("\n").map((p, i) => (<p key={i}>{p}</p>))}
               </div>
@@ -180,15 +190,34 @@ export default function VerMasHist() {
             {/* Hero y resto del contenido igual */}
             <section ref={heroRef} className="relative py-8 px-4">
               <div className="max-w-4xl mx-auto">
-                <motion.div initial={{ opacity: 0, y: 30 }} animate={heroAnimation} transition={{ duration: 0.8 }} className="rounded-3xl overflow-hidden border border-violet-200 shadow-2xl shadow-violet-200/50 h-96 relative">
-                  <img src={story.image} alt={story.title} className="w-full h-full object-cover" />
-                  <div/>
-                  <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                {story.image.map((img, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={heroAnimation}
+                    transition={{ duration: 0.8, delay: i * 0.2 }}
+                    className="rounded-3xl overflow-hidden border border-violet-200 shadow-2xl shadow-violet-200/50 h-96 relative mb-8"
+                    onClick={() => setSelectedImage(img)}
+                  >
+                    <img src={img} alt={`img-${i}`} className="w-full h-full object-cover" />
+                  </motion.div>
+                ))}
 
-                  </div>
-                </motion.div>
               </div>
             </section>
+            {selectedImage && (
+              <div
+                className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[9999]"
+                onClick={() => setSelectedImage(null)}
+              >
+                <img
+                  src={selectedImage}
+                  className="max-w-[90%] max-h-[90%] rounded-2xl shadow-2xl"
+                  alt="preview"
+                />
+              </div>
+            )}
+
             <div className="grid grid-cols-3 gap-4">
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6  text-center">
                 <Eye className="w-5 h-5 mx-auto text-violet-600 mb-2" />
