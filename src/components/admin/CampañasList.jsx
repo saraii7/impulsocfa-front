@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getPendingCampaigns, approveCampaign, getCampaignById } from "../../services/admin.service";
 import { toast } from "react-hot-toast";
+import { Target, Calendar } from "lucide-react";
 
 export default function CampaignList() {
   const [campaigns, setCampaigns] = useState([]);
@@ -20,7 +21,7 @@ export default function CampaignList() {
         summary.map((c) => getCampaignById(c.id_campana))
       );
       setCampaigns(detailedCampaigns);
-    
+
     } catch (error) {
       console.error("Error al cargar campañas pendientes:", error);
       toast.error("❌ Error al cargar las campañas pendientes");
@@ -70,22 +71,41 @@ export default function CampaignList() {
               key={c.id_campana}
               className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-violet-200 p-6 flex flex-col hover:shadow-md transition-all duration-300"
             >
-              {c.foto_principal && (
+              {c.foto1 && (
                 <img
-                  src={c.foto_principal || "/placeholder.svg"}
+                  src={c.foto1 || "/placeholder.svg"}
                   alt={c.titulo}
                   className="rounded-lg mb-4 object-cover h-48 w-full border border-violet-200"
                 />
               )}
               <h3 className="text-xl font-semibold mb-2">{c.titulo}</h3>
               <p className="text-slate-700 mb-3 line-clamp-3">{c.descripcion}</p>
-              <p className="text-slate-600 text-sm">
-                <span className="text-violet-600 font-semibold">Meta:</span> ${c.monto_objetivo} |{" "}
-                <span className="text-violet-600 font-semibold">Duración:</span> {c.tiempo_objetivo} días
-              </p>
+
+              <div className="flex items-center gap-4 mt-2 text-sm text-slate-700">
+
+                {/* META */}
+                <div className="flex items-center gap-2 bg-violet-50 px-3 py-1.5 rounded-lg border border-violet-200">
+                  <Target className="w-4 h-4 text-violet-600" />
+                  <span className="font-semibold text-violet-700">
+                    ${c.monto_objetivo.toLocaleString()}
+                  </span>
+                </div>
+
+                {/* DURACIÓN */}
+                <div className="flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-200">
+                  <Calendar className="w-4 h-4 text-blue-600" />
+                  <span className="font-semibold text-blue-700">
+                    {new Date(c.tiempo_objetivo).toLocaleDateString("es-AR")}
+                  </span>
+
+                </div>
+
+              </div>
+
+              {/* DURACIÓN 
               <p className="mt-1 text-sm text-gray-500 font-semibold">
                 Usuario: {c.usuario?.nombre ? `${c.usuario.nombre} ${c.usuario.apellido}` : c.id_usuario}
-              </p>
+              </p>*/}
               <div className="mt-4 flex gap-2">
                 <button
                   onClick={() => handleApprove(c.id_campana, true)}
