@@ -9,6 +9,11 @@ export default function TusHist() {
   const [stories, setStories] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const isVideo = (url) => {
+    if (!url) return false;
+    return url.endsWith(".mp4") || url.endsWith(".mov") || url.endsWith(".webm");
+  };
+
 
   // Obtener userId del token
   const token = localStorage.getItem("access_token");
@@ -102,11 +107,30 @@ export default function TusHist() {
               onClick={() => navigate(`/vermashist/${story.id_historia}`)}
             >
               <div className="flex-1">
-                <img
-                  src={story.archivo1|| "https://via.placeholder.com/400x300?text=Sin+imagen"}
-                  alt={story.title}
-                  className="w-full h-48 object-cover rounded-lg mb-4"
-                />
+                {/* Mostrar imagen o video según el archivo */}
+                {story.archivo1 ? (
+                  isVideo(story.archivo1) ? (
+                    <video
+                      src={story.archivo1}
+                      className="w-full h-48 object-cover rounded-lg mb-4"
+                      muted
+                      autoPlay
+                      loop
+                    />
+                  ) : (
+                    <img
+                      src={story.archivo1}
+                      alt={story.titulo}
+                      className="w-full h-48 object-cover rounded-lg mb-4"
+                    />
+                  )
+                ) : (
+                  <img
+                    src="https://via.placeholder.com/400x300?text=Sin+archivo"
+                    className="w-full h-48 object-cover rounded-lg mb-4"
+                  />
+                )}
+
                 <h2 className="text-xl font-bold text-slate-800 mb-3 line-clamp-2">
                   {story.titulo}
                 </h2>
