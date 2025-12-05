@@ -168,8 +168,15 @@ export default function VerMasHist() {
               <div>
                 <h2 className="text-xl font-bold text-slate-800">{story.author}</h2>
                 <p className="text-sm text-slate-600">
-                  Creador de la Campaña: <strong>{story.category}</strong>
+                  Creador de la Campaña:{" "}
+                  <Link
+                    to={`/campanas/${story.id_campana}`}
+                    className="font-semibold text-violet-600 hover:underline"
+                  >
+                    {story.category}
+                  </Link>
                 </p>
+
 
                 <p className="text-xs text-slate-500">{story.date}</p>
               </div>
