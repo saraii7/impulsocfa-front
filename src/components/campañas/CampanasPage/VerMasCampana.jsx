@@ -5,6 +5,7 @@ import Comments from "../../comentarios/Comments"
 import UltimasDonaciones from "../../../pages/Campanas/UltimasDonaciones"
 import { ArrowLeft, Target, Calendar, TrendingUp, Clock, ChevronLeft, ChevronRight, Edit3, Trash2 } from "lucide-react"
 import { getHistoriesByCampaign } from "../../../services/history.service"
+import { toast } from "react-hot-toast";
 
 export default function VerMasCampana() {
   const { id } = useParams()
@@ -39,6 +40,32 @@ export default function VerMasCampana() {
     (history50 && !history50.editada) ||
     (history100 && !history100.editada);
 
+function toastConfirm(message, onConfirm) {
+  toast((t) => (
+    <div className=" bg-white p-4 rounded-xl shadow-lg ">
+      <p className="text-sm font-medium text-slate-800">{message}</p>
+
+      <div className="flex justify-end gap-2">
+        <button
+          className="px-3 py-1 rounded bg-slate-200 hover:bg-slate-300 text-sm"
+          onClick={() => toast.dismiss(t.id)}
+        >
+          Cancelar
+        </button>
+
+        <button
+          className="px-3 py-1 rounded bg-red-500 text-white hover:bg-red-600 text-sm"
+          onClick={() => {
+            toast.dismiss(t.id);
+            onConfirm(); // acción confirmada
+          }}
+        >
+          Aceptar
+        </button>
+      </div>
+    </div>
+  ));
+}
 
   // Carrusel automático
   useEffect(() => {
@@ -63,18 +90,19 @@ export default function VerMasCampana() {
 
   const handleEdit = () => navigate(`/editarcampana/${campana.id_campana}`)
 
-  const handleSuspend = async () => {
-    if (confirm("¿Seguro que querés suspender esta campaña?")) {
-      try {
-        await suspendCampaign(campana.id_campana)
-        alert("Campaña suspendida")
-        navigate("/campanas") // vuelve al listado
-      } catch (err) {
-        console.error(err)
-        alert("Error al suspender la campaña")
-      }
+
+async function handleSuspender(id) {
+  toastConfirm("¿Seguro que querés suspender esta campaña?", async () => {
+    try {
+      await suspendCampaign(id);
+      toast.success("Campaña suspendida correctamente ✅");
+      loadCampana(); // o navegar, lo que tengas
+    } catch (error) {
+      toast.error("❌ Error al suspender campaña");
+      console.error(error);
     }
-  }
+  });
+}
 
   if (loading) return <p className="text-center py-12">Cargando campaña...</p>
   if (error) return <p className="text-red-600 text-center py-12">{error}</p>
@@ -275,7 +303,7 @@ export default function VerMasCampana() {
             Editar
           </button>
           <button
-            onClick={handleSuspend}
+            onClick={handleSuspender}
             className="flex-1 px-4 py-2 bg-red-400 hover:bg-red-500 text-white rounded-lg font-semibold transition"
           >
             Suspender

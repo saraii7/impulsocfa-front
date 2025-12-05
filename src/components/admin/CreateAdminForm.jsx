@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createAdmin } from "../../services/admin.service";
+import toast from "react-hot-toast";
 
 export default function CreateAdminForm() {
   const [formData, setFormData] = useState({
@@ -7,7 +8,6 @@ export default function CreateAdminForm() {
     apellido: "",
     email: "",
     password: "",
-    nacionalidad: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -20,7 +20,7 @@ export default function CreateAdminForm() {
     setLoading(true);
     try {
       await createAdmin(formData);
-      alert("✅ Administrador creado correctamente!");
+    toast.success("Administrador creado correctamente. Revisa tu mail para confirmar el inicio de sesion.");
       setFormData({
         nombre: "",
         apellido: "",
@@ -29,7 +29,7 @@ export default function CreateAdminForm() {
         nacionalidad: "",
       });
     } catch (error) {
-      alert("❌ Error al crear administrador: " + error.message);
+       toast.error(error.message || "Error al crear administrador: " );
     } finally {
       setLoading(false);
     }
@@ -81,15 +81,7 @@ export default function CreateAdminForm() {
           required
           className="border-2 border-violet-200 p-3 rounded-lg focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition"
         />
-        <input
-          type="text"
-          name="nacionalidad"
-          placeholder="Nacionalidad"
-          value={formData.nacionalidad}
-          onChange={handleChange}
-          required
-          className="border-2 border-violet-200 p-3 rounded-lg focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition md:col-span-2"
-        />
+
       </div>
 
       <button

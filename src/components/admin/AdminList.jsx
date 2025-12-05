@@ -20,9 +20,36 @@ export default function AdminList() {
       console.error("Error al cargar administradores:", error);
     }
   }
+  function toastConfirm(message, onConfirm) {
+  toast((t) => (
+    <div className="flex flex-col gap-3">
+      <p className="text-sm font-medium">{message}</p>
 
-  async function handleDisable(id) {
-    if (!confirm("¿Seguro que querés deshabilitar este administrador?")) return;
+      <div className="flex justify-end gap-2">
+        <button
+          className="px-3 py-1 rounded bg-slate-200 hover:bg-slate-300 text-sm"
+          onClick={() => toast.dismiss(t.id)}
+        >
+          Cancelar
+        </button>
+
+        <button
+          className="px-3 py-1 rounded bg-red-500 text-white hover:bg-red-600 text-sm"
+          onClick={() => {
+            toast.dismiss(t.id);
+            onConfirm(); // ejecuta acción
+          }}
+        >
+          Aceptar
+        </button>
+      </div>
+    </div>
+  ));
+}
+
+
+async function handleDisable(id) {
+  toastConfirm("¿Seguro que querés deshabilitar este administrador?", async () => {
     try {
       await disableAdmin(id);
       toast.success("Administrador deshabilitado correctamente ✅");
@@ -31,7 +58,8 @@ export default function AdminList() {
       toast.error("❌ Error al deshabilitar administrador");
       console.error("❌ Error al deshabilitar administrador:", error);
     }
-  }
+  });
+}
 
   // Abrir el formulario de edición
   function handleEditClick(admin) {
@@ -82,12 +110,7 @@ export default function AdminList() {
                         onChange={(e) => setEditData({ ...editData, apellido: e.target.value })}
                         placeholder="Apellido"
                       />
-                      <input
-                        className="border-2 border-violet-200 px-3 py-2 rounded-lg focus:outline-none focus:border-violet-400"
-                        value={editData.email}
-                        onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-                        placeholder="Email"
-                      />
+
                     </div>
                   ) : (
                     <>

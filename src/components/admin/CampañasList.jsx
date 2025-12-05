@@ -20,7 +20,7 @@ export default function CampaignList() {
         summary.map((c) => getCampaignById(c.id_campana))
       );
       setCampaigns(detailedCampaigns);
-      toast.success("✅ Campañas pendientes cargadas correctamente");
+    
     } catch (error) {
       console.error("Error al cargar campañas pendientes:", error);
       toast.error("❌ Error al cargar las campañas pendientes");
