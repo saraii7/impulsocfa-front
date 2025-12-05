@@ -13,11 +13,15 @@ export default function LeerHist() {
   const isStoriesInView = useInView(storiesRef, { once: true });
 
   const [stories, setStories] = useState([]);
+  const isVideo = (url) => {
+    if (!url) return false;
+    return url.endsWith(".mp4") || url.endsWith(".mov") || url.endsWith(".webm");
+  };
 
   useEffect(() => {
     async function loadStories() {
       try {
-        
+
         const data = await getAllHistories();
         setStories(data);
       } catch (err) {
@@ -90,11 +94,22 @@ export default function LeerHist() {
                 >
                   {/* Story Image */}
                   <div className="relative h-48 overflow-hidden bg-gradient-to-br from-violet-200 to-blue-200">
-                    <img
-                      src={image}
-                      alt={story.titulo}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
+                    {isVideo(image) ? (
+                      <video
+                        src={image}
+                        className="w-full h-full object-cover"
+                        muted
+                        autoPlay
+                        loop
+                      />
+                    ) : (
+                      <img
+                        src={image}
+                        alt={story.titulo}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    )}
+
 
                     <div className="absolute top-3 right-3 bg-violet-500/90 text-white px-3 py-1 rounded-full text-xs font-semibold">
                       {story.nombre_campana || "Historia"}
