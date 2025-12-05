@@ -22,6 +22,8 @@ export default function UsuarioPanel() {
     <div>
       <div>
         {activeTab === "perfil" && user && <UserProfile user={user} />}
+           {activeTab === "Mis Campañas" && user && <UserProfile user={user} />}
+        
       </div>
     </div>
   );
