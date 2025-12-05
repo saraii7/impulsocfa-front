@@ -225,7 +225,7 @@ export default function VerMasHist() {
               </div>
             )}
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6  text-center">
                 <Eye className="w-5 h-5 mx-auto text-violet-600 mb-2" />
                 <span className="text-2xl font-bold text-violet-600">{(story.views / 1000).toFixed(1)}K</span>
@@ -235,11 +235,6 @@ export default function VerMasHist() {
                 <Heart className="w-5 h-5 mx-auto text-red-500 mb-2" />
                 <span className="text-2xl font-bold text-red-500">{story.likes}</span>
                 <p className="text-xs text-slate-600">Me encanta</p>
-              </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6  text-center">
-                <MessageCircle className="w-5 h-5 mx-auto text-violet-600 mb-2" />
-                <span className="text-2xl font-bold text-violet-600">{Math.floor(story.likes / 10)}</span>
-                <p className="text-xs text-slate-600">Comentarios</p>
               </div>
             </div>
           </motion.div>
