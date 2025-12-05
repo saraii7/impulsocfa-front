@@ -11,15 +11,22 @@ export default function AdminList() {
     loadAdmins();
   }, []);
 
-  async function loadAdmins() {
-    try {
-      const data = await getAdmins();
-      setAdmins(data);
-    } catch (error) {
-      toast.error("❌ Error al cargar administradores");
-      console.error("Error al cargar administradores:", error);
-    }
+async function loadAdmins() {
+  try {
+    const data = await getAdmins();
+
+    // Filtrar solo administradores habilitados
+    const adminsHabilitados = data.filter(
+      admin => admin.estado_cuenta === "habilitada"
+    );
+
+    setAdmins(adminsHabilitados);
+  } catch (error) {
+    toast.error("❌ Error al cargar administradores");
+    console.error("Error al cargar administradores:", error);
   }
+}
+
   function toastConfirm(message, onConfirm) {
   toast((t) => (
     <div className="flex flex-col gap-3">
