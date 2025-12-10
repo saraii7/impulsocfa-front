@@ -491,7 +491,7 @@ const isVideo = (url) => {
       <Link
         key={h.id_historia}
         to={`/vermashist/${h.id_historia}`}
-        className="block p-5 rounded-xl border border-violet-200 shadow-sm hover:shadow-md hover:scale-[1.01] transition-all duration-200"
+        className="inilne-block p-5 rounded-xl border border-violet-200 shadow-sm hover:shadow-md hover:scale-[1.01] transition-all duration-200"
       >
         {/* MEDIA */}
         {h.archivo1 && (
@@ -500,13 +500,13 @@ const isVideo = (url) => {
               <video
                 src={h.archivo1}
                 controls
-                className="w-full h-48 object-cover rounded-lg mb-3"
+                className="max-w-full h-48 object-cover rounded-lg mb-3"
               />
             ) : (
               <img
                 src={h.archivo1}
                 alt={h.titulo}
-                className="w-full h-48 object-cover rounded-lg mb-3"
+                className="max-w-full h-48 object-cover rounded-lg mb-3"
               />
             )}
           </>
