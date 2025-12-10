@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useParams, useNavigate } from "react-router-dom"
+import { useParams, useNavigate, Link } from "react-router-dom"
 import { getCampaignById } from "../../services/campaing.service"
 import { ArrowLeft, Target, Calendar, TrendingUp, Clock, ChevronLeft, ChevronRight } from "lucide-react"
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react"
@@ -24,6 +24,15 @@ export default function DetalleCampana() {
   const [histories, setHistories] = useState([]);
   const [hist50, setHist50] = useState([]);
   const [hist100, setHist100] = useState([]);
+const isVideo = (url) => {
+  if (!url) return false;
+  return (
+    url.endsWith(".mp4") ||
+    url.endsWith(".mov") ||
+    url.endsWith(".webm") ||
+    url.endsWith(".avi")
+  );
+};
 
 
   //carrusel estado
@@ -441,69 +450,91 @@ export default function DetalleCampana() {
                 Donar con Mercado Pago
               </button>
 
-              {/* HISTORIAS */}
-              <div className="mt-12 pt-8 border-t border-violet-200">
-                {/* TÍTULO + ICONO */}
-                <div className="flex items-center gap-3 mb-3">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-7 h-7 text-violet-600"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.8}
-                      d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"
-                    />
-                  </svg>
+{/* HISTORIAS */}
+<div className="mt-12 pt-8 border-t border-violet-200">
+  {/* TÍTULO + ICONO */}
+  <div className="flex items-center gap-3 mb-3">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-7 h-7 text-violet-600"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.8}
+        d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"
+      />
+    </svg>
 
-                  <h2 className="text-2xl font-bold text-violet-700">
-                    Historias y actualizaciones
-                  </h2>
-                </div>
+    <h2 className="text-2xl font-bold text-violet-700">
+      Historias y actualizaciones
+    </h2>
+  </div>
 
-                {/* DESCRIPCIÓN */}
-                <p className="text-slate-600 mb-6">
-                  Enterate del progreso de la campaña: avances, compras realizadas,
-                  testimonios y otras novedades importantes que el creador compartió.
-                </p>
+  {/* DESCRIPCIÓN */}
+  <p className="text-slate-600 mb-6">
+    Enterate del progreso de la campaña: avances, compras realizadas,
+    testimonios y otras novedades importantes que el creador compartió.
+  </p>
 
-                {/* LISTA */}
-                {histories.length === 0 ? (
-                  <p className="text-slate-600 italic">
-                    Aún no hay historias cargadas para esta campaña.
-                  </p>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    {histories.map((h) => (
-                      <div
-                        key={h.id_historia}
-                        className="p-5 rounded-xl border border-violet-200 shadow-sm hover:shadow-md transition-all duration-200"
-                      >
-                        {/* TITULO */}
-                        <h3 className="text-lg font-semibold text-violet-700 mb-2">
-                          {h.titulo}
-                        </h3>
+  {/* LISTA */}
+{histories.length === 0 ? (
+  <p className="text-slate-600 italic">
+    Aún no hay historias cargadas para esta campaña.
+  </p>
+) : (
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+    {histories.map((h) => (
+      <Link
+        key={h.id_historia}
+        to={`/vermashist/${h.id_historia}`}
+        className="block p-5 rounded-xl border border-violet-200 shadow-sm hover:shadow-md hover:scale-[1.01] transition-all duration-200"
+      >
+        {/* MEDIA */}
+        {h.archivo1 && (
+          <>
+            {isVideo(h.archivo1) ? (
+              <video
+                src={h.archivo1}
+                controls
+                className="w-full h-48 object-cover rounded-lg mb-3"
+              />
+            ) : (
+              <img
+                src={h.archivo1}
+                alt={h.titulo}
+                className="w-full h-48 object-cover rounded-lg mb-3"
+              />
+            )}
+          </>
+        )}
 
-                        {/* CONTENIDO */}
-                        <p className="text-slate-700 whitespace-pre-wrap leading-relaxed">
-                          {h.contenido}
-                        </p>
+        {/* TITULO */}
+        <h3 className="text-lg font-semibold text-violet-700 mb-2">
+          {h.titulo}
+        </h3>
 
-                        {/* FECHA (si la tenés disponible) */}
-                        {h.fecha && (
-                          <p className="mt-4 text-xs text-slate-500">
-                            Publicado el {new Date(h.fecha).toLocaleDateString("es-AR")}
-                          </p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+        {/* CONTENIDO → recortado a 3 líneas */}
+        <p className="text-slate-700 whitespace-pre-wrap leading-relaxed line-clamp-3">
+          {h.contenido}
+        </p>
+
+        {/* FECHA */}
+        {h.fecha && (
+          <p className="mt-4 text-xs text-slate-500">
+            Publicado el {new Date(h.fecha).toLocaleDateString("es-AR")}
+          </p>
+        )}
+      </Link>
+    ))}
+  </div>
+)}
+
+</div>
+
 
 
 
