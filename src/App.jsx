@@ -88,7 +88,7 @@ function App() {
             <Route path="/pago-pendiente" element={<PagoPendiente />} />
             <Route path="/todasdonaciones" element={<TodasDonaciones />} />
             <Route path="/vermascampana/:id" element={<VerMasCampana />} />
-            <Route path="/historias" element={<Historias />} />
+            <Route path="/historias/" element={<Historias />} />
             <Route path="/leerhist" element={<LeerHist />} />
             <Route path="/vermashist/:id" element={<VerMasHist />} />
             <Route path="/formhist" element={<FormHist />} />
