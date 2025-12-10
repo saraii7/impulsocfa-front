@@ -25,6 +25,7 @@ export default function DetalleCampana() {
   const [hist50, setHist50] = useState([]);
   const [hist100, setHist100] = useState([]);
 
+
   //carrusel estado
   const [currentImage, setCurrentImage] = useState(0)
 
@@ -345,6 +346,22 @@ export default function DetalleCampana() {
                 </p>
               </div>
             </div>
+            {/* AVISO: mostrar SOLO si la campaña llegó >=50% y NO hay historias en hist50 */}
+            {porcentaje >= 50 && histories.length === 0 && (
+              <div className="mt-6 mb-8 p-5 bg-yellow-50 border border-yellow-300 rounded-xl shadow-sm">
+                <h3 className="text-lg font-semibold text-yellow-700 flex items-center gap-2">
+                  ⚠️ Atención: esta campaña superó el 50% sin historias verificables
+                </h3>
+                <p className="text-yellow-800 text-sm mt-1 leading-relaxed">
+                  Cuando una campaña alcanza el 50% o más, debería publicar al menos una historia
+                  que permita verificar el destino de los fondos. La ausencia de historias
+                  reduce el nivel de transparencia; doná con precaución.
+                </p>
+                <p className="text-yellow-700 text-xs mt-2 italic">
+                  Esta donación queda a cargo del usuario que desea contribuir.
+                </p>
+              </div>
+            )}
 
             {/* Formulario de donación */}
             <form onSubmit={handleDonate} className="flex flex-col gap-4">
@@ -424,69 +441,69 @@ export default function DetalleCampana() {
                 Donar con Mercado Pago
               </button>
 
-{/* HISTORIAS */}
-<div className="mt-12 pt-8 border-t border-violet-200">
-  {/* TÍTULO + ICONO */}
-  <div className="flex items-center gap-3 mb-3">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-7 h-7 text-violet-600"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.8}
-        d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"
-      />
-    </svg>
+              {/* HISTORIAS */}
+              <div className="mt-12 pt-8 border-t border-violet-200">
+                {/* TÍTULO + ICONO */}
+                <div className="flex items-center gap-3 mb-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-7 h-7 text-violet-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.8}
+                      d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"
+                    />
+                  </svg>
 
-    <h2 className="text-2xl font-bold text-violet-700">
-      Historias y actualizaciones
-    </h2>
-  </div>
+                  <h2 className="text-2xl font-bold text-violet-700">
+                    Historias y actualizaciones
+                  </h2>
+                </div>
 
-  {/* DESCRIPCIÓN */}
-  <p className="text-slate-600 mb-6">
-    Enterate del progreso de la campaña: avances, compras realizadas,
-    testimonios y otras novedades importantes que el creador compartió.
-  </p>
+                {/* DESCRIPCIÓN */}
+                <p className="text-slate-600 mb-6">
+                  Enterate del progreso de la campaña: avances, compras realizadas,
+                  testimonios y otras novedades importantes que el creador compartió.
+                </p>
 
-  {/* LISTA */}
-  {histories.length === 0 ? (
-    <p className="text-slate-600 italic">
-      Aún no hay historias cargadas para esta campaña.
-    </p>
-  ) : (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-      {histories.map((h) => (
-        <div
-          key={h.id_historia}
-          className="p-5 rounded-xl border border-violet-200 shadow-sm hover:shadow-md transition-all duration-200"
-        >
-          {/* TITULO */}
-          <h3 className="text-lg font-semibold text-violet-700 mb-2">
-            {h.titulo}
-          </h3>
+                {/* LISTA */}
+                {histories.length === 0 ? (
+                  <p className="text-slate-600 italic">
+                    Aún no hay historias cargadas para esta campaña.
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    {histories.map((h) => (
+                      <div
+                        key={h.id_historia}
+                        className="p-5 rounded-xl border border-violet-200 shadow-sm hover:shadow-md transition-all duration-200"
+                      >
+                        {/* TITULO */}
+                        <h3 className="text-lg font-semibold text-violet-700 mb-2">
+                          {h.titulo}
+                        </h3>
 
-          {/* CONTENIDO */}
-          <p className="text-slate-700 whitespace-pre-wrap leading-relaxed">
-            {h.contenido}
-          </p>
+                        {/* CONTENIDO */}
+                        <p className="text-slate-700 whitespace-pre-wrap leading-relaxed">
+                          {h.contenido}
+                        </p>
 
-          {/* FECHA (si la tenés disponible) */}
-          {h.fecha && (
-            <p className="mt-4 text-xs text-slate-500">
-              Publicado el {new Date(h.fecha).toLocaleDateString("es-AR")}
-            </p>
-          )}
-        </div>
-      ))}
-    </div>
-  )}
-</div>
+                        {/* FECHA (si la tenés disponible) */}
+                        {h.fecha && (
+                          <p className="mt-4 text-xs text-slate-500">
+                            Publicado el {new Date(h.fecha).toLocaleDateString("es-AR")}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
 
 

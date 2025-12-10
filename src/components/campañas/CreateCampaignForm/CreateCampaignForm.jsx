@@ -23,6 +23,7 @@ export default function CreateCampaignForm() {
   const [message, setMessage] = useState({ type: "", text: "" });
   const [errors, setErrors] = useState({});
   const [llaveMaestra, setLlaveMaestra] = useState("");
+  const [showRules, setShowRules] = useState(false)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -143,6 +144,20 @@ export default function CreateCampaignForm() {
         onSubmit={handleSubmit}
         className="relative z-10 w-full max-w-lg bg-white/80 backdrop-blur-xl p-8 rounded-2xl shadow-xl border border-violet-200 flex flex-col gap-5"
       >
+
+        <button
+          onClick={() => setShowRules(true)}
+          className="flex items-center gap-2 px-6 py-3 rounded-xl 
+               bg-gradient-to-r from-amber-400 to-orange-400 hover:from-amber-500 hover:to-orange-500
+               text-white font-semibold
+               shadow-md hover:shadow-lg
+               transition-all duration-300
+               border border-amber-300/50"
+        >
+          <span className="text-lg">⚠️</span>
+          <span>Reglas importantes</span>
+        </button>
+
         {/* Llave maestra */}
         <div>
           <label className="block text-slate-700 font-semibold mb-1">
@@ -383,6 +398,71 @@ export default function CreateCampaignForm() {
           {loading ? "Creando..." : "Crear Campaña"}
         </button>
       </form>
+      {showRules && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full p-6 relative animate-[fadeIn_0.3s_ease]">
+            {/* Cerrar */}
+            <button
+              onClick={() => setShowRules(false)}
+              className="absolute right-4 top-4 text-slate-500 hover:text-slate-700 text-xl"
+            >
+              ✕
+            </button>
+
+            <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-violet-600 text-transparent bg-clip-text">
+              Reglas importantes para crear campañas
+            </h2>
+
+            <div className="space-y-4 text-slate-700">
+              <p>
+                Para mantener{" "}
+                <span className="font-semibold text-violet-600">seguridad, transparencia y confianza</span> en nuestra
+                comunidad, todas las campañas deben cumplir estas reglas:
+              </p>
+
+              <ul className="list-disc pl-6 space-y-3">
+                <li>
+                  <span className="font-semibold">Chequeá con frecuencia tu campaña.</span> para estar al tanto de como va tu progreso.
+                </li>
+
+                <li>
+                  <span className="font-semibold text-violet-700">Al llegar al 50% del objetivo</span>, es obligatorio
+                  subir una
+                  <span className="font-semibold"> historia o actualización</span> con evidencia: fotos, videos,
+                  comprobantes o cualquier material que demuestre el avance y la veracidad, <span className="font-semibold text-violet-700">Al llegar al 100% del objetivo aplica lo mismo</span>.
+                </li>
+
+                <li>Mantener fotos actualizadas y datos claros es clave para que los donantes confíen en vos.</li>
+
+                <li className="text-red-600 font-semibold">
+                  Si pasan 48 horas desde que alcanzaste el 50% y no subiste una historia, la campaña será suspendida
+                  automáticamente.
+                </li>
+
+                <li className="text-red-600 font-semibold">
+                  Si la falta de actualización persiste,{" "}
+                  <span className="underline">tu cuenta también podrá ser suspendida.</span>
+                </li>
+                <li className="text-red-600 font-semibold">
+                  Si la falta de actualización persiste una vez finalizada tu campaña,{" "}
+                  <span className="underline">tu cuenta también podrá ser suspendida.</span>
+                </li>
+              </ul>
+
+              <p>Queremos que cada campaña sea confiable y segura. Estas reglas nos ayudan a proteger a todos 🤝</p>
+            </div>
+
+            <div className="mt-6 flex justify-end">
+              <button
+                onClick={() => setShowRules(false)}
+                className="px-5 py-2 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-lg shadow transition"
+              >
+                Entendido
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
