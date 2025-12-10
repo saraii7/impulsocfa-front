@@ -122,15 +122,8 @@ async function handleSuspender(id) {
 
       {/* Card principal */}
       <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-violet-200 overflow-hidden p-6">
-        {/* WARNING SI HAY HISTORIAS AUTOMÁTICAS SIN EDITAR */}
-        {tienePendientes && (
-          <div className="mb-4 p-3 rounded-lg bg-amber-100 border-l-4 border-amber-500 flex items-center gap-3">
-            <span className="text-amber-600 text-xl">⚠️</span>
-            <p className="text-amber-700 font-medium">
-              Hay historias automáticas que necesitan ser editadas antes de finalizar la campaña.
-            </p>
-          </div>
-        )}
+     
+
 
         {/* Carrusel */}
         <div className="relative h-80 w-full mb-6 rounded-lg overflow-hidden border border-violet-200 flex items-center justify-center bg-violet-50">
@@ -168,68 +161,40 @@ async function handleSuspender(id) {
         </div>
 
         <p className="text-slate-700 mb-6">{campana.descripcion}</p>
-        {/* HISTORIAS AUTOMÁTICAS */}
-        <div className="mt-10">
-          <h2 className="text-xl font-bold text-violet-700 mb-4">
-            Historias automáticas generadas por el progreso
-          </h2>
+{porcentaje >= 50 && histories.length === 0 && (
+  <div className="mb-6 p-4 bg-yellow-50 border border-yellow-300 rounded-xl shadow-sm">
+    <h3 className="text-lg font-semibold text-yellow-700 flex items-center gap-2">
+      ⚠️ Tenés que crear una historia de actualización de como va tu camapaña
+    </h3>
+    <p className="text-yellow-800 text-sm mt-1">
+      Cuando tu campaña alcanza el 50%, debés crear una historia para mostrar a tus donadores como va su
+       donación, toca el boton violeta para crear una historia y atrer posibles donadores como esta yendo tu campaña.
+    </p>
+    <button
+      onClick={() => navigate("/formhist")}
+      className="mt-3 px-4 py-2 bg-violet-600 text-white text-sm mt-1 rounded-lg hover:bg-violet-700"
+    >
+      Crear historia
+    </button>
+  </div>
+)}
+{porcentaje >= 100 && histories.length === 0 && (
+  <div className="mb-6 p-4 bg-red-50 border border-red-300 rounded-xl shadow-sm">
+    <h3 className="text-lg font-semibold text-red-700 flex items-center gap-2">
+      ⚠️ Necesitás crear la historia final (100%)
+    </h3>
+    <p className="text-red-800 text-sm mt-1">
+      Tu campaña llegó al 100%. Creá la historia final para completar la transparencia.
+    </p>
+    <button
+      onClick={() => navigate("/formhist")}
+      className="mt-3 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+    >
+      Crear historia
+    </button>
+  </div>
+)}
 
-          {/* 50% */}
-          <div className="mb-6 p-4 rounded-xl border border-violet-200 bg-white/70 shadow">
-            <h3 className="font-bold text-violet-600 text-lg">Avance 50%</h3>
-
-            {history50 ? (
-              <>
-                <p className="text-slate-700 whitespace-pre-wrap mt-2">
-                  {history50.contenido}
-                </p>
-
-                {!history50.editada && (
-                  <p className="text-amber-600 text-sm mt-2">
-                    ⚠ Esta historia fue generada automáticamente. Edítala para personalizarla.
-                  </p>
-                )}
-
-                <button
-                  onClick={() => navigate(`/edithist/${history50.id_historia}`)}
-                  className="mt-3 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700"
-                >
-                  Editar historia
-                </button>
-              </>
-            ) : (
-              <p className="text-slate-500">Todavía no se alcanzó el 50%.</p>
-            )}
-          </div>
-
-          {/* 100% */}
-          <div className="p-4 rounded-xl border border-violet-200 bg-white/70 shadow">
-            <h3 className="font-bold text-violet-600 text-lg">Avance 100%</h3>
-
-            {history100 ? (
-              <>
-                <p className="text-slate-700 whitespace-pre-wrap mt-2">
-                  {history100.contenido}
-                </p>
-
-                {!history100.editada && (
-                  <p className="text-amber-600 text-sm mt-2">
-                    ⚠ Esta historia fue generada automáticamente. Edítala para finalizar la campaña.
-                  </p>
-                )}
-
-                <button
-                  onClick={() => navigate(`/edithist/${history100.id_historia}`)}
-                  className="mt-3 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700"
-                >
-                  Editar historia
-                </button>
-              </>
-            ) : (
-              <p className="text-slate-500">La campaña aún no se completó.</p>
-            )}
-          </div>
-        </div>
 
 
         {/* Barra de progreso */}
