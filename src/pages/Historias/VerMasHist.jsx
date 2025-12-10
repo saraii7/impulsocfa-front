@@ -229,18 +229,27 @@ export default function VerMasHist() {
 
               </div>
             </section>
-            {selectedImage && (
-              <div
-                className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[9999]"
-                onClick={() => setSelectedImage(null)}
-              >
-                <img
-                  src={selectedImage}
-                  className="max-w-[90%] max-h-[90%] rounded-2xl shadow-2xl"
-                  alt="preview"
-                />
-              </div>
-            )}
+{selectedImage && (
+  <div
+    className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[9999]"
+    onClick={() => setSelectedImage(null)}
+  >
+    {isVideo(selectedImage) ? (
+      <video
+        src={selectedImage}
+        controls
+        autoPlay
+        className="max-w-[90%] max-h-[90%] rounded-2xl shadow-2xl"
+      />
+    ) : (
+      <img
+        src={selectedImage}
+        className="max-w-[90%] max-h-[90%] rounded-2xl shadow-2xl"
+        alt="preview"
+      />
+    )}
+  </div>
+)}
 
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6  text-center">
