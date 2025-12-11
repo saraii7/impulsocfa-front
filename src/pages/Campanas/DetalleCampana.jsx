@@ -24,15 +24,15 @@ export default function DetalleCampana() {
   const [histories, setHistories] = useState([]);
   const [hist50, setHist50] = useState([]);
   const [hist100, setHist100] = useState([]);
-const isVideo = (url) => {
-  if (!url) return false;
-  return (
-    url.endsWith(".mp4") ||
-    url.endsWith(".mov") ||
-    url.endsWith(".webm") ||
-    url.endsWith(".avi")
-  );
-};
+  const isVideo = (url) => {
+    if (!url) return false;
+    return (
+      url.endsWith(".mp4") ||
+      url.endsWith(".mov") ||
+      url.endsWith(".webm") ||
+      url.endsWith(".avi")
+    );
+  };
 
 
   //carrusel estado
@@ -67,6 +67,8 @@ const isVideo = (url) => {
   const porcentaje = campana
     ? Math.min((campana.monto_actual / campana.monto_objetivo) * 100, 100)
     : 0;
+
+
 
   useEffect(() => {
     if (!campana) return
@@ -174,6 +176,8 @@ const isVideo = (url) => {
       </div>
     )
   }
+    const fechaFin = new Date(campana.tiempo_objetivo);
+  const campanaFinalizada = fechaFin < new Date();
   const imagenes = [campana.foto1, campana.foto2, campana.foto3].filter(Boolean)
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-violet-50 via-blue-50 to-purple-50 overflow-hidden">
@@ -202,7 +206,12 @@ const isVideo = (url) => {
           {/* Botón reportar */}
           <button
             onClick={() => navigate(`/reportcampana/${campana.id_campana}`)}
-            className="px-4 py-2 bg-red-100 text-red-700 border border-red-300 rounded-lg hover:bg-red-200 transition"
+            disabled={campanaFinalizada}
+            className={`px-4 py-2 border rounded-lg transition 
+    ${campanaFinalizada
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-red-100 text-red-700 border-red-300 hover:bg-red-200"
+              }`}
           >
             Reportar campaña
           </button>
@@ -445,7 +454,12 @@ const isVideo = (url) => {
               </div>
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 hover:from-blue-500 hover:to-violet-500 text-white font-semibold px-6 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                disabled={campanaFinalizada}
+                className={`mt-4 px-4 py-2 font-semibold rounded-lg transition 
+    ${campanaFinalizada
+                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    : "bg-violet-600 text-white hover:bg-violet-700"
+                  }`}
               >
                 Donar con Mercado Pago
               </button>
@@ -456,89 +470,89 @@ const isVideo = (url) => {
               )}
 
               {/* HISTORIAS */}
-<div className="mt-12 pt-8 border-t border-violet-200">
-  {/* TÍTULO + ICONO */}
-  <div className="flex items-center gap-3 mb-3">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-7 h-7 text-violet-600"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.8}
-        d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"
-      />
-    </svg>
+              <div className="mt-12 pt-8 border-t border-violet-200">
+                {/* TÍTULO + ICONO */}
+                <div className="flex items-center gap-3 mb-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-7 h-7 text-violet-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.8}
+                      d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"
+                    />
+                  </svg>
 
-    <h2 className="text-2xl font-bold text-violet-700">
-      Historias y actualizaciones
-    </h2>
-  </div>
+                  <h2 className="text-2xl font-bold text-violet-700">
+                    Historias y actualizaciones
+                  </h2>
+                </div>
 
-  {/* DESCRIPCIÓN */}
-  <p className="text-slate-600 mb-6">
-    Enterate del progreso de la campaña: avances, compras realizadas,
-    testimonios y otras novedades importantes que el creador compartió.
-  </p>
+                {/* DESCRIPCIÓN */}
+                <p className="text-slate-600 mb-6">
+                  Enterate del progreso de la campaña: avances, compras realizadas,
+                  testimonios y otras novedades importantes que el creador compartió.
+                </p>
 
-  {/* LISTA */}
-{histories.length === 0 ? (
-  <p className="text-slate-600 italic">
-    Aún no hay historias cargadas para esta campaña.
-  </p>
-) : (
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-    {histories.map((h) => (
-      <Link
-        key={h.id_historia}
-        to={`/vermashist/${h.id_historia}`}
-        className="inilne-block p-5 rounded-xl border border-violet-200 shadow-sm hover:shadow-md hover:scale-[1.01] transition-all duration-200"
-      >
-        {/* MEDIA */}
-        {h.archivo1 && (
-          <>
-            {isVideo(h.archivo1) ? (
-              <video
-                src={h.archivo1}
-                controls
-                className="max-w-full h-48 object-cover rounded-lg mb-3"
-              />
-            ) : (
-              <img
-                src={h.archivo1}
-                alt={h.titulo}
-                className="max-w-full h-48 object-cover rounded-lg mb-3"
-              />
-            )}
-          </>
-        )}
+                {/* LISTA */}
+                {histories.length === 0 ? (
+                  <p className="text-slate-600 italic">
+                    Aún no hay historias cargadas para esta campaña.
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    {histories.map((h) => (
+                      <Link
+                        key={h.id_historia}
+                        to={`/vermashist/${h.id_historia}`}
+                        className="inilne-block p-5 rounded-xl border border-violet-200 shadow-sm hover:shadow-md hover:scale-[1.01] transition-all duration-200"
+                      >
+                        {/* MEDIA */}
+                        {h.archivo1 && (
+                          <>
+                            {isVideo(h.archivo1) ? (
+                              <video
+                                src={h.archivo1}
+                                controls
+                                className="max-w-full h-48 object-cover rounded-lg mb-3"
+                              />
+                            ) : (
+                              <img
+                                src={h.archivo1}
+                                alt={h.titulo}
+                                className="max-w-full h-48 object-cover rounded-lg mb-3"
+                              />
+                            )}
+                          </>
+                        )}
 
-        {/* TITULO */}
-        <h3 className="text-lg font-semibold text-violet-700 mb-2">
-          {h.titulo}
-        </h3>
+                        {/* TITULO */}
+                        <h3 className="text-lg font-semibold text-violet-700 mb-2">
+                          {h.titulo}
+                        </h3>
 
-        {/* CONTENIDO → recortado a 3 líneas */}
-        <p className="text-slate-700 whitespace-pre-wrap leading-relaxed line-clamp-3">
-          {h.contenido}
-        </p>
+                        {/* CONTENIDO → recortado a 3 líneas */}
+                        <p className="text-slate-700 whitespace-pre-wrap leading-relaxed line-clamp-3">
+                          {h.contenido}
+                        </p>
 
-        {/* FECHA */}
-        {h.fecha && (
-          <p className="mt-4 text-xs text-slate-500">
-            Publicado el {new Date(h.fecha).toLocaleDateString("es-AR")}
-          </p>
-        )}
-      </Link>
-    ))}
-  </div>
-)}
+                        {/* FECHA */}
+                        {h.fecha && (
+                          <p className="mt-4 text-xs text-slate-500">
+                            Publicado el {new Date(h.fecha).toLocaleDateString("es-AR")}
+                          </p>
+                        )}
+                      </Link>
+                    ))}
+                  </div>
+                )}
 
-</div>
+              </div>
             </form>
             <Comments id_campana={id} />
             <UltimasDonaciones id_campana={id} token={localStorage.getItem("access_token")} />
