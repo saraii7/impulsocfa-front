@@ -449,8 +449,13 @@ const isVideo = (url) => {
               >
                 Donar con Mercado Pago
               </button>
+              {preferenceId && (
+                <div className="mt-4">
+                  <Wallet initialization={{ preferenceId }} />
+                </div>
+              )}
 
-{/* HISTORIAS */}
+              {/* HISTORIAS */}
 <div className="mt-12 pt-8 border-t border-violet-200">
   {/* TÍTULO + ICONO */}
   <div className="flex items-center gap-3 mb-3">
@@ -534,15 +539,6 @@ const isVideo = (url) => {
 )}
 
 </div>
-
-
-
-
-              {preferenceId && (
-                <div className="mt-4">
-                  <Wallet initialization={{ preferenceId }} />
-                </div>
-              )}
             </form>
             <Comments id_campana={id} />
             <UltimasDonaciones id_campana={id} token={localStorage.getItem("access_token")} />
