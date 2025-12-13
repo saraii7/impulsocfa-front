@@ -21,31 +21,27 @@ export default function FormHist({ campañas = [], onSuccess }) {
   const [loading, setLoading] = useState(false);
 
   // campañas finalizadas filtradas por fecha
-  const [campañasFinalizadas, setCampañasFinalizadas] = useState([]);
+  const [campañasUsuario, setCampañasUsuario] = useState([]);
 
 useEffect(() => {
-  async function cargarCampañasFinalizadas() {
+  async function cargarCampañasUsuario() {
     try {
-      const user = JSON.parse(localStorage.getItem("user")); // 👈 dueño actual
+      const user = JSON.parse(localStorage.getItem("user"));
       const todas = await getAllCampaigns();
 
-      const finalizadas = todas.filter((c) => {
-        const fechaFin = new Date(c.tiempo_objetivo);
+      const propias = todas.filter(
+        (c) => c.id_usuario === user.id_usuario
+      );
 
-        return (
-          fechaFin < new Date() && 
-          c.id_usuario === user.id_usuario // 👈 solo suyas
-        );
-      });
-
-      setCampañasFinalizadas(finalizadas);
+      setCampañasUsuario(propias);
     } catch (err) {
       console.log(err);
     }
   }
 
-  cargarCampañasFinalizadas();
+  cargarCampañasUsuario();
 }, []);
+
 
   const handleChange = (e) => {
     setForm({
@@ -65,12 +61,7 @@ useEffect(() => {
     e.preventDefault();
     setLoading(true);
 
-    // 🔥 Validación extra: solo permitir campañas finalizadas
-    if (!campañasFinalizadas.some((c) => c.id_campana == form.id_campana)) {
-      toast.error("Solo podés crear historias de campañas finalizadas ✋");
-      setLoading(false);
-      return;
-    }
+
 
     try {
       const result = await createHistory({ ...form, ...files });
@@ -204,8 +195,8 @@ useEffect(() => {
               className="w-full px-4 py-3 bg-white/60 border-2 border-violet-200 rounded-2xl focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-300/50 transition-all text-slate-800 font-medium"
               required
             >
-              <option value="">Seleccionar campaña finalizada...</option>
-              {campañasFinalizadas.map((c) => (
+              <option value="">Seleccionar campaña...</option>
+              {campañasUsuario.map((c) => (
                 <option key={c.id_campana} value={c.id_campana}>
                   {c.titulo}
                 </option>
