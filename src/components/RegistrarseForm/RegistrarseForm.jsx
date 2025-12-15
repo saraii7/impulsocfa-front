@@ -22,6 +22,19 @@ export default function RegistrarseForm() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+  const calcularEdad = (fechaNacimiento) => {
+    const hoy = new Date();
+    const nacimiento = new Date(fechaNacimiento);
+
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    const mes = hoy.getMonth() - nacimiento.getMonth();
+
+    if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+      edad--;
+    }
+
+    return edad;
+  };
 
   // Manejar selección de país
   const handleCountryChange = (countryCode) => {
@@ -42,6 +55,22 @@ export default function RegistrarseForm() {
         padding: "12px 16px",
       },
     });
+    // Validación +16 (solo front)
+    const edad = calcularEdad(formData.fecha_nacimiento);
+
+    if (!formData.fecha_nacimiento) {
+      toast.dismiss(toastId);
+      toast.error("Tenés que ingresar tu fecha de nacimiento 📅");
+      setLoading(false);
+      return;
+    }
+
+    if (edad < 16) {
+      toast.dismiss(toastId);
+      toast.error("Debes tener al menos 16 años para registrarte 🚫");
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await registerUser(formData);
@@ -95,6 +124,15 @@ export default function RegistrarseForm() {
       setLoading(false);
     }
   };
+  const hoy = new Date();
+  const maxFecha = new Date(
+    hoy.getFullYear() - 16,
+    hoy.getMonth(),
+    hoy.getDate()
+  )
+    .toISOString()
+    .split("T")[0];
+
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -165,15 +203,18 @@ export default function RegistrarseForm() {
       {/* Fecha de nacimiento */}
       <div>
         <label className="block text-slate-700 font-semibold mb-2">
-          Fecha de nacimiento
+          Fecha de nacimiento (+16 años)
         </label>
         <input
           type="date"
           name="fecha_nacimiento"
+          max={maxFecha}
           value={formData.fecha_nacimiento}
           onChange={handleChange}
-          className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition-all duration-300 hover:border-violet-400 [color-scheme:light]"
+          required
+          className="w-full bg-violet-50/50 border border-violet-300 rounded-lg px-4 py-3 ..."
         />
+
       </div>
 
       {/* Nacionalidad */}

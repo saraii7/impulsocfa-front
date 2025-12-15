@@ -88,12 +88,39 @@ export default function TusHist() {
         animate={{ opacity: 1, y: 0 }}
         className="max-w-6xl mx-auto"
       >
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-2">
-            Tus historias
-          </h1>
-          <p className="text-slate-600 text-lg">{stories.length} historia{stories.length !== 1 ? 's' : ''} publicada{stories.length !== 1 ? 's' : ''}</p>
-        </div>
+<div className="mb-10 flex items-center justify-between gap-4">
+  {/* Título + subtítulo */}
+  <div>
+    <h1 className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-2">
+      Tus historias
+    </h1>
+    <p className="text-slate-600 text-lg">
+      {stories.length} historia{stories.length !== 1 ? "s" : ""} publicada
+      {stories.length !== 1 ? "s" : ""}
+    </p>
+  </div>
+
+  {/* Botón a la derecha */}
+  <Link to="/formhist">
+    <motion.button
+      whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(167, 139, 250, 0.6)" }}
+      whileTap={{ scale: 0.95 }}
+      className="group relative px-8 py-4 bg-gradient-to-r from-violet-400 to-blue-400 rounded-2xl text-lg font-bold text-white shadow-2xl shadow-violet-300/50 overflow-hidden flex items-center gap-3"
+    >
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-r from-blue-400 to-violet-400"
+        initial={{ x: "100%" }}
+        whileHover={{ x: 0 }}
+        transition={{ duration: 0.3 }}
+      />
+      <span className="relative z-10 flex items-center gap-2">
+        Subí tu historia
+        <ArrowRight className="w-5 h-5" />
+      </span>
+    </motion.button>
+  </Link>
+</div>
+
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {stories.map((story, index) => (
@@ -150,8 +177,11 @@ export default function TusHist() {
               </div>
             </motion.div>
           ))}
+          
         </div>
       </motion.div>
+      
     </div>
+    
   );
 }
