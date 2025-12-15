@@ -164,7 +164,7 @@ async function handleSuspender(id) {
 {porcentaje >= 50 && histories.length === 0 && (
   <div className="mb-6 p-4 bg-yellow-50 border border-yellow-300 rounded-xl shadow-sm">
     <h3 className="text-lg font-semibold text-yellow-700 flex items-center gap-2">
-      ⚠️ Tenés que crear una historia de actualización de como va tu camapaña
+      ⚠️ Tenés que crear una historia de actualización de como va tu campaña
     </h3>
     <p className="text-yellow-800 text-sm mt-1">
       Cuando tu campaña alcanza el 50%, debés crear una historia para mostrar a tus donadores como va su
