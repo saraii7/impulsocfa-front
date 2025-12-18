@@ -127,7 +127,7 @@ export default function DetalleCampana() {
       });
 
       setPreferenceId(idPreference);
-      toast.success("Llave maestra verificada correctamente 🎉");
+   
     } catch (err) {
       console.error("Error al crear preferencia:", err);
       toast.error(err.message || "Hubo un error al procesar el pago, intentá nuevamente");
@@ -176,7 +176,7 @@ export default function DetalleCampana() {
       </div>
     )
   }
-    const fechaFin = new Date(campana.tiempo_objetivo);
+  const fechaFin = new Date(campana.tiempo_objetivo);
   const campanaFinalizada = fechaFin < new Date();
   const imagenes = [campana.foto1, campana.foto2, campana.foto3].filter(Boolean)
   return (

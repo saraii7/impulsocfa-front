@@ -28,27 +28,15 @@ export default function IniciarSesionForm() {
       },
     });
 
-    try {
-      const data = await login(formData.email, formData.password);
-      console.log("Usuario logueado:", data);
+try {
+  const data = await login(formData.email, formData.password);
+  console.log("Usuario logueado:", data);
 
-      toast.dismiss(toastId);
-      toast.success("¡Inicio de sesión exitoso! 🚀", {
-        style: {
-          background: "#1e1e2f",
-          color: "#e2e8f0",
-          border: "1px solid rgba(139,92,246,0.4)",
-          borderRadius: "12px",
-          padding: "12px 16px",
-        },
-        iconTheme: {
-          primary: "#a78bfa",
-          secondary: "#1e1e2f",
-        },
-      });
+  toast.dismiss(toastId);
 
-      setTimeout(() => navigate("/home"), 800);
-    }
+  setTimeout(() => navigate("/home"), 800);
+}
+
 catch (error) {
   console.error("Error al iniciar sesión:", error.message);
   toast.dismiss(toastId);

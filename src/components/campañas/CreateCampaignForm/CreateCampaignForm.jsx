@@ -82,6 +82,11 @@ export default function CreateCampaignForm() {
       toast.error("Por favor, corrige los campos en rojo.");
       return;
     }
+
+    if (!formData.foto1 && !formData.foto2 && !formData.foto3) {
+      toast.error("⚠️ Debés subir al menos una imagen para crear la campaña");
+      return;
+    }
     if (!llaveMaestra.trim()) {
       toast.error("Ingresá tu llave maestra para continuar.");
       return;
@@ -99,7 +104,7 @@ export default function CreateCampaignForm() {
         monto_objetivo: numericMonto,
         llave_maestra: llaveMaestra,
       });
-      toast.success("✅ Campaña creada con éxito!");
+      toast.success("✅ Campaña creada con éxito! Un administrador la revisará pronto, mietras tanto queda en estado pendiente");
       setTimeout(() => navigate("/campanas"), 1500);
     } catch (error) {
       console.error(error);
