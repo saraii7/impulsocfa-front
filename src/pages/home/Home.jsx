@@ -106,7 +106,7 @@ export default function Home() {
       </div>
 
       {/* Hero Section */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center px-4 py-20">
+      <section ref={heroRef} className="relative  flex items-center justify-center px-4 py-15">
         <div className="max-w-6xl mx-auto text-center space-y-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
