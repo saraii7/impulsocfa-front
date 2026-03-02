@@ -10,6 +10,7 @@ function Header() {
   const [user, setUser] = useState(null); // NUEVO: Objeto completo del usuario (para avatar y nombre)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // NUEVO: Para desplegable del usuario
+  const [isMobileUserMenuOpen, setIsMobileUserMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const updateAuthState = () => {
@@ -43,6 +44,7 @@ function Header() {
       navigate("/iniciarsesion");
       setIsMobileMenuOpen(false);
       setIsDropdownOpen(false);
+      setIsMobileUserMenuOpen(false);
     } catch (err) {
       console.error("Error al cerrar sesión:", err.message);
       toast.error("Error al cerrar sesión 😕", {
@@ -63,6 +65,7 @@ function Header() {
   const handleLinkClick = () => {
     setIsMobileMenuOpen(false);
     setIsDropdownOpen(false); //  Cerrar dropdown al hacer click en un link
+    setIsMobileUserMenuOpen(false);
   };
 
   return (
@@ -297,55 +300,71 @@ function Header() {
 
             ) : (
               <>
-                <div className="flex items-center gap-2 px-4 py-3">
-                  <img
-                    src={user?.foto_perfil || "/default-avatar.png"}
-                    alt="Avatar"
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                  <span>{user?.nombre}</span>
-                </div>
-                <Link
-                  to="/usuariopanel"
-                  className="px-4 py-3 text-base font-semibold text-gray-700 hover:text-violet-600 hover:bg-blue-50 rounded-lg transition-all duration-300"
-                  onClick={handleLinkClick}
-                >
-                  Panel de usuario
-                </Link>
-                <Link
-                  to="/usuariopanel"
-                  className="px-4 py-3 text-base font-semibold text-gray-700 hover:text-violet-600 hover:bg-blue-50 rounded-lg transition-all duration-300"
-                  onClick={handleLinkClick}
-                >
-                  Perfil
-                </Link>
-                <Link
-                  to="/campanas"
-                  className="px-4 py-3 text-base font-semibold text-gray-700 hover:text-violet-600 hover:bg-blue-50 rounded-lg transition-all duration-300"
-                  onClick={handleLinkClick}
-                >
-                  Tus Historias
-                </Link>
-                <Link
-                  to="/todasdonaciones"
-                  className="px-4 py-3 text-base font-semibold text-gray-700 hover:text-violet-600 hover:bg-blue-50 rounded-lg transition-all duration-300"
-                  onClick={handleLinkClick}
-                >
-                  Donaciones Recibidas
-                </Link>
-                                <Link
-                  to="/tushist"
-                  className="px-4 py-3 text-base font-semibold text-gray-700 hover:text-violet-600 hover:bg-blue-50 rounded-lg transition-all duration-300"
-                  onClick={handleLinkClick}
-                >
-                  Tus Historias
-                </Link>
+                {/* Botón usuario mobile */}
                 <button
-                  className="px-4 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 rounded-lg shadow-lg shadow-blue-200/50 hover:shadow-violet-200/50 transition-all duration-300"
-                  onClick={handleLogout}
+                  onClick={() => setIsMobileUserMenuOpen(!isMobileUserMenuOpen)}
+                  className="flex items-center justify-between w-full px-4 py-3 text-left text-base font-semibold text-gray-700 hover:text-violet-600 hover:bg-blue-50 rounded-lg transition-all duration-300"
                 >
-                  Cerrar sesión
+                  <div className="flex items-center gap-2">
+                    <img
+                      src={user?.foto_perfil || "/default-avatar.png"}
+                      alt="Avatar"
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                    <span>{user?.nombre}</span>
+                  </div>
+
+                  <span className="text-sm">
+                    {isMobileUserMenuOpen ? "▲" : "▼"}
+                  </span>
                 </button>
+
+                {/* Submenú usuario */}
+                <div
+                  className={`overflow-hidden transition-all duration-300 ${isMobileUserMenuOpen
+                      ? "max-h-[500px] opacity-100 mt-2"
+                      : "max-h-0 opacity-0"
+                    }`}
+                >
+                  <Link
+                    to="/usuariopanel"
+                    className="block px-4 py-3 text-base font-semibold text-gray-700 hover:text-violet-600 hover:bg-blue-50 rounded-lg transition-all duration-300"
+                    onClick={handleLinkClick}
+                  >
+                    Panel de usuario
+                  </Link>
+
+                  <Link
+                    to="/campanas"
+                    className="block px-4 py-3 text-base font-semibold text-gray-700 hover:text-violet-600 hover:bg-blue-50 rounded-lg transition-all duration-300"
+                    onClick={handleLinkClick}
+                  >
+                    Mis campañas
+                  </Link>
+
+                  <Link
+                    to="/todasdonaciones"
+                    className="block px-4 py-3 text-base font-semibold text-gray-700 hover:text-violet-600 hover:bg-blue-50 rounded-lg transition-all duration-300"
+                    onClick={handleLinkClick}
+                  >
+                    Donaciones recibidas
+                  </Link>
+
+                  <Link
+                    to="/tushist"
+                    className="block px-4 py-3 text-base font-semibold text-gray-700 hover:text-violet-600 hover:bg-blue-50 rounded-lg transition-all duration-300"
+                    onClick={handleLinkClick}
+                  >
+                    Tus Historias
+                  </Link>
+
+                  <button
+                    className="w-full text-left px-4 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-violet-600 rounded-lg shadow-lg transition-all duration-300"
+                    onClick={handleLogout}
+                  >
+                    Cerrar sesión
+                  </button>
+                </div>
               </>
             )
           ) : (
