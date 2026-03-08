@@ -125,7 +125,7 @@ export default function Historias() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="flex flex-col md:flex-row gap-4 justify-center mt-12"
+          className="flex flex-col md:flex-row gap-4 justify-center items-center mt-12"
           >
             <Link to={isLoggedIn ? "/leerhist" : "/iniciarsesion"}>
               <motion.button
