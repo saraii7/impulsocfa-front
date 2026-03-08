@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { motion, useInView, useScroll, useTransform } from "framer-motion"
 import Inundacion from "../../assets/inundacion.jpg";
 import Inundacion1 from "../../assets/inundacion1.jpg";
-import Icon1 from "../../assets/icon1.jpeg";
+import Icon1 from "../../assets/icon1.jpg";
 import Icon2 from "../../assets/icon2.jpeg";
 
 function AnimatedCounter({ end, duration = 2, suffix = "" }) {
@@ -256,8 +256,8 @@ export default function Nosotros() {
 
             <div className="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto">
               {[
-                { name: "Camila Ocaña", role: "Co-fundadora", image: Icon1 },
-                { name: "Franco Jarc", role: "Co-fundador", image: Icon2 },
+                { name: "Camila Ocaña", role: "Desarrollo Frontend", image: Icon1 },
+                { name: "Franco Jarc", role: "Desarrollo Backend", image: Icon2 },
               ].map((founder, index) => (
                 <motion.div
                   key={index}
